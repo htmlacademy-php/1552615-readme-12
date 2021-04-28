@@ -1,7 +1,7 @@
 # Личный проект «Readme»
 
 * Студент: [Ильнур Курмандаев](https://up.htmlacademy.ru/php/12/user/1552615).
-* Наставник: [Дмитрий Мехов](https://https://htmlacademy.ru/profile/id368057).
+* Наставник: [Дмитрий Мехов](https://htmlacademy.ru/profile/id368057).
 
 ---
 
