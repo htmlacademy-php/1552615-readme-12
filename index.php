@@ -70,6 +70,7 @@ $user_name = 'Ильнур'; // укажите здесь ваше имя
                             <div class="header__profile-name">
                                 <span>
                                     <!--здесь должно быть имя пользователя-->
+                                    <?php echo($user_name); ?>
                                 </span>
                                 <svg class="header__link-arrow" width="10" height="6">
                                     <use xlink:href="#icon-arrow-right-ad"></use>
