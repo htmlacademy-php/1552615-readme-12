@@ -41,23 +41,23 @@ $posts = [
 
 function get_cut_text($text, $symbol_amount = 300)
 {
-    $words = explode(' ', $text);
     $link = '<a class="post-text__more-link" href="#">Читать далее</a>';
-    $result = 0;
-    $words_count = 0;
-    foreach ($words as $word) {
-        $result += mb_strlen($word);
-        $words_count ++;
-        if ($result > $symbol_amount) {
-            break;
-        };
-    };
-    if ($result >= $symbol_amount) {
-        $trimmed_words = explode(' ', $text, -(count($words) - ($words_count - 1)));
-        $trimmed_string = implode($trimmed_words, ' ');
-        return "$trimmed_string... $link";
+    if (mb_strlen($text) < $symbol_amount) {
+        return "<p>$text</p>";
     } else {
-        return $text;
+        $words = explode(' ', $text);
+        $result = 0;
+        $new_words = [];
+        foreach ($words as $word) {
+            $result += (mb_strlen($word) + 1);
+            array_push($new_words, $word);
+            $trimmed_string = implode($new_words, ' ');
+            if (($result - 1) >= $symbol_amount) {
+                array_pop($new_words);
+                $trimmed_string = implode($new_words, ' ');
+            };
+        };
+        return "<p>$trimmed_string...</p> $link";
     };
 }
 ?>
@@ -314,7 +314,7 @@ function get_cut_text($text, $symbol_amount = 300)
                     </div>
 
                     <?php elseif ($post['type'] === 'post-text'): ?>
-                    <p><?=get_cut_text($post['content']);?></p>
+                    <?=get_cut_text($post['content']);?>
 
                     <?php endif;?>
 
