@@ -51,12 +51,12 @@ function get_cut_text($text, $symbol_amount = 300)
         foreach ($words as $word) {
             $result += (mb_strlen($word) + 1);
             array_push($new_words, $word);
-            $trimmed_string = implode($new_words, ' ');
             if (($result - 1) >= $symbol_amount) {
-                array_pop($new_words);
-                $trimmed_string = implode($new_words, ' ');
+                break;
             };
         };
+        array_pop($new_words);
+        $trimmed_string = implode(' ', $new_words);
         return "<p>$trimmed_string...</p> $link";
     };
 }
