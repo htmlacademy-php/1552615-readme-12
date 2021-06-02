@@ -1,8 +1,6 @@
 <?php
 $is_auth = rand(0, 1);
-
 $user_name = 'Ильнур'; // укажите здесь ваше имя
-
 $posts = [
     [
         'title' => 'Цитата',
@@ -11,7 +9,6 @@ $posts = [
         'author_name' => 'Лариса',
         'avatar' => 'userpic-larisa-small.jpg',
     ],
-
     [
         'title' => 'Игра престолов',
         'type' => 'post-text',
@@ -19,7 +16,6 @@ $posts = [
         'author_name' => 'Владик',
         'avatar' => 'userpic.jpg',
     ],
-
     [
         'title' => 'Наконец, обработал фотки!',
         'type' => 'post-photo',
@@ -27,7 +23,6 @@ $posts = [
         'author_name' => 'Виктор',
         'avatar' => 'userpic-mark.jpg',
     ],
-
     [
         'title' => 'Моя мечта',
         'type' => 'post-photo',
@@ -35,15 +30,36 @@ $posts = [
         'author_name' => 'Лариса',
         'avatar' => 'userpic-larisa-small.jpg',
     ],
-
     [
         'title' => 'Лучшие курсы',
         'type' => 'post-link',
         'content' => 'www.htmlacademy.ru',
         'author_name' => 'Владик',
         'avatar' => 'userpic.jpg',
-    ]
+    ],
 ];
+
+function get_cut_text($text, $symbol_amount = 300)
+{
+    $link = '<a class="post-text__more-link" href="#">Читать далее</a>';
+    if (mb_strlen($text) < $symbol_amount) {
+        return "<p>$text</p>";
+    } else {
+        $words = explode(' ', $text);
+        $result = 0;
+        $new_words = [];
+        foreach ($words as $word) {
+            $result += (mb_strlen($word) + 1);
+            array_push($new_words, $word);
+            if (($result - 1) >= $symbol_amount) {
+                break;
+            };
+        };
+        array_pop($new_words);
+        $trimmed_string = implode(' ', $new_words);
+        return "<p>$trimmed_string...</p> $link";
+    };
+}
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -112,7 +128,7 @@ $posts = [
                             <div class="header__profile-name">
                                 <span>
                                     <!--здесь должно быть имя пользователя-->
-                                    <?php echo($user_name); ?>
+                                    <?php echo ($user_name); ?>
                                 </span>
                                 <svg class="header__link-arrow" width="10" height="6">
                                     <use xlink:href="#icon-arrow-right-ad"></use>
@@ -154,7 +170,7 @@ $posts = [
                     </li>
                 </ul>
             </nav>
-            <?php endif; ?>
+            <?php endif;?>
 
         </div>
     </div>
@@ -248,8 +264,8 @@ $posts = [
         </div>
         <div class="popular__posts">
 
-            <?php foreach($posts as $post): ?>
-            <article class="popular__post post <?php echo($post['type']);?>">
+            <?php foreach ($posts as $post): ?>
+            <article class="popular__post post <?php echo ($post['type']); ?>">
                 <header class="post__header">
                     <h2><?=$post['title'];?></h2>
                 </header>
@@ -298,9 +314,9 @@ $posts = [
                     </div>
 
                     <?php elseif ($post['type'] === 'post-text'): ?>
-                    <p><?=$post['content'];?></p>
+                    <?=get_cut_text($post['content']);?>
 
-                    <?php endif; ?>
+                    <?php endif;?>
 
                 </div>
                 <footer class="post__footer">
@@ -339,7 +355,7 @@ $posts = [
                     </div>
                 </footer>
             </article>
-            <?php endforeach; ?>
+            <?php endforeach;?>
 
         </div>
     </div>
