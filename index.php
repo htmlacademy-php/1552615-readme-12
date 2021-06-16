@@ -63,9 +63,35 @@ function get_cut_text($text, $symbol_amount = 300)
     };
 }
 
+function get_random_date($key) {
+    return date_create(generate_random_date($key));
+}
+
+function get_date_interval($key) {
+    $current_date = date_create('now');
+    $random_date = get_random_date($key);
+    return $date_interval = date_diff($random_date, $current_date);
+}
+
+function get_date_interval_format($key) {
+    $date_interval = get_date_interval($key);
+    $week = floor($date_interval->d / 7);
+
+    if ($week > 5 || $date_interval->m >= 1) {
+        return $date_interval->m . " " . get_noun_plural_form($date_interval->m, 'месяц', 'месяца', 'месяцев') . " назад";
+    } elseif ($week >= 1 && $week <= 5) {
+        return $week . " " . get_noun_plural_form($week, 'неделя', 'недели', 'недель') . " назад";
+    } elseif ($date_interval->h === 24 || $date_interval->d >= 1 && $date_interval->d < 7) {
+        return $date_interval->d . " " . get_noun_plural_form($date_interval->d, 'день', 'дня', 'дней') . " назад";
+    } elseif ($date_interval->h >= 1 ) {
+        return $date_interval->h . " " . get_noun_plural_form($date_interval->h, 'час', 'часа', 'часов') . " назад";
+    } elseif ($date_interval->i >= 1 || $date_interval->i < 60) {
+        return $date_interval->i . " " . get_noun_plural_form($date_interval->i, 'минута', 'минуты', 'минут') . " назад";
+    };
+}
+
 $popular_content = include_template('main.php', ['posts' => $posts]);
 
 $layout = include_template('layout.php', ['popular_content' => $popular_content, 'title' => 'readme: популярное', 'is_auth' => $is_auth, 'user_name' => $user_name]);
 
 print($layout);
-?>

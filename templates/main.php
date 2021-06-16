@@ -85,7 +85,7 @@
         </div>
         <div class="popular__posts">
 
-            <?php foreach ($posts as $post): ?>
+            <?php foreach ($posts as $key =>$post): ?>
             <article class="popular__post post <?php echo (htmlspecialchars($post['type'])); ?>">
                 <header class="post__header">
                     <h2><?=htmlspecialchars($post['title']);?></h2>
@@ -148,8 +148,8 @@
                                 <img class="post__author-avatar" src="img/<?=$post['avatar'];?>" alt="Аватар пользователя">
                             </div>
                             <div class="post__info">
-                                <b class="post__author-name"><?=$post['author_name'];?></b>
-                                <time class="post__time" datetime="">дата</time>
+                                <b class="post__author-name"><?=htmlspecialchars($post['author_name'])?></b>
+                                <time class="post__time" datetime="<?=date_format(get_random_date($key), 'c');?>" title="<?=date_format(get_random_date($key), 'd.m.Y H:i');?>"><?=get_date_interval_format($key);?></time>
                             </div>
                         </a>
                     </div>
