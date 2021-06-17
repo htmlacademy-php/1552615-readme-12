@@ -10,6 +10,7 @@ $posts = [
         'content' => 'Мы в жизни любим только раз, а после ищем лишь похожих',
         'author_name' => 'Лариса',
         'avatar' => 'userpic-larisa-small.jpg',
+        'random_date' => date_create(generate_random_date(0)),
     ],
     [
         'title' => 'Игра престолов',
@@ -17,6 +18,7 @@ $posts = [
         'content' => 'Не могу дождаться начала финального сезона своего любимого сериала!',
         'author_name' => 'Владик',
         'avatar' => 'userpic.jpg',
+        'random_date' => date_create(generate_random_date(1)),
     ],
     [
         'title' => 'Наконец, обработал фотки!',
@@ -24,6 +26,7 @@ $posts = [
         'content' => 'rock-medium.jpg',
         'author_name' => 'Виктор',
         'avatar' => 'userpic-mark.jpg',
+        'random_date' => date_create(generate_random_date(2)),
     ],
     [
         'title' => 'Моя мечта',
@@ -31,6 +34,7 @@ $posts = [
         'content' => 'coast-medium.jpg',
         'author_name' => 'Лариса',
         'avatar' => 'userpic-larisa-small.jpg',
+        'random_date' => date_create(generate_random_date(3)),
     ],
     [
         'title' => 'Лучшие курсы',
@@ -38,6 +42,7 @@ $posts = [
         'content' => 'www.htmlacademy.ru',
         'author_name' => 'Владик',
         'avatar' => 'userpic.jpg',
+        'random_date' => date_create(generate_random_date(4)),
     ],
 ];
 
@@ -63,18 +68,9 @@ function get_cut_text($text, $symbol_amount = 300)
     };
 }
 
-function get_random_date($key) {
-    return date_create(generate_random_date($key));
-}
-
-function get_date_interval($key) {
+function get_date_interval_format($random_date) {
     $current_date = date_create('now');
-    $random_date = get_random_date($key);
-    return $date_interval = date_diff($random_date, $current_date);
-}
-
-function get_date_interval_format($key) {
-    $date_interval = get_date_interval($key);
+    $date_interval = date_diff($random_date, $current_date);
     $week = floor($date_interval->d / 7);
 
     if ($week > 5 || $date_interval->m >= 1) {
