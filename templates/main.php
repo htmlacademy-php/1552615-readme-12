@@ -150,7 +150,7 @@
                             </div>
                             <div class="post__info">
                                 <b class="post__author-name"><?=htmlspecialchars($post['author_name'])?></b>
-                                <time class="post__time" datetime="<?=date_format($post['random_date'], 'c');?>" title="<?=date_format($post['random_date'], 'd.m.Y H:i');?>"><?=get_date_interval_format($post['random_date']);?></time>
+                                <time class="post__time" datetime="<?=date_format($post['published_at'], 'c');?>" title="<?=date_format($post['published_at'], 'd.m.Y H:i');?>"><?=get_date_interval_format($post['published_at']);?></time>
                             </div>
                         </a>
                     </div>

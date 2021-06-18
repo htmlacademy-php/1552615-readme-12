@@ -10,7 +10,7 @@ $posts = [
         'content' => 'Мы в жизни любим только раз, а после ищем лишь похожих',
         'author_name' => 'Лариса',
         'avatar' => 'userpic-larisa-small.jpg',
-        'random_date' => date_create(generate_random_date(0)),
+        'published_at' => date_create(generate_random_date(0)),
     ],
     [
         'title' => 'Игра престолов',
@@ -18,7 +18,7 @@ $posts = [
         'content' => 'Не могу дождаться начала финального сезона своего любимого сериала!',
         'author_name' => 'Владик',
         'avatar' => 'userpic.jpg',
-        'random_date' => date_create(generate_random_date(1)),
+        'published_at' => date_create(generate_random_date(1)),
     ],
     [
         'title' => 'Наконец, обработал фотки!',
@@ -26,7 +26,7 @@ $posts = [
         'content' => 'rock-medium.jpg',
         'author_name' => 'Виктор',
         'avatar' => 'userpic-mark.jpg',
-        'random_date' => date_create(generate_random_date(2)),
+        'published_at' => date_create(generate_random_date(2)),
     ],
     [
         'title' => 'Моя мечта',
@@ -34,7 +34,7 @@ $posts = [
         'content' => 'coast-medium.jpg',
         'author_name' => 'Лариса',
         'avatar' => 'userpic-larisa-small.jpg',
-        'random_date' => date_create(generate_random_date(3)),
+        'published_at' => date_create(generate_random_date(3)),
     ],
     [
         'title' => 'Лучшие курсы',
@@ -42,7 +42,7 @@ $posts = [
         'content' => 'www.htmlacademy.ru',
         'author_name' => 'Владик',
         'avatar' => 'userpic.jpg',
-        'random_date' => date_create(generate_random_date(4)),
+        'published_at' => date_create(generate_random_date(4)),
     ],
 ];
 
@@ -68,22 +68,21 @@ function get_cut_text($text, $symbol_amount = 300)
     };
 }
 
-function get_date_interval_format($random_date) {
+function get_date_interval_format($date) {
     $current_date = date_create('now');
-    $date_interval = date_diff($random_date, $current_date);
+    $date_interval = date_diff($date, $current_date);
     $week = floor($date_interval->d / 7);
 
-    if ($week > 5 || $date_interval->m >= 1) {
+    if ($date_interval->m >= 1) {
         return $date_interval->m . " " . get_noun_plural_form($date_interval->m, 'месяц', 'месяца', 'месяцев') . " назад";
-    } elseif ($week >= 1 && $week <= 5) {
+    } elseif ($week >= 1) {
         return $week . " " . get_noun_plural_form($week, 'неделя', 'недели', 'недель') . " назад";
-    } elseif ($date_interval->h === 24 || $date_interval->d >= 1 && $date_interval->d < 7) {
+    } elseif ($date_interval->d >= 1) {
         return $date_interval->d . " " . get_noun_plural_form($date_interval->d, 'день', 'дня', 'дней') . " назад";
     } elseif ($date_interval->h >= 1 ) {
         return $date_interval->h . " " . get_noun_plural_form($date_interval->h, 'час', 'часа', 'часов') . " назад";
-    } elseif ($date_interval->i >= 1 || $date_interval->i < 60) {
-        return $date_interval->i . " " . get_noun_plural_form($date_interval->i, 'минута', 'минуты', 'минут') . " назад";
     };
+    return $date_interval->i . " " . get_noun_plural_form($date_interval->i, 'минута', 'минуты', 'минут') . " назад";
 }
 
 $popular_content = include_template('main.php', ['posts' => $posts]);
