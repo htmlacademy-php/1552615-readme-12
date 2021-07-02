@@ -83,7 +83,7 @@ CREATE TABLE likes (
         REFERENCES post(id)
         ON DELETE CASCADE,
 
-    INDEX user_post_ind (user_id, post_id)
+    UNIQUE INDEX user_post_ind (user_id, post_id)
 );
 CREATE TABLE subscribtions (
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
