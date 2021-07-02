@@ -1,29 +1,28 @@
 CREATE DATABASE readme DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
 USE readme;
 CREATE TABLE user (
-    user_id INT PRIMARY KEY NOT NULL,
-    reg_date DATETIME,
-    email VARCHAR(45),
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    email VARCHAR(45) NOT NULL,
     UNIQUE INDEX email_ind (email),
-    user_login VARCHAR(45),
+    user_login VARCHAR(45) NOT NULL,
     UNIQUE INDEX user_login_ind (user_login),
     user_password VARCHAR(45),
     avatar VARCHAR(100)
 );
 CREATE TABLE content_type (
-    content_type_id INT PRIMARY KEY NOT NULL,
-    title VARCHAR(30),
-    classname VARCHAR(30) NOT NULL,
-    INDEX classname_ind (classname)
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    title VARCHAR(30) NOT NULL,
+    classname VARCHAR(30) NOT NULL
 );
 CREATE TABLE hashtag (
-    hashtag_id INT PRIMARY KEY NOT NULL,
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     hashtag VARCHAR(30),
     INDEX hashtag_ind (hashtag)
 );
 CREATE TABLE post (
-    post_id INT PRIMARY KEY NOT NULL,
-    published_date DATETIME,
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    published_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     title VARCHAR(45),
     author VARCHAR(45),
     picture VARCHAR(100),
@@ -36,36 +35,28 @@ CREATE TABLE post (
         REFERENCES user(user_id)
         ON DELETE CASCADE,
 
-    content_id INT NOT NULL,
-    INDEX content_ind (content_id),
-    FOREIGN KEY (content_id)
-        REFERENCES content_type(content_type_id)
+    type_id INT NOT NULL,
+    INDEX type_ind (type_id),
+    FOREIGN KEY (type_id)
+        REFERENCES content_type(id)
         ON DELETE CASCADE,
-
+);
+CREATE TABLE hashtags_posts (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     hashtag_id INT,
     INDEX hashtag_ind (hashtag_id),
     FOREIGN KEY (hashtag_id)
-        REFERENCES hashtag(hashtag_id)
-        ON DELETE CASCADE
-);
-CREATE TABLE comment (
-    comment_id INT PRIMARY KEY,
-    create_date DATETIME,
-    comment TEXT,
-    author INT NOT NULL,
-    INDEX author_ind (author),
-    FOREIGN KEY (author)
-        REFERENCES user(user_id)
+        REFERENCES hashtag(id)
         ON DELETE CASCADE,
-
     post_id INT NOT NULL,
-    INDEX post_ind (post_id),
     FOREIGN KEY (post_id)
-        REFERENCES post(post_id)
+        REFERENCES post(id)
         ON DELETE CASCADE
 );
-CREATE TABLE likes (
-    likes_id INT PRIMARY KEY,
+CREATE TABLE comments (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    published_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    comment TEXT,
     user_id INT NOT NULL,
     INDEX user_ind (user_id),
     FOREIGN KEY (user_id)
@@ -75,37 +66,52 @@ CREATE TABLE likes (
     post_id INT NOT NULL,
     INDEX post_ind (post_id),
     FOREIGN KEY (post_id)
-        REFERENCES post(post_id)
+        REFERENCES post(id)
         ON DELETE CASCADE
 );
-CREATE TABLE subscribe (
-    subscribe_id INT PRIMARY KEY,
-    author INT NOT NULL,
-    INDEX author_ind (author),
-    FOREIGN KEY (author)
-        REFERENCES user(user_id)
+CREATE TABLE likes (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    INDEX user_ind (user_id),
+    FOREIGN KEY (user_id)
+        REFERENCES user(id)
         ON DELETE CASCADE,
 
-    subscriber INT NOT NULL,
-    INDEX subscriber_ind (subscriber),
-    FOREIGN KEY (subscriber)
-        REFERENCES user(user_id)
+    post_id INT NOT NULL,
+    INDEX post_ind (post_id),
+    FOREIGN KEY (post_id)
+        REFERENCES post(id)
+        ON DELETE CASCADE,
+
+    INDEX user_post_ind (user_id, post_id)
+);
+CREATE TABLE subscribtions (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    INDEX user_ind (user_id),
+    FOREIGN KEY (user_id)
+        REFERENCES user(id)
+        ON DELETE CASCADE,
+
+    to_user_id INT NOT NULL,
+    INDEX to_user_id_ind (to_user_id),
+    FOREIGN KEY (to_user_id)
+        REFERENCES user(id)
         ON DELETE CASCADE
 );
 CREATE TABLE user_message (
-    message_id INT PRIMARY KEY,
-    send_date DATETIME,
-    INDEX send_date_ind (send_date),
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    published_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     user_message TEXT,
-    sender INT NOT NULL,
-    INDEX sender_ind (sender),
-    FOREIGN KEY (sender)
-        REFERENCES user(user_id)
+    user_id INT NOT NULL,
+    INDEX user_ind (user_id),
+    FOREIGN KEY (user_id)
+        REFERENCES user(id)
         ON DELETE CASCADE,
 
-    reciever INT NOT NULL,
-    INDEX reciever_ind (reciever),
-    FOREIGN KEY (reciever)
-        REFERENCES user(user_id)
+    to_user_id INT NOT NULL,
+    INDEX to_user_ind (to_user_id),
+    FOREIGN KEY (to_user_id)
+        REFERENCES user(id)
         ON DELETE CASCADE
 );
