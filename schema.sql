@@ -23,7 +23,7 @@ CREATE TABLE hashtag (
 CREATE TABLE post (
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     published_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    title VARCHAR(45),
+    title VARCHAR(45) NOT NULL,
     author VARCHAR(45),
     picture VARCHAR(100),
     video VARCHAR(100),
