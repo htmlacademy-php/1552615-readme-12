@@ -32,14 +32,14 @@ CREATE TABLE post (
     user_id INT NOT NULL,
     INDEX user_ind (user_id),
     FOREIGN KEY (user_id)
-        REFERENCES user(user_id)
+        REFERENCES user(id)
         ON DELETE CASCADE,
 
     type_id INT NOT NULL,
     INDEX type_ind (type_id),
     FOREIGN KEY (type_id)
         REFERENCES content_type(id)
-        ON DELETE CASCADE,
+        ON DELETE CASCADE
 );
 CREATE TABLE hashtags_posts (
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -60,7 +60,7 @@ CREATE TABLE comments (
     user_id INT NOT NULL,
     INDEX user_ind (user_id),
     FOREIGN KEY (user_id)
-        REFERENCES user(user_id)
+        REFERENCES user(id)
         ON DELETE CASCADE,
 
     post_id INT NOT NULL,
