@@ -24,7 +24,7 @@ CREATE TABLE post (
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     published_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     title VARCHAR(45) NOT NULL,
-    quote_text VARCHAR(200),
+    text_content VARCHAR(200),
     quote_author VARCHAR(45),
     picture VARCHAR(100),
     video VARCHAR(100),
