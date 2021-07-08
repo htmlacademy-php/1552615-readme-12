@@ -41,8 +41,8 @@ FROM post
 ORDER BY watch_count DESC;
 
 -- делаем запрос на получение списка постов для конкретного пользователя
-SELECT p.id, p.title, text_content, quote_author, picture, video, link, watch_count, u.user_login
-FROM post p
+SELECT post.*, watch_count, u.user_login
+FROM post
   LEFT JOIN user u ON user_id = u.id
 WHERE u.user_login = 'pikachu';
 
