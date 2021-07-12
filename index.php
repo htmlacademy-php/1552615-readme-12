@@ -85,7 +85,28 @@ function get_date_interval_format($date) {
     return $date_interval->i . " " . get_noun_plural_form($date_interval->i, 'минута', 'минуты', 'минут') . " назад";
 }
 
-$popular_content = include_template('main.php', ['posts' => $posts]);
+// $popular_content = include_template('main.php', ['posts' => $posts]);
+
+// $layout = include_template('layout.php', ['popular_content' => $popular_content, 'title' => 'readme: популярное', 'is_auth' => $is_auth, 'user_name' => $user_name]);
+
+// print($layout);
+
+$connect = mysqli_connect("localhost:3306", "root", " ", "readme");
+if ($connect == false) {
+    print("Connection error: " . mysqli_connect_error());
+} else {
+    print("Connection complete");
+};
+mysqli_set_charset($connect, "utf8");
+
+$sql_types_query = "SELECT * FROM content_type";
+$sql_posts_query = "SELECT post.*, u.user_login, u.avatar FROM post LEFT JOIN user u ON user_id = u.id ORDER BY watch_count DESC LIMIT 6";
+$result_types = mysqli_query($connect, $sql_types_query);
+$result_posts = mysqli_query($connect, $sql_posts_query);
+$sql_types = mysqli_fetch_all($result_types, MYSQLI_ASSOC);
+$sql_posts = mysqli_fetch_all($result_posts, MYSQLI_ASSOC);
+
+$popular_content = include_template('main.php', ['posts' => $sql_posts]);
 
 $layout = include_template('layout.php', ['popular_content' => $popular_content, 'title' => 'readme: популярное', 'is_auth' => $is_auth, 'user_name' => $user_name]);
 

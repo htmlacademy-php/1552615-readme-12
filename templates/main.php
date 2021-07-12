@@ -86,8 +86,8 @@
         <div class="popular__posts">
 
             <?php
-            foreach ($posts as $key =>$post):?>
-            <article class="popular__post post <?php echo (htmlspecialchars($post['type'])); ?>">
+            foreach ($posts as $key => $post):?>
+            <article class="popular__post post <?php echo (htmlspecialchars($post['type_id'])); ?>">
                 <header class="post__header">
                     <h2><?=htmlspecialchars($post['title']);?></h2>
                 </header>
@@ -96,14 +96,14 @@
                     <?php if ($post['type'] === 'post-quote'): ?>
                     <blockquote>
                         <p>
-                            <?=htmlspecialchars($post['content']);?>
+                            <?=htmlspecialchars($post['text-content']);?>
                         </p>
-                        <cite><?=htmlspecialchars($post['author_name']);?></cite>
+                        <cite><?=htmlspecialchars($post['quote_author']);?></cite>
                     </blockquote>
 
                     <?php elseif ($post['type'] === 'post-link'): ?>
                     <div class="post-link__wrapper">
-                        <a class="post-link__external" href="http://<?=htmlspecialchars($post['content']);?>" title="Перейти по ссылке">
+                        <a class="post-link__external" href="http://<?=htmlspecialchars($post['link']);?>" title="Перейти по ссылке">
                             <div class="post-link__info-wrapper">
                                 <div class="post-link__icon-wrapper">
                                     <img src="https://www.google.com/s2/favicons?domain=vitadental.ru" alt="Иконка">
@@ -112,19 +112,19 @@
                                     <h3><?=htmlspecialchars($post['title'])?></h3>
                                 </div>
                             </div>
-                            <span><?=htmlspecialchars($post['content']);?></span>
+                            <span><?=htmlspecialchars($post['link']);?></span>
                         </a>
                     </div>
 
                     <?php elseif ($post['type'] === 'post-photo'): ?>
                     <div class="post-photo__image-wrapper">
-                        <img src="img/<?=htmlspecialchars($post['content']);?>" alt="Фото от пользователя" width="360" height="240">
+                        <img src="img/<?=htmlspecialchars($post['picture']);?>" alt="Фото от пользователя" width="360" height="240">
                     </div>
 
                     <?php elseif ($post['type'] === 'post-video'): ?>
                     <div class="post-video__block">
                         <div class="post-video__preview">
-                            <?=embed_youtube_cover(htmlspecialchars($post['content']));?>
+                            <?=embed_youtube_cover(htmlspecialchars($post['video']));?>
                             <img src="img/coast-medium.jpg" alt="Превью к видео" width="360" height="188">
                         </div>
                         <a href="post-details.html" class="post-video__play-big button">
@@ -136,7 +136,7 @@
                     </div>
 
                     <?php elseif ($post['type'] === 'post-text'): ?>
-                    <?=get_cut_text(htmlspecialchars($post['content']));?>
+                    <?=get_cut_text(htmlspecialchars($post['text-content']));?>
 
                     <?php endif;?>
 
@@ -146,10 +146,10 @@
                         <a class="post__author-link" href="#" title="Автор">
                             <div class="post__avatar-wrapper">
                                 <!--укажите путь к файлу аватара-->
-                                <img class="post__author-avatar" src="img/<?=$post['avatar'];?>" alt="Аватар пользователя">
+                                <img class="post__author-avatar" src="img/<?=$post['u.avatar'];?>" alt="Аватар пользователя">
                             </div>
                             <div class="post__info">
-                                <b class="post__author-name"><?=htmlspecialchars($post['author_name'])?></b>
+                                <b class="post__author-name"><?=htmlspecialchars($post['user_login'])?></b>
                                 <time class="post__time" datetime="<?=date_format($post['published_at'], 'c');?>" title="<?=date_format($post['published_at'], 'd.m.Y H:i');?>"><?=get_date_interval_format($post['published_at']);?></time>
                             </div>
                         </a>
