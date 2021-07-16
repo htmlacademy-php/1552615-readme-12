@@ -95,8 +95,8 @@ $sql_types_query = "SELECT * FROM content_type";
 $sql_posts_query = "SELECT post.*, u.user_login, u.avatar, ct.classname
 FROM post LEFT JOIN user u ON user_id = u.id LEFT JOIN content_type ct ON type_id = ct.id ORDER BY watch_count DESC LIMIT 6";
 
-$sql_types = db_query($connect, $sql_types_query);
-$sql_posts = db_query($connect, $sql_posts_query);
+$sql_types = db_get_query($connect, $sql_types_query);
+$sql_posts = db_get_query($connect, $sql_posts_query);
 
 $popular_content = include_template('main.php', ['posts' => $sql_posts, 'types' => $sql_types]);
 

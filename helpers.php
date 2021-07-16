@@ -266,7 +266,7 @@ function generate_random_date($index)
 /** Принимает $connect и $sql
  * возвращает двумерный массив с данными из базы данных
  */
-function db_query($connect, $sql) {
+function db_get_query($connect, $sql) {
     $result = mysqli_query($connect, $sql);
     if (!$result) {
         die("Ошибка запроса:" . mysqli_error($connect));
