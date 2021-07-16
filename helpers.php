@@ -262,3 +262,15 @@ function generate_random_date($index)
 
     return $dt;
 }
+
+/** Принимает $connect и $sql
+ * возвращает двумерный массив с данными из базы данных
+ */
+function db_get_query($connect, $sql) {
+    $result = mysqli_query($connect, $sql);
+    if (!$result) {
+        die("Ошибка запроса:" . mysqli_error($connect));
+    };
+    return mysqli_fetch_all($result, MYSQLI_ASSOC);
+};
+

@@ -4,7 +4,7 @@ INSERT INTO content_type (title, classname)
 
 -- добавляем записи в сущность user
 INSERT INTO user (email, user_login, user_password, avatar)
-    VALUES ('pikachu@gmail.com', 'pikachu', 'pikapika777', 'userpic-mark.jpg.jpg'), ('petr_petrovich@gmail.com', 'petr_petrovich', 'vodka_4ever', 'userpic.jpg'), ('valiko@yandex.ru', 'valiko', 'mimino555', 'userpic-larisa-small.jpg');
+    VALUES ('pikachu@gmail.com', 'pikachu', 'pikapika777', 'userpic-mark.jpg'), ('petr_petrovich@gmail.com', 'petr_petrovich', 'vodka_4ever', 'userpic.jpg'), ('valiko@yandex.ru', 'valiko', 'mimino555', 'userpic-larisa-small.jpg');
 
 -- добавляем записи в сущность post, отдельный запрос для каждого типа контента
 INSERT INTO post (title, text_content, quote_author, watch_count, user_id, type_id)

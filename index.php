@@ -85,7 +85,20 @@ function get_date_interval_format($date) {
     return $date_interval->i . " " . get_noun_plural_form($date_interval->i, 'минута', 'минуты', 'минут') . " назад";
 }
 
-$popular_content = include_template('main.php', ['posts' => $posts]);
+$connect = mysqli_connect("localhost", "root", "root", "readme");
+if ($connect == false) {
+    die("Connection error: " . mysqli_connect_error());
+};
+mysqli_set_charset($connect, "utf8");
+
+$sql_types_query = "SELECT * FROM content_type";
+$sql_posts_query = "SELECT post.*, u.user_login, u.avatar, ct.classname
+FROM post LEFT JOIN user u ON user_id = u.id LEFT JOIN content_type ct ON type_id = ct.id ORDER BY watch_count DESC LIMIT 6";
+
+$sql_types = db_get_query($connect, $sql_types_query);
+$sql_posts = db_get_query($connect, $sql_posts_query);
+
+$popular_content = include_template('main.php', ['posts' => $sql_posts, 'types' => $sql_types]);
 
 $layout = include_template('layout.php', ['popular_content' => $popular_content, 'title' => 'readme: популярное', 'is_auth' => $is_auth, 'user_name' => $user_name]);
 
