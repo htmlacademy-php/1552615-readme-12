@@ -87,7 +87,7 @@ function get_date_interval_format($date) {
 
 $connect = mysqli_connect("localhost", "root", "root", "readme");
 if ($connect == false) {
-    print("Connection error: " . mysqli_connect_error());
+    die("Connection error: " . mysqli_connect_error());
 };
 mysqli_set_charset($connect, "utf8");
 
@@ -95,15 +95,8 @@ $sql_types_query = "SELECT * FROM content_type";
 $sql_posts_query = "SELECT post.*, u.user_login, u.avatar, ct.classname
 FROM post LEFT JOIN user u ON user_id = u.id LEFT JOIN content_type ct ON type_id = ct.id ORDER BY watch_count DESC LIMIT 6";
 
-$result_types = mysqli_query($connect, $sql_types_query);
-$result_posts = mysqli_query($connect, $sql_posts_query);
-
-if (!$result_posts || !$result_types) {
-    print("" . mysqli_error($connect));
-};
-
-$sql_types = mysqli_fetch_all($result_types, MYSQLI_ASSOC);
-$sql_posts = mysqli_fetch_all($result_posts, MYSQLI_ASSOC);
+$sql_types = db_query($connect, $sql_types_query);
+$sql_posts = db_query($connect, $sql_posts_query);
 
 $popular_content = include_template('main.php', ['posts' => $sql_posts, 'types' => $sql_types]);
 

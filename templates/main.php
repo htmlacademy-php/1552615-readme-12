@@ -42,56 +42,15 @@
                     </li>
 
                     <?php foreach ($types as $type):?>
-                    <?php if ($type['classname'] === 'photo'):?>
                     <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--photo button" href="#">
+                        <a class="filters__button filters__button--<?php echo $type['classname']?> button" href="#">
                             <span class="visually-hidden"><?=$type['title']?></span>
                             <svg class="filters__icon" width="22" height="18">
-                                <use xlink:href="#icon-filter-photo"></use>
+                                <use xlink:href="#icon-filter-<?php echo $type['classname']?>"></use>
                             </svg>
                         </a>
                     </li>
-
-                    <?php elseif ($type['classname'] === 'video'):?>
-                    <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--video button" href="#">
-                            <span class="visually-hidden"><?=$type['title']?></span>
-                            <svg class="filters__icon" width="24" height="16">
-                                <use xlink:href="#icon-filter-video"></use>
-                            </svg>
-                        </a>
-                    </li>
-
-                    <?php elseif ($type['classname'] === 'text'):?>
-                    <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--text button" href="#">
-                            <span class="visually-hidden"><?=$type['title']?></span>
-                            <svg class="filters__icon" width="20" height="21">
-                                <use xlink:href="#icon-filter-text"></use>
-                            </svg>
-                        </a>
-                    </li>
-
-                    <?php elseif ($type['classname'] === 'quote'):?>
-                    <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--quote button" href="#">
-                            <span class="visually-hidden"><?=$type['title']?></span>
-                            <svg class="filters__icon" width="21" height="20">
-                                <use xlink:href="#icon-filter-quote"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    <?php endif;?>
                     <?php endforeach;?>
-
-                    <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--link button" href="#">
-                            <span class="visually-hidden">Ссылка</span>
-                            <svg class="filters__icon" width="21" height="18">
-                                <use xlink:href="#icon-filter-link"></use>
-                            </svg>
-                        </a>
-                    </li>
                 </ul>
             </div>
         </div>
