@@ -36,14 +36,14 @@
                 <b class="popular__filters-caption filters__caption">Тип контента:</b>
                 <ul class="popular__filters-list filters__list">
                     <li class="popular__filters-item popular__filters-item--all filters__item filters__item--all">
-                        <a class="filters__button filters__button--ellipse filters__button--all filters__button--active" href="/index.php">
+                        <a class="filters__button filters__button--ellipse filters__button--all filters__button--active" href="<?php echo $url; ?>">
                             <span>Все</span>
-                        </a>
+                        </a >
                     </li>
 
                     <?php foreach ($types as $type):?>
                     <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--<?php echo $type['classname']?> button" href="/index.php<?php echo $content_type?>">
+                        <a class="filters__button filters__button--<?php echo $type['classname']?> button" href="<?php echo $url . $type['id']; ?>">
                             <span class="visually-hidden"><?=$type['title']?></span>
                             <svg class="filters__icon" w idth="22" height="18">
                                 <use xlink:href="#icon-filter-<?php echo $type['classname']?>"></use>
