@@ -1,5 +1,6 @@
 <?php
 require('helpers.php');
+require('post.php');
 
 $is_auth = rand(0, 1);
 $user_name = 'Ильнур'; // укажите здесь ваше имя
@@ -85,35 +86,35 @@ function get_date_interval_format($date) {
     return $date_interval->i . " " . get_noun_plural_form($date_interval->i, 'минута', 'минуты', 'минут') . " назад";
 }
 
-$params = $_GET;
-
-echo $_GET;
-
-// if (isset($_GET['id'])) {
-//     $content_type_id = $_GET['id'];
-// } else {
-//     $content_type_id = '';
-// };
-
-echo ($content_type_id);
-
-$scriptname = pathinfo(__FILE__, PATHINFO_BASENAME);
-$url = "/" . $scriptname . "?";
-
 $connect = mysqli_connect("localhost", "root", "root", "readme");
 if ($connect == false) {
     die("Connection error: " . mysqli_connect_error());
 };
 mysqli_set_charset($connect, "utf8");
 
+$scriptname = pathinfo(__FILE__, PATHINFO_BASENAME);
+$url = "/" . $scriptname . "?";
+
+if (isset($_GET['id'])) {
+    $content_type_id = $_GET['id'];
+    $sql_posts_query = "SELECT post.*, u.user_login, u.avatar, ct.classname
+    FROM post LEFT JOIN user u ON user_id = u.id LEFT JOIN content_type ct ON type_id = ct.id WHERE type_id = $content_type_id ORDER BY watch_count LIMIT 6";
+    $active_btn = 'filters__button--active';
+    $active_btn_all = '';
+} else {
+    $content_type_id = '';
+    $sql_posts_query = "SELECT post.*, u.user_login, u.avatar, ct.classname
+    FROM post LEFT JOIN user u ON user_id = u.id LEFT JOIN content_type ct ON type_id = ct.id ORDER BY watch_count DESC LIMIT 6";
+    $active_btn = '';
+    $active_btn_all = 'filters__button--active';
+};
+
 $sql_types_query = "SELECT * FROM content_type";
-$sql_posts_query = "SELECT post.*, u.user_login, u.avatar, ct.classname
-FROM post LEFT JOIN user u ON user_id = u.id LEFT JOIN content_type ct ON type_id = ct.id ORDER BY ct.id LIMIT 6";
 
 $sql_types = db_get_query($connect, $sql_types_query);
 $sql_posts = db_get_query($connect, $sql_posts_query);
 
-$popular_content = include_template('main.php', ['posts' => $sql_posts, 'types' => $sql_types, 'url' => $url]);
+$popular_content = include_template('main.php', ['posts' => $sql_posts, 'types' => $sql_types, 'url' => $url, 'post_url' => $post_url, 'active_btn' => $active_btn, 'active_btn_all' => $active_btn_all, 'content_type_id' => $content_type_id]);
 
 $layout = include_template('layout.php', ['popular_content' => $popular_content, 'title' => 'readme: популярное', 'is_auth' => $is_auth, 'user_name' => $user_name]);
 
