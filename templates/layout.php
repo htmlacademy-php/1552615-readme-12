@@ -114,7 +114,7 @@
 </header>
 
 <section class="page__main page__main--popular">
-    <?=$popular_content; ?>
+    <?=$content; ?>
 </section>
 
 <footer class="footer">

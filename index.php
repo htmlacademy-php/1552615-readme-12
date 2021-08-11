@@ -1,6 +1,6 @@
 <?php
-require('helpers.php');
-require('post.php');
+require_once('helpers.php');
+require_once('post.php');
 
 $is_auth = rand(0, 1);
 $user_name = 'Ильнур'; // укажите здесь ваше имя
@@ -116,6 +116,6 @@ $sql_posts = db_get_query($connect, $sql_posts_query);
 
 $popular_content = include_template('main.php', ['posts' => $sql_posts, 'types' => $sql_types, 'url' => $url, 'post_url' => $post_url, 'active_btn' => $active_btn, 'active_btn_all' => $active_btn_all, 'content_type_id' => $content_type_id]);
 
-$layout = include_template('layout.php', ['popular_content' => $popular_content, 'title' => 'readme: популярное', 'is_auth' => $is_auth, 'user_name' => $user_name]);
+$layout = include_template('layout.php', ['content' => $popular_content, 'title' => 'readme: популярное', 'is_auth' => $is_auth, 'user_name' => $user_name]);
 
 print($layout);
