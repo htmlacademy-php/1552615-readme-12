@@ -12,27 +12,22 @@ $post_url = '/' . $scriptname . '?';
 
 if (isset($_GET['post_id'])) {
     $post_id = $_GET['post_id'];
-    $sql_posts_query = "SELECT post.*, u.user_login, u.avatar, ct.classname
-    FROM post LEFT JOIN user u ON user_id = u.id
-    LEFT JOIN content_type ct ON type_id = ct.id
-    WHERE $post_id = post.id
-    ORDER BY watch_count DESC LIMIT 6";
+    $sql_post_query = "SELECT post.*, u.user_login, u.avatar, ct.classname, comm.*, likes.*, um.*, sub.*, SUM(sub.to_user_id) AS total_subs, SUM(likes.post_id) AS total_likes, SUM(comm.id)
+    FROM post
+        LEFT JOIN user u ON user_id = u.id
+        LEFT JOIN content_type ct ON type_id = ct.id
+        LEFT JOIN comments comm ON post.id = comm.post_id
+        LEFT JOIN likes ON id = likes.post_id
+        LEFT JOIN user_message um ON user_id = um.user_id
+        LEFT JOIN subscribtions sub ON user_id = sub.user_id
+    WHERE post.id = $post_id";
 };
 
-$sql_posts = db_get_query($connect, $sql_posts_query);
+$sql_post = call_user_func_array('array_merge', db_get_query($connect, $sql_post_query));
 
-$active_post = '';
-if($sql_posts['classname'] == 'quote') {
-    $active_post = include_template('post-quote.php');
-} elseif ($sql_posts['classname'] == 'text') {
-    $active_post = include_template('post-text.php');
-} elseif ($sql_posts['classname'] == 'link') {
-    $active_post = include_template('post-link.php');
-} elseif ($sql_posts['classname'] == 'video') {
-    $active_post = include_template('post-video.php');
-};
+$active_post = include_template('post-' . $sql_post['classname'] . '.php', ['post' => $sql_post]);
 
-$post_details = include_template('post-details.php', ['active_post' => $active_post]);
+$post_details = include_template('post-details.php', ['active_post' => $active_post, 'post' => $sql_post]);
 
 $post_layout = include_template('layout.php', ['content' => $post_details, 'title' => 'readme: публикация', 'is_auth' => $is_auth, 'user_name' => $user_name]);
 

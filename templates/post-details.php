@@ -1,11 +1,13 @@
 
 <div class="container">
-    <h1 class="page__title page__title--publication">Наконец, обработала фотки!</h1>
+    <h1 class="page__title page__title--publication"><?=$post['title'] ?></h1>
     <section class="post-details">
         <h2 class="visually-hidden">Публикация</h2>
-        <div class="post-details__wrapper post-photo">
+        <div class="post-details__wrapper post-<?php echo $post['classname']?>">
             <div class="post-details__main-block post post--details">
-                <?php echo $active_post; ?>
+
+                <?=$active_post; ?>
+
                 <div class="post__indicators">
                     <div class="post__buttons">
                         <a class="post__indicator post__indicator--likes button" href="#" title="Лайк">
@@ -15,7 +17,7 @@
                         <svg class="post__indicator-icon post__indicator-icon--like-active" width="20" height="17">
                             <use xlink:href="#icon-heart-active"></use>
                         </svg>
-                        <span>250</span>
+                        <span><?=$post['total_likes']?></span>
                         <span class="visually-hidden">количество лайков</span>
                         </a>
                         <a class="post__indicator post__indicator--comments button" href="#" title="Комментарии">
@@ -33,7 +35,7 @@
                         <span class="visually-hidden">количество репостов</span>
                         </a>
                     </div>
-                    <span class="post__view">500 просмотров</span>
+                    <span class="post__view"><?=$post['watch_count'] ?> просмотров</span>
                 </div>
                 <ul class="post__tags">
                     <li><a href="#">#nature</a></li>
@@ -114,14 +116,14 @@
             </div>
             <div class="post-details__name-wrapper user__name-wrapper">
                 <a class="post-details__name user__name" href="#">
-                <span>Эльвира Хайпулинова</span>
+                <span><?=$post['user_login'] ?></span>
                 </a>
                 <time class="post-details__time user__time" datetime="2014-03-20">5 лет на сайте</time>
             </div>
             </div>
             <div class="post-details__rating user__rating">
             <p class="post-details__rating-item user__rating-item user__rating-item--subscribers">
-                <span class="post-details__rating-amount user__rating-amount">1856</span>
+                <span class="post-details__rating-amount user__rating-amount"><?=$post['total_subs'] ?></span>
                 <span class="post-details__rating-text user__rating-text">подписчиков</span>
             </p>
             <p class="post-details__rating-item user__rating-item user__rating-item--publications">
