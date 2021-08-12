@@ -274,3 +274,4 @@ function db_get_query($connect, $sql) {
     return mysqli_fetch_all($result, MYSQLI_ASSOC);
 };
 
+

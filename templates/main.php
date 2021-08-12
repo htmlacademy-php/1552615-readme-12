@@ -64,7 +64,7 @@
             foreach ($posts as $key => $post):?>
             <article class="popular__post post post-<?php echo (htmlspecialchars($post['classname'])); ?>">
                 <header class="post__header">
-                    <a href="<?php echo($post_url . 'post_id=' . $post['id'])?>">
+                    <a href="<?php echo('/post.php?post_id=' . $post['id'])?>">
                         <h2><?=htmlspecialchars($post['title']);?></h2>
                     </a>
                 </header>

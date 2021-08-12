@@ -1,6 +1,6 @@
 <?php
 require_once('helpers.php');
-require_once('post.php');
+// require_once('post.php');
 
 $is_auth = rand(0, 1);
 $user_name = 'Ильнур'; // укажите здесь ваше имя
