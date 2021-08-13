@@ -55,7 +55,29 @@ WHERE post_id = 1;
 -- добавляем лайк к посту
 INSERT INTO likes
   VALUES (NULL, 2, 1);
+INSERT INTO likes
+  VALUES (NULL, 1, 1);
+INSERT INTO likes
+  VALUES (NULL, 3, 1);
+INSERT INTO likes
+  VALUES (NULL, 1, 2);
+INSERT INTO likes
+  VALUES (NULL, 3, 3);
+INSERT INTO likes
+  VALUES (NULL, 2, 5);
+INSERT INTO likes
+  VALUES (NULL, 1, 5);
+INSERT INTO likes
+  VALUES (NULL, 3, 5);
 
 -- подписываемся на пользователя
 INSERT INTO subscribtions
   VALUES (NULL, 2, 3);
+INSERT INTO subscribtions
+  VALUES (NULL, 1, 3);
+INSERT INTO subscribtions
+  VALUES (NULL, 3, 2);
+INSERT INTO subscribtions
+  VALUES (NULL, 1, 1);
+INSERT INTO subscribtions
+  VALUES (NULL, 1, 1);

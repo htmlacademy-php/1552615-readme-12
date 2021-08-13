@@ -24,7 +24,7 @@
                         <svg class="post__indicator-icon" width="19" height="17">
                             <use xlink:href="#icon-comment"></use>
                         </svg>
-                        <span>25</span>
+                        <span><?=$post['total_comm']?></span>
                         <span class="visually-hidden">количество комментариев</span>
                         </a>
                         <a class="post__indicator post__indicator--repost button" href="#" title="Репост">
@@ -111,7 +111,7 @@
             <div class="post-details__user-info user__info">
             <div class="post-details__avatar user__avatar">
                 <a class="post-details__avatar-link user__avatar-link" href="#">
-                <img class="post-details__picture user__picture" src="img/userpic-elvira.jpg" alt="Аватар пользователя">
+                <img class="post-details__picture user__picture" src="img/<?php echo $post['avatar']; ?>" alt="Аватар пользователя">
                 </a>
             </div>
             <div class="post-details__name-wrapper user__name-wrapper">
@@ -127,7 +127,7 @@
                 <span class="post-details__rating-text user__rating-text">подписчиков</span>
             </p>
             <p class="post-details__rating-item user__rating-item user__rating-item--publications">
-                <span class="post-details__rating-amount user__rating-amount">556</span>
+                <span class="post-details__rating-amount user__rating-amount"><?=$post['total_um']?></span>
                 <span class="post-details__rating-text user__rating-text">публикаций</span>
             </p>
             </div>
