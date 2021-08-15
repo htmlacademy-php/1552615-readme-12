@@ -8,15 +8,16 @@ if ($connect == false) {
 mysqli_set_charset($connect, "utf8");
 
 $scriptname = pathinfo(__FILE__, PATHINFO_BASENAME);
-$post_url = '/' . $scriptname . '?';
+$post_url = '/' . $scriptname;
 $sql_total_posts_query = "SELECT COUNT(id) as total_posts FROM post";
 $sql_total_posts = call_user_func_array('array_merge', db_get_query($connect, $sql_total_posts_query));
 
-echo(var_dump($sql_total_posts));
+if (isset($_GET['post_id'])) {
+    $post_id = intval($_GET['post_id']);
+};
 
-if (isset($_GET['post_id']) && $_GET['post_id'] <= $sql_total_posts['total_posts']) {
-    $post_id = $_GET['post_id'];
-    $sql_post_query = "SELECT post.*, u.user_login, u.avatar, ct.classname, comm.*, likes.*, um.*, sub.*, COUNT(sub.to_user_id) AS total_subs, COUNT(likes.post_id) AS total_likes, COUNT(comm.id) AS total_comm, COUNT(um.id) AS total_um
+if ($post_id && $post_id <= $sql_total_posts['total_posts']) {
+    $sql_post_query = "SELECT post.*, u.user_login, u.avatar, ct.classname, COUNT(DISTINCT sub.to_user_id) AS total_subs, COUNT(DISTINCT likes.post_id) AS total_likes, COUNT(DISTINCT comm.id) AS total_comm, COUNT(DISTINCT um.id) AS total_um
     FROM post
         LEFT JOIN user u ON post.user_id = u.id
         LEFT JOIN content_type ct ON type_id = ct.id
@@ -27,7 +28,7 @@ if (isset($_GET['post_id']) && $_GET['post_id'] <= $sql_total_posts['total_posts
     WHERE post.id = $post_id";
 } else {
     http_response_code(404);
-    print('Такой страницы не существует!');
+    die('Такой страницы не существует!');
 };
 
 $sql_post = call_user_func_array('array_merge', db_get_query($connect, $sql_post_query));

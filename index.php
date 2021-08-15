@@ -92,23 +92,23 @@ if ($connect == false) {
 mysqli_set_charset($connect, "utf8");
 
 $scriptname = pathinfo(__FILE__, PATHINFO_BASENAME);
-$url = "/" . $scriptname . "?";
+$url = "/" . $scriptname;
 
 if (isset($_GET['id'])) {
-    $content_type_id = $_GET['id'];
-    $sql_posts_query = "SELECT post.*, u.user_login, u.avatar, ct.classname
-    FROM post LEFT JOIN user u ON user_id = u.id LEFT JOIN content_type ct ON type_id = ct.id WHERE type_id = $content_type_id ORDER BY watch_count LIMIT 6";
-    $active_btn = 'filters__button--active';
-    $active_btn_all = '';
+    $content_type_id = intval($_GET['id']);
+};
+
+if ($content_type_id) {
+    $query_condition = "WHERE type_id = $content_type_id";
 } else {
     $content_type_id = '';
-    $sql_posts_query = "SELECT post.*, u.user_login, u.avatar, ct.classname
-    FROM post LEFT JOIN user u ON user_id = u.id LEFT JOIN content_type ct ON type_id = ct.id ORDER BY watch_count DESC LIMIT 6";
-    $active_btn = '';
-    $active_btn_all = 'filters__button--active';
+    $query_condition = "";
 };
 
 $sql_types_query = "SELECT * FROM content_type";
+$sql_posts_query = "SELECT post.*, u.user_login, u.avatar, ct.classname
+    FROM post LEFT JOIN user u ON user_id = u.id LEFT JOIN content_type ct ON type_id = ct.id
+    $query_condition ORDER BY watch_count LIMIT 6";
 
 $sql_types = db_get_query($connect, $sql_types_query);
 $sql_posts = db_get_query($connect, $sql_posts_query);

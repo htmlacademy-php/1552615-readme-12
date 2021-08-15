@@ -36,7 +36,9 @@
                 <b class="popular__filters-caption filters__caption">Тип контента:</b>
                 <ul class="popular__filters-list filters__list">
                     <li class="popular__filters-item popular__filters-item--all filters__item filters__item--all">
-                        <a class="filters__button filters__button--ellipse filters__button--all <?php echo $active_btn_all; ?>" href="<?php echo $url; ?>">
+                        <a class="filters__button filters__button--ellipse filters__button--all <?php if($content_type_id == ''): echo ('filters__button--active');?>
+                        <?php endif; ?>"
+                            href="<?php echo $url; ?>">
                             <span>Все</span>
                         </a >
                     </li>
@@ -45,9 +47,9 @@
                     <li class="popular__filters-item filters__item">
                         <a class="filters__button filters__button--<?php echo $type['classname']; ?> button
                         <?php if ($type['id'] == $content_type_id):
-                            echo $active_btn; ?>
+                            echo ('filters__button--active'); ?>
                         <?php endif; ?>"
-                        href="<?php echo ($url . 'id=' . $type['id']);?>">
+                        href="<?php echo ($url . '?id=' . $type['id']);?>">
                             <span class="visually-hidden"><?=$type['title']?></span>
                             <svg class="filters__icon" width="22" height="18">
                                 <use xlink:href="#icon-filter-<?php echo $type['classname']?>"></use>
