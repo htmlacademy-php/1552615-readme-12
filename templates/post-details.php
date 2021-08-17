@@ -123,11 +123,19 @@
             </div>
             <div class="post-details__rating user__rating">
             <p class="post-details__rating-item user__rating-item user__rating-item--subscribers">
-                <span class="post-details__rating-amount user__rating-amount"><?=$post['total_subs'] ?></span>
+                <span class="post-details__rating-amount user__rating-amount">
+                    0
+                </span>
                 <span class="post-details__rating-text user__rating-text">подписчиков</span>
             </p>
             <p class="post-details__rating-item user__rating-item user__rating-item--publications">
-                <span class="post-details__rating-amount user__rating-amount"><?=$post['total_um']?></span>
+                <span class="post-details__rating-amount user__rating-amount">
+                <?php foreach ($total_posts as $totalpost):?>
+                    <?php if ($totalpost['user_id'] == $post['user_id']): ?>
+                        <?=$totalpost['total_posts'] ?>
+                    <?php endif;?>
+                <?php endforeach; ?>
+                </span>
                 <span class="post-details__rating-text user__rating-text">публикаций</span>
             </p>
             </div>

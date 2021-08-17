@@ -28,15 +28,17 @@ if ($post_id) {
     http_response_code(404);
     die('Такой страницы не существует!');
 };
-
-$sql_total_posts_query = "SELECT COUNT(id) FROM post
-WHERE id = $post_id";
-
 $sql_post = call_user_func_array('array_merge', db_get_query($connect, $sql_post_query));
+
+$sql_total_posts_query = "SELECT COUNT(id) AS total_posts, user_id
+FROM post
+GROUP BY user_id";
+
+$sql_total_posts = db_get_query($connect, $sql_total_posts_query);
 
 $active_post = include_template('post-' . $sql_post['classname'] . '.php', ['post' => $sql_post]);
 
-$post_details = include_template('post-details.php', ['active_post' => $active_post, 'post' => $sql_post]);
+$post_details = include_template('post-details.php', ['active_post' => $active_post, 'post' => $sql_post, 'total_posts' => $sql_total_posts]);
 
 $post_layout = include_template('layout.php', ['content' => $post_details, 'title' => 'readme: публикация', 'is_auth' => $is_auth, 'user_name' => $user_name]);
 
