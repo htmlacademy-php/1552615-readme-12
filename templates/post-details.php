@@ -17,7 +17,7 @@
                         <svg class="post__indicator-icon post__indicator-icon--like-active" width="20" height="17">
                             <use xlink:href="#icon-heart-active"></use>
                         </svg>
-                        <span><?=$likes['total_likes'];?></span>
+                        <span><?=$likes['total'];?></span>
                         <span class="visually-hidden">количество лайков</span>
                         </a>
                         <a class="post__indicator post__indicator--comments button" href="#" title="Комментарии">
@@ -124,13 +124,13 @@
             <div class="post-details__rating user__rating">
             <p class="post-details__rating-item user__rating-item user__rating-item--subscribers">
                 <span class="post-details__rating-amount user__rating-amount">
-                    0
+                    <?=$subs['total'];?>
                 </span>
                 <span class="post-details__rating-text user__rating-text">подписчиков</span>
             </p>
             <p class="post-details__rating-item user__rating-item user__rating-item--publications">
                 <span class="post-details__rating-amount user__rating-amount">
-                    <?=$totalpost['total_posts']; ?>
+                    <?=$totalpost['total']; ?>
                 </span>
                 <span class="post-details__rating-text user__rating-text">публикаций</span>
             </p>
