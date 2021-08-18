@@ -274,4 +274,23 @@ function db_get_query($connect, $sql) {
     return mysqli_fetch_all($result, MYSQLI_ASSOC);
 };
 
+/**Функция для получения общего количества
+ * чего-либо из sql запроса (лайки, подписчики, публикации)
+ * Принимает
+ * group_by - строка, поле по которому группируем значения
+ * $table - строка, таблица, из которой необходимо вывести значения
+ * $sql_connect - созданное sql соединение
+ *
+ */
+// function get_total_from_sql_query($group_by, $table, $sql_connect, ) {
+//     $sql_total_query = "SELECT COUNT(id) AS total, $group_by
+//     FROM $table
+//     GROUP BY $group_by";
+//     $sql_total = db_get_query($sql_connect, $sql_total_query);
+//     foreach ($sql_total as $total) {
+//         if ($total[$group_by] == $sql_total['user_id']) {
+//            return $total['total'];
+//         };
+//     };
+// }
 
