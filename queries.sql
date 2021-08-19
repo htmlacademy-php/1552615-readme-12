@@ -81,3 +81,5 @@ INSERT INTO subscribtions
   VALUES (NULL, 1, 1);
 INSERT INTO subscribtions
   VALUES (NULL, 1, 1);
+DELETE FROM subscribtions
+  WHERE id = 3;
