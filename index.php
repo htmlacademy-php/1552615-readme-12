@@ -1,5 +1,5 @@
 <?php
-require('helpers.php');
+require_once('helpers.php');
 
 $is_auth = rand(0, 1);
 $user_name = 'Ильнур'; // укажите здесь ваше имя
@@ -91,15 +91,30 @@ if ($connect == false) {
 };
 mysqli_set_charset($connect, "utf8");
 
+$scriptname = pathinfo(__FILE__, PATHINFO_BASENAME);
+$url = "/" . $scriptname;
+
+if (isset($_GET['id'])) {
+    $content_type_id = intval($_GET['id']);
+};
+
+if ($content_type_id) {
+    $query_condition = "WHERE type_id = $content_type_id";
+} else {
+    $content_type_id = '';
+    $query_condition = "";
+};
+
 $sql_types_query = "SELECT * FROM content_type";
 $sql_posts_query = "SELECT post.*, u.user_login, u.avatar, ct.classname
-FROM post LEFT JOIN user u ON user_id = u.id LEFT JOIN content_type ct ON type_id = ct.id ORDER BY watch_count DESC LIMIT 6";
+    FROM post LEFT JOIN user u ON user_id = u.id LEFT JOIN content_type ct ON type_id = ct.id
+    $query_condition ORDER BY watch_count LIMIT 6";
 
-$sql_types = db_get_query($connect, $sql_types_query);
-$sql_posts = db_get_query($connect, $sql_posts_query);
+$sql_types = db_get_query('all', $connect, $sql_types_query);
+$sql_posts = db_get_query('all', $connect, $sql_posts_query);
 
-$popular_content = include_template('main.php', ['posts' => $sql_posts, 'types' => $sql_types]);
+$popular_content = include_template('main.php', ['posts' => $sql_posts, 'types' => $sql_types, 'url' => $url, 'active_btn' => $active_btn, 'active_btn_all' => $active_btn_all, 'content_type_id' => $content_type_id]);
 
-$layout = include_template('layout.php', ['popular_content' => $popular_content, 'title' => 'readme: популярное', 'is_auth' => $is_auth, 'user_name' => $user_name]);
+$layout = include_template('layout.php', ['content' => $popular_content, 'title' => 'readme: популярное', 'is_auth' => $is_auth, 'user_name' => $user_name]);
 
 print($layout);

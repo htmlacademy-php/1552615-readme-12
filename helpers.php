@@ -263,14 +263,48 @@ function generate_random_date($index)
     return $dt;
 }
 
-/** Принимает $connect и $sql
- * возвращает двумерный массив с данными из базы данных
+/** Принимает
+ * - value - требуемое значение на выходе - двумерный массив или ассоциативный массив
+ * - $connect - соединение с БД
+ * - $sql - sql запрос
+ *
+ * возвращает двумерный массив с данными из базы данных если value = 'all'
+ * и значение если 'assoc'
  */
-function db_get_query($connect, $sql) {
+function db_get_query($value, $connect, $sql) {
     $result = mysqli_query($connect, $sql);
     if (!$result) {
         die("Ошибка запроса:" . mysqli_error($connect));
     };
-    return mysqli_fetch_all($result, MYSQLI_ASSOC);
+    if ($value == 'all') {
+        return mysqli_fetch_all($result, MYSQLI_ASSOC);
+    } elseif ($value == 'assoc') {
+        return mysqli_fetch_assoc($result);
+    } else {
+        die ("Уточните передаваемые данные");
+    };
 };
+
+/**Функция для получения общего количества
+ * чего-либо из sql запроса (лайки, подписчики, публикации)
+ * Принимает
+ * $count - строка, поля которые нужно посчитать
+ * $table - строка, таблица, из которой необходимо вывести значения
+ * $group_by - строка, поле по которому группируем значения
+ * $equals - строка, значение, которому равно значение искомого поля
+ * $sql_connect - созданное sql соединение
+ * возвращает либо значение общего количества,
+ * либо 0 в случае пустого массива
+ */
+function get_total_from_db ($count, $table, $group_by, $equals, $sql_connect) {
+    $sql_total_posts_query = "SELECT COUNT($count) AS total
+    FROM $table
+    WHERE $group_by = $equals
+    GROUP BY $group_by";
+    $result = db_get_query('assoc', $sql_connect, $sql_total_posts_query);
+    if ($result == '') {
+        return '0';
+    };
+    return $result['total'];
+}
 

@@ -36,14 +36,20 @@
                 <b class="popular__filters-caption filters__caption">Тип контента:</b>
                 <ul class="popular__filters-list filters__list">
                     <li class="popular__filters-item popular__filters-item--all filters__item filters__item--all">
-                        <a class="filters__button filters__button--ellipse filters__button--all filters__button--active" href="#">
+                        <a class="filters__button filters__button--ellipse filters__button--all <?php if($content_type_id == ''): echo ('filters__button--active');?>
+                        <?php endif; ?>"
+                            href="<?php echo $url; ?>">
                             <span>Все</span>
-                        </a>
+                        </a >
                     </li>
 
                     <?php foreach ($types as $type):?>
                     <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--<?php echo $type['classname']?> button" href="#">
+                        <a class="filters__button filters__button--<?php echo $type['classname']; ?> button
+                        <?php if ($type['id'] == $content_type_id):
+                            echo ('filters__button--active'); ?>
+                        <?php endif; ?>"
+                        href="<?php echo ($url . '?id=' . $type['id']);?>">
                             <span class="visually-hidden"><?=$type['title']?></span>
                             <svg class="filters__icon" width="22" height="18">
                                 <use xlink:href="#icon-filter-<?php echo $type['classname']?>"></use>
@@ -60,7 +66,9 @@
             foreach ($posts as $key => $post):?>
             <article class="popular__post post post-<?php echo (htmlspecialchars($post['classname'])); ?>">
                 <header class="post__header">
-                    <h2><?=htmlspecialchars($post['title']);?></h2>
+                    <a href="<?php echo('/post.php?post_id=' . $post['id'])?>">
+                        <h2><?=htmlspecialchars($post['title']);?></h2>
+                    </a>
                 </header>
                 <div class="post__main">
 
