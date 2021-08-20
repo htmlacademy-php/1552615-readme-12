@@ -263,13 +263,13 @@ function generate_random_date($index)
     return $dt;
 }
 
-/** Принимает
- * - value - требуемое значение на выходе - двумерный массив или ассоциативный массив
- * - $connect - соединение с БД
- * - $sql - sql запрос
- *
- * возвращает двумерный массив с данными из базы данных если value = 'all'
+/**
+ * Возвращает двумерный массив с данными из базы данных если value = 'all'
  * и значение если 'assoc'
+ * @param $value - требуемое значение на выходе - двумерный массив или ассоциативный массив
+ * @param $connect - соединение с БД
+ * @param $sql - sql запрос
+ * @return array
  */
 function db_get_query($value, $connect, $sql) {
     $result = mysqli_query($connect, $sql);
@@ -285,16 +285,20 @@ function db_get_query($value, $connect, $sql) {
     };
 };
 
-/**Функция для получения общего количества
+/**
+ * Функция для получения общего количества
  * чего-либо из sql запроса (лайки, подписчики, публикации)
- * Принимает
- * $count - строка, поля которые нужно посчитать
- * $table - строка, таблица, из которой необходимо вывести значения
- * $group_by - строка, поле по которому группируем значения
- * $equals - строка, значение, которому равно значение искомого поля
- * $sql_connect - созданное sql соединение
- * возвращает либо значение общего количества,
+ * Возвращает либо значение общего количества,
  * либо 0 в случае пустого массива
+ * @param $count - строка, поля которые нужно посчитать
+ * @param $table - строка, таблица, из которой необходимо
+ * вывести значения
+ * @param $group_by - строка, поле по которому группируем
+ * значения
+ * @param $equals - строка, значение, которому равно значение
+ * искомого поля
+ * @param $sql_connect - созданное sql соединение
+ * @return string
  */
 function get_total_from_db ($count, $table, $group_by, $equals, $sql_connect) {
     $sql_total_posts_query = "SELECT COUNT($count) AS total
@@ -302,9 +306,6 @@ function get_total_from_db ($count, $table, $group_by, $equals, $sql_connect) {
     WHERE $group_by = $equals
     GROUP BY $group_by";
     $result = db_get_query('assoc', $sql_connect, $sql_total_posts_query);
-    if ($result == '') {
-        return '0';
-    };
-    return $result['total'];
+    return $result['total'] ?? '0';
 }
 
