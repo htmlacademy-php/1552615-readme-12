@@ -12,6 +12,9 @@ $post_url = '/' . $scriptname;
 
 if (isset($_GET['post_id'])) {
     $post_id = intval($_GET['post_id']);
+} else {
+    http_response_code(404);
+    die('Такой страницы не существует!');
 };
 
 $sql_post_id_query = "SELECT id FROM post WHERE id = $post_id";
