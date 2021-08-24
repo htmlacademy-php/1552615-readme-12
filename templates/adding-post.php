@@ -8,8 +8,12 @@
             <ul class="adding-post__tabs-list filters__list tabs__list">
             <?php foreach ($types as $type):?>
                 <li class="adding-post__tabs-item filters__item">
-                    <a class="adding-post__tabs-link filters__button filters__button--<?php echo $type['classname'];?> filters__button--active tabs__item tabs__item--active button"
-                    href="<?php echo ($url . '?id=' . $type['id']);?> ">
+                    <a class="adding-post__tabs-link filters__button filters__button--<?php echo $type['classname'];?>
+                    tabs__item button
+                    <?php if ($type['id'] == $content_type_id):?>
+                        <?php echo ('filters__button--active tabs__item--active');?>
+                    <?php endif;?>"
+                    href="<?php echo ($url . '?id=' . $type['id']);?>">
                         <svg class="filters__icon"
                         <?php if ($type['classname'] == 'photo'): ?>
                             <?php echo ('width="22" height="18"');?>
@@ -31,49 +35,52 @@
             </ul>
         </div>
         <div class="adding-post__tab-content">
+            <?php foreach ($types as $type): ?>
+
+            <?php if ($type['classname'] == 'photo'):?>
             <section class="adding-post__photo tabs__content tabs__content--active">
             <h2 class="visually-hidden">Форма добавления фото</h2>
-            <form class="adding-post__form form" action="#" method="post" enctype="multipart/form-data">
+            <form class="adding-post__form form" action="add.php" method="post" enctype="multipart/form-data" name="photo">
                 <div class="form__text-inputs-wrapper">
-                <div class="form__text-inputs">
+                    <div class="form__text-inputs">
+                        <div class="adding-post__input-wrapper form__input-wrapper">
+                        <label class="adding-post__label form__label" for="photo-heading">Заголовок <span class="form__input-required">*</span></label>
+                        <div class="form__input-section">
+                            <input class="adding-post__input form__input" id="photo-heading" type="text" name="photo-heading" placeholder="Введите заголовок">
+                            <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
+                            <div class="form__error-text">
+                            <h3 class="form__error-title">Заголовок сообщения</h3>
+                            <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="adding-post__input-wrapper form__input-wrapper">
+                        <label class="adding-post__label form__label" for="photo-url">Ссылка из интернета</label>
+                        <div class="form__input-section">
+                            <input class="adding-post__input form__input" id="photo-url" type="text" name="photo-heading" placeholder="Введите ссылку">
+                            <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
+                            <div class="form__error-text">
+                                <h3 class="form__error-title">Заголовок сообщения</h3>
+                                <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
+                            </div>
+                        </div>
+                    </div>
                     <div class="adding-post__input-wrapper form__input-wrapper">
-                    <label class="adding-post__label form__label" for="photo-heading">Заголовок <span class="form__input-required">*</span></label>
-                    <div class="form__input-section">
-                        <input class="adding-post__input form__input" id="photo-heading" type="text" name="photo-heading" placeholder="Введите заголовок">
-                        <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
-                        <div class="form__error-text">
-                        <h3 class="form__error-title">Заголовок сообщения</h3>
-                        <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
+                        <label class="adding-post__label form__label" for="photo-tags">Теги</label>
+                        <div class="form__input-section">
+                            <input class="adding-post__input form__input" id="photo-tags" type="text" name="photo-heading" placeholder="Введите теги">
+                            <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
+                            <div class="form__error-text">
+                                <h3 class="form__error-title">Заголовок сообщения</h3>
+                                <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
+                            </div>
                         </div>
                     </div>
                     </div>
-                    <div class="adding-post__input-wrapper form__input-wrapper">
-                    <label class="adding-post__label form__label" for="photo-url">Ссылка из интернета</label>
-                    <div class="form__input-section">
-                        <input class="adding-post__input form__input" id="photo-url" type="text" name="photo-heading" placeholder="Введите ссылку">
-                        <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
-                        <div class="form__error-text">
-                        <h3 class="form__error-title">Заголовок сообщения</h3>
-                        <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
-                        </div>
-                    </div>
-                    </div>
-                    <div class="adding-post__input-wrapper form__input-wrapper">
-                    <label class="adding-post__label form__label" for="photo-tags">Теги</label>
-                    <div class="form__input-section">
-                        <input class="adding-post__input form__input" id="photo-tags" type="text" name="photo-heading" placeholder="Введите теги">
-                        <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
-                        <div class="form__error-text">
-                        <h3 class="form__error-title">Заголовок сообщения</h3>
-                        <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
-                        </div>
-                    </div>
-                    </div>
-                </div>
                 <div class="form__invalid-block">
                     <b class="form__invalid-slogan">Пожалуйста, исправьте следующие ошибки:</b>
                     <ul class="form__invalid-list">
-                    <li class="form__invalid-item">Заголовок. Это поле должно быть заполнено.</li>
+                        <li class="form__invalid-item">Заголовок. Это поле должно быть заполнено.</li>
                     </ul>
                 </div>
                 </div>
@@ -103,9 +110,10 @@
             </form>
             </section>
 
+            <?php elseif ($type['classname'] == 'video'):?>
             <section class="adding-post__video tabs__content">
             <h2 class="visually-hidden">Форма добавления видео</h2>
-            <form class="adding-post__form form" action="#" method="post" enctype="multipart/form-data">
+            <form class="adding-post__form form" action="add.php" method="post" enctype="multipart/form-data" name="video">
                 <div class="form__text-inputs-wrapper">
                 <div class="form__text-inputs">
                     <div class="adding-post__input-wrapper form__input-wrapper">
@@ -157,9 +165,10 @@
             </form>
             </section>
 
+            <?php elseif ($type['classname'] == 'text'):?>
             <section class="adding-post__text tabs__content">
             <h2 class="visually-hidden">Форма добавления текста</h2>
-            <form class="adding-post__form form" action="#" method="post">
+            <form class="adding-post__form form" action="add.php" method="post" name="text">
                 <div class="form__text-inputs-wrapper">
                 <div class="form__text-inputs">
                     <div class="adding-post__input-wrapper form__input-wrapper">
@@ -211,9 +220,10 @@
             </form>
             </section>
 
+            <?php elseif ($type['classname'] == 'quote'):?>
             <section class="adding-post__quote tabs__content">
             <h2 class="visually-hidden">Форма добавления цитаты</h2>
-            <form class="adding-post__form form" action="#" method="post">
+            <form class="adding-post__form form" action="add.php" method="post" name="quote">
                 <div class="form__text-inputs-wrapper">
                 <div class="form__text-inputs">
                     <div class="adding-post__input-wrapper form__input-wrapper">
@@ -276,32 +286,33 @@
             </form>
             </section>
 
+            <?php elseif ($type['classname'] == 'link'):?>
             <section class="adding-post__link tabs__content">
             <h2 class="visually-hidden">Форма добавления ссылки</h2>
-            <form class="adding-post__form form" action="#" method="post">
+            <form class="adding-post__form form" action="add.php" method="post" name="link">
                 <div class="form__text-inputs-wrapper">
                 <div class="form__text-inputs">
                     <div class="adding-post__input-wrapper form__input-wrapper">
-                    <label class="adding-post__label form__label" for="link-heading">Заголовок <span class="form__input-required">*</span></label>
-                    <div class="form__input-section">
-                        <input class="adding-post__input form__input" id="link-heading" type="text" name="link-heading" placeholder="Введите заголовок">
-                        <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
-                        <div class="form__error-text">
-                        <h3 class="form__error-title">Заголовок сообщения</h3>
-                        <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
+                        <label class="adding-post__label form__label" for="link-heading">Заголовок <span class="form__input-required">*</span></label>
+                        <div class="form__input-section">
+                            <input class="adding-post__input form__input" id="link-heading" type="text" name="link-heading" placeholder="Введите заголовок">
+                            <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
+                            <div class="form__error-text">
+                            <h3 class="form__error-title">Заголовок сообщения</h3>
+                            <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
+                            </div>
                         </div>
-                    </div>
                     </div>
                     <div class="adding-post__textarea-wrapper form__input-wrapper">
-                    <label class="adding-post__label form__label" for="post-link">Ссылка <span class="form__input-required">*</span></label>
-                    <div class="form__input-section">
-                        <input class="adding-post__input form__input" id="post-link" type="text" name="post-link">
-                        <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
-                        <div class="form__error-text">
-                        <h3 class="form__error-title">Заголовок сообщения</h3>
-                        <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
+                        <label class="adding-post__label form__label" for="post-link">Ссылка <span class="form__input-required">*</span></label>
+                        <div class="form__input-section">
+                            <input class="adding-post__input form__input" id="post-link" type="text" name="post-link">
+                            <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
+                            <div class="form__error-text">
+                            <h3 class="form__error-title">Заголовок сообщения</h3>
+                            <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
+                            </div>
                         </div>
-                    </div>
                     </div>
                     <div class="adding-post__input-wrapper form__input-wrapper">
                     <label class="adding-post__label form__label" for="link-tags">Теги</label>
@@ -329,6 +340,9 @@
                 </div>
             </form>
             </section>
+        <?php endif;?>
+
+        <?php endforeach;?>
         </div>
         </div>
     </div>

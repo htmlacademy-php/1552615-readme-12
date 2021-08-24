@@ -36,7 +36,7 @@
         </form>
         <div class="header__nav-wrapper">
             <!-- здесь должен быть PHP код, который показывает следующий тег по условию -->
-            <?php if ($is_auth === 1): ?>
+            <?php if ($is_auth == 1): ?>
             <nav class="header__nav">
                 <ul class="header__my-nav">
                     <li class="header__my-page header__my-page--popular">
@@ -77,25 +77,25 @@
                                 <ul class="header__profile-nav">
                                     <li class="header__profile-nav-item">
                                         <a class="header__profile-nav-link" href="#">
-                          <span class="header__profile-nav-text">
-                            Мой профиль
-                          </span>
+                                            <span class="header__profile-nav-text">
+                                                Мой профиль
+                                            </span>
                                         </a>
                                     </li>
                                     <li class="header__profile-nav-item">
                                         <a class="header__profile-nav-link" href="#">
-                          <span class="header__profile-nav-text">
-                            Сообщения
-                            <i class="header__profile-indicator">2</i>
-                          </span>
+                                            <span class="header__profile-nav-text">
+                                                Сообщения
+                                                <i class="header__profile-indicator">2</i>
+                                            </span>
                                         </a>
                                     </li>
 
                                     <li class="header__profile-nav-item">
                                         <a class="header__profile-nav-link" href="#">
-                          <span class="header__profile-nav-text">
-                            Выход
-                          </span>
+                                            <span class="header__profile-nav-text">
+                                                Выход
+                                            </span>
                                         </a>
                                     </li>
                                 </ul>
@@ -103,7 +103,7 @@
                         </div>
                     </li>
                     <li>
-                        <a class="header__post-button button button--transparent" href="adding-post.html">Пост</a>
+                        <a class="header__post-button button button--transparent" href="add.php">Пост</a>
                     </li>
                 </ul>
             </nav>
@@ -171,8 +171,8 @@
         </div>
     </div>
 </footer>
-<script src="libs/dropzone.js"></script>
+<!-- <script src="libs/dropzone.js"></script>
 <script src="js/dropzone-settings.js"></script>
-<script src="js/main.js"></script>
+<script src="js/main.js"></script> -->
 </body>
 </html>
