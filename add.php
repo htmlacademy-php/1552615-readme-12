@@ -1,6 +1,10 @@
 <?php
 require_once('helpers.php');
 
+function getPostVal($name) {
+    return $_POST[$name] ?? "";
+};
+
 $connect = mysqli_connect("localhost", "root", "root", "readme");
 if ($connect == false) {
     die('Connection error: ' . mysqli_connect_error());
@@ -21,7 +25,9 @@ if ($content_type_id) {
     $sql_one_type_query = "SELECT * FROM content_type
     WHERE id = $content_type_id";
     $sql_one_type = db_get_query('assoc', $connect, $sql_one_type_query);
-    $active_form = include_template('adding-post-forms/adding-' . $sql_one_type['classname'] . '-form.php');
+    $form_header = include_template('adding-post-forms/add-header-form.php', ['one_type' => $sql_one_type]);
+    $tag_form = include_template('adding-post-forms/add-tag-form.php', ['one_type' => $sql_one_type]);
+    $active_form = include_template('adding-post-forms/adding-' . $sql_one_type['classname'] . '-form.php', ['form_header' => $form_header, 'tag_form' => $tag_form]);
 } else {
     $active_form = '';
 };

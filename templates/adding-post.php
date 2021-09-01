@@ -37,7 +37,17 @@
             <div class="adding-post__tab-content">
 
                 <section class="adding-post__<?php echo($one_type['classname']);?> tabs__content tabs__content--active">
-                <?=$active_form;?>
+                    <h2 class="visually-hidden">
+                        Форма добавления <?=$one_type['title'];?>
+                    </h2>
+                    <form class="adding-post__form form" action="add.php" method="post" enctype="multipart/form-data" name="<?php echo($one_type['classname']);?>">
+                        <?=$active_form;?>
+
+                        <div class="adding-post__buttons">
+                            <button class="adding-post__submit button button--main" type="submit">Опубликовать</button>
+                            <a class="adding-post__close" href="#">Закрыть</a>
+                        </div>
+                    </form>
                 </section>
 
             </div>
