@@ -17,7 +17,16 @@ if (isset($_GET['id'])) {
 $sql_types_query = "SELECT * FROM content_type";
 $sql_types = db_get_query('all', $connect, $sql_types_query);
 
-$adding_post = include_template('adding-post.php', ['types' => $sql_types, 'content_type_id' => $content_type_id, 'url' => $add_url]);
+if ($content_type_id) {
+    $sql_one_type_query = "SELECT * FROM content_type
+    WHERE id = $content_type_id";
+    $sql_one_type = db_get_query('assoc', $connect, $sql_one_type_query);
+    $active_form = include_template('adding-post-forms/adding-' . $sql_one_type['classname'] . '-form.php');
+} else {
+    $active_form = '';
+};
+
+$adding_post = include_template('adding-post.php', ['active_form' => $active_form, 'types' => $sql_types, 'content_type_id' => $content_type_id, 'one_type' => $sql_one_type, 'url' => $add_url]);
 
 $add_post_layout = include_template('layout.php', ['content' => $adding_post, 'title' => 'readme: добавление публикации', 'is_auth' => $is_auth, 'user_name' => $user_name]);
 
