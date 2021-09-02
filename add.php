@@ -1,10 +1,6 @@
 <?php
 require_once('helpers.php');
 
-function getPostVal($name) {
-    return $_POST[$name] ?? "";
-};
-
 $connect = mysqli_connect("localhost", "root", "root", "readme");
 if ($connect == false) {
     die('Connection error: ' . mysqli_connect_error());

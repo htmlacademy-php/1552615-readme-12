@@ -309,3 +309,11 @@ function get_total_from_db ($count, $table, $group_by, $equals, $sql_connect) {
     return $result['total'] ?? '0';
 }
 
+/**
+ * Функция для сохранения написанного пользователем в форме
+ * @param $name - string, атрибут name для input
+ *
+ */
+function getPostVal($name) {
+    return $_POST[$name] ?? "";
+};
