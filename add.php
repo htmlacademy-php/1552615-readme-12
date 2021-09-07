@@ -28,6 +28,25 @@ if ($content_type_id) {
     $active_form = '';
 };
 
+$required_fields = [$sql_one_type['classname'] . '-heading', 'cite-text', 'quote-author', 'video-heading', 'post-text', 'post-link'];
+$errors = [];
+
+foreach ($required_fields as $field) {
+    if (empty($_POST[$field])) {
+        $errors[$field] = 'Поле не заполнено';
+    };
+};
+
+foreach ($_POST as $key => $value) {
+    if ($key == "post-link" || $key == "video-heading") {
+        if (!filter_var($value, FILTER_VALIDATE_URL)) {
+            $errors[$key] = 'Ссылка должна быть корректной';
+        };
+    };
+};
+
+
+
 $adding_post = include_template('adding-post.php', ['active_form' => $active_form, 'types' => $sql_types, 'content_type_id' => $content_type_id, 'one_type' => $sql_one_type, 'url' => $add_url]);
 
 $add_post_layout = include_template('layout.php', ['content' => $adding_post, 'title' => 'readme: добавление публикации', 'is_auth' => $is_auth, 'user_name' => $user_name]);
