@@ -32,17 +32,11 @@ $required_fields = [$sql_one_type['classname'] . '-heading', 'cite-text', 'quote
 $errors = [];
 
 foreach ($required_fields as $field) {
-    if (empty($_POST[$field])) {
-        $errors[$field] = 'Поле не заполнено';
-    };
+    validateFilled($field);
 };
 
 foreach ($_POST as $key => $value) {
-    if ($key == "post-link" || $key == "video-heading") {
-        if (!filter_var($value, FILTER_VALIDATE_URL)) {
-            $errors[$key] = 'Ссылка должна быть корректной';
-        };
-    };
+    validateUrl($key);
 };
 
 

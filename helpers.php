@@ -316,4 +316,27 @@ function get_total_from_db ($count, $table, $group_by, $equals, $sql_connect) {
  */
 function getPostVal($name) {
     return $_POST[$name] ?? "";
-};
+}
+
+/**
+ * Функция проверки заполненности формы
+ * @param $name - атрибут name для input
+ */
+function validateFilled($name) {
+    if (empty($_POST[$name])) {
+        return "Это поле должно быть заполнено";
+    };
+}
+
+/**
+ * Функция проверки правильности ссылки url
+ * @param $name - атрибут name для input
+ */
+function validateUrl($name) {
+    if ($name == "post-link" || $name == "video-heading") {
+        if (!filter_input(INPUT_POST, $name, FILTER_VALIDATE_URL)) {
+            return 'Ссылка должна быть корректной';
+        };
+    };
+}
+
