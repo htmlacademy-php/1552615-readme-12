@@ -340,3 +340,38 @@ function validateUrl($name) {
     };
 }
 
+/**
+ * Функция валидации загружаемого пользователем файла
+ * @param $name - атрибут name для input
+ */
+function validateFile($name) {
+    if (isset($_FILES[$name])) {
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $file_name = $_FILES[$name]['tmp_name'];
+        $file_type = finfo_file($finfo, $file_name);
+
+        if ($file_type !== 'image/jpeg' || $file_type !== 'image/png' || $file_type !== 'image/gif') {
+            return 'Загрузите картинку в формате JPEG, PNG или GIF';
+        };
+    };
+}
+
+/**
+ * Функция загрузки файла
+ * @param $name - атрибут name для input
+ */
+function uploadFile($name) {
+    if (isset($_FILES[$name])) {
+        $file_name = $_FILES[$name]['name'];
+        $file_path = __DIR__ . '/uploads/';
+        $file_url = '/uploads/' . $file_name;
+        move_uploaded_file($_FILES[$name]['tmp_name'], $file_path . $file_name);
+        return $file_url;
+    };
+}
+
+function downloadFile($name) {
+    if (isset($_POST[$name])) {
+
+    };
+}
