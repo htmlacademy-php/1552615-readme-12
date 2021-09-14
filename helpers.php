@@ -333,10 +333,8 @@ function validateFilled($name) {
  * @param $name - атрибут name для input
  */
 function validateUrl($name) {
-    if ($name == "post-link" || $name == "video-heading") {
-        if (!filter_input(INPUT_POST, $name, FILTER_VALIDATE_URL)) {
-            return 'Ссылка должна быть корректной';
-        };
+    if (!filter_input(INPUT_POST, $name, FILTER_VALIDATE_URL)) {
+        return 'Ссылка должна быть корректной';
     };
 }
 
@@ -357,11 +355,12 @@ function validateFile($name) {
 }
 
 /**
- * Функция загрузки файла
+ * Функция загрузки файла пользователем
  * @param $name - атрибут name для input
  */
 function uploadFile($name) {
     if (isset($_FILES[$name])) {
+        $_POST['photo-url'] = '';
         $file_name = $_FILES[$name]['name'];
         $file_path = __DIR__ . '/uploads/';
         $file_url = '/uploads/' . $file_name;
@@ -370,8 +369,28 @@ function uploadFile($name) {
     };
 }
 
+/**
+ * Функция загрузки файла по указанной ссылке
+ * @param $name - атрибут name для input
+ */
 function downloadFile($name) {
     if (isset($_POST[$name])) {
+        $file = file_get_contents($_POST[$name]);
+        if ($file === false) {
+            return 'Не удалось загрузить файл';
+        };
+        $file_path = __DIR__ . '/uploads/';
+        $file_url = '/uploads/' . $name;
+        file_put_contents($file_path, $file);
+        return $file_url;
+    };
+}
 
+/**
+ * Функция валидации полей загрузки фото
+ */
+function validateFilledPhoto ($name) {
+    if (empty($_POST[$name]) && empty($_FILES[$name])) {
+        return 'Необходимо загрузить изображение или ввести ссылку';
     };
 }
