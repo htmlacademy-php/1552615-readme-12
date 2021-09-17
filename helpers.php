@@ -394,3 +394,15 @@ function validateFilledPhoto ($name) {
         return 'Необходимо загрузить изображение или ввести ссылку';
     };
 }
+
+/**
+ * Функция валидации хэштегов
+ */
+function validateTags ($name) {
+    if (isset($_POST[$name])) {
+        $tags = explode(' ', htmlspecialchars($_POST[$name]));
+        if (count($tags) == 0) {
+            return 'Должен быть хотя бы один тег';
+        }
+    };
+}
