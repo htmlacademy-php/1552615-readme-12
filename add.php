@@ -28,48 +28,21 @@ if ($content_type_id) {
     $active_form = '';
 };
 
-// $required_fields = [$sql_one_type['classname'] . '-heading', 'cite-text', 'quote-author', 'video-heading', 'post-text', 'post-link'];
-
 $errors = [];
 
 $rules = [
-    $sql_one_type['classname'] . '-heading' => function() {
-        return validateFilled($sql_one_type['classname'] . '-heading');
-    },
-    'cite-text' => function() {
-        return validateFilled('cite-text');
-    },
-    'quote-author' => function() {
-        return validateFilled('quote-author');
-    },
-    'video-heading' => function() {
-        return validateFilled('video-heading');
-    },
-    'post-text' => function() {
-        return validateFilled('post-text');
-    },
-    'post-link' => function() {
-        return validateFilled('post-link');
-    },
-    'photo-url' => function() {
-        return validateUrl('photo-url');
-    },
-    'userpic-file-photo' => function() {
-        return validateFile('userpic-file-photo');
-    },
-    $sql_one_type['classname'] . '-tags' => function() {
-        return validateTags($sql_one_type['classname'] . '-tags');
-    }
-
+    $sql_one_type['classname'] . '-heading' => ['required'],
+    'cite-text' => ['required'],
+    'quote-author' => ['required'],
+    'video-heading' => ['required'],
+    'post-text' => ['required'],
+    'post-link' => ['required'],
+    'photo-url' => ['url'],
+    'userpic-file-photo' => ['userpic-file-photo'],
+    $sql_one_type['classname'] . '-tags' => [$sql_one_type['classname'] . '-tags'],
 ];
 
-foreach ($required_fields as $field) {
-    validateFilled($field);
-};
 
-foreach ($_POST as $key => $value) {
-    validateUrl($key);
-};
 
 $adding_post = include_template('adding-post.php', ['active_form' => $active_form, 'types' => $sql_types, 'content_type_id' => $content_type_id, 'one_type' => $sql_one_type, 'url' => $add_url]);
 
