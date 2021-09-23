@@ -32,15 +32,29 @@ $errors = [];
 
 $rules = [
     $sql_one_type['classname'] . '-heading' => ['required'],
-    'cite-text' => ['required'],
-    'quote-author' => ['required'],
-    'video-heading' => ['required'],
-    'post-text' => ['required'],
-    'post-link' => ['required'],
-    'photo-url' => ['url'],
-    'userpic-file-photo' => ['userpic-file-photo'],
-    $sql_one_type['classname'] . '-tags' => [$sql_one_type['classname'] . '-tags'],
+    'cite-text' => ['required', 'string'],
+    'quote-author' => ['required', 'string'],
+    'video-heading' => ['required', 'string'],
+    'post-text' => ['required', 'string'],
+    'post-link' => ['required', 'url'],
+    'photo-url' => ['url', 'string'],
+    'video-heading' => ['url'],
+    'userpic-file-photo' => ['file'],
+    $sql_one_type['classname'] . '-tags' => ['tag', 'string'],
 ];
+
+foreach ($rules as $key => $value) {
+    if (isset($_POST[$key])) {
+        if ($value == 'required') {
+            return validateFilled($key);
+        } elseif ($value == 'url') {
+            return validateUrl($key);
+        } elseif ($value == 'file') {
+            return validateFile($key);
+        };
+        
+    };
+};
 
 
 
