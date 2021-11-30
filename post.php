@@ -1,6 +1,7 @@
 <?php
 require_once('helpers.php');
-
+$is_auth = rand(0, 1);
+$user_name = 'Ильнур';
 $connect = mysqli_connect("localhost", "root", "root", "readme");
 if ($connect == false) {
     die("Connection error: " . mysqli_connect_error());
