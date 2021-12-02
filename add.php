@@ -9,9 +9,9 @@ if ($connect == false) {
 };
 mysqli_set_charset($connect, "utf8");
 
-
 $scriptname = pathinfo(__FILE__, PATHINFO_BASENAME);
 $add_url = '/' . $scriptname;
+
 $content_type_id = '1';
 if (isset($_GET['id'])) {
     $content_type_id = intval($_GET['id']);
@@ -32,30 +32,34 @@ $active_form = include_template('adding-post-forms/adding-' . $sql_one_type['cla
 $errors = [];
 
 $rules = [
-    $sql_one_type['classname'] . '-heading' => ['required'],
+    $sql_one_type['classname'] . '-heading' => ['required', 'string'],
     'cite-text' => ['required', 'string'],
     'quote-author' => ['required', 'string'],
-    'video-heading' => ['required', 'string'],
+    'video-heading' => ['required', 'url'],
     'post-text' => ['required', 'string'],
     'post-link' => ['required', 'url'],
-    'photo-url' => ['url', 'string'],
-    'video-heading' => ['url'],
-    'userpic-file-photo' => ['file'],
-    $sql_one_type['classname'] . '-tags' => ['tag', 'string'],
+    'photo-url' => 'url',
+    'video-url' => ['required', 'url'],
+    'userpic-file-photo' => 'file',
+    $sql_one_type['classname'] . '-tags' => ['tag'],
 ];
 
-foreach ($rules as $key => $value) {
-    if (isset($_POST[$key])) {
-        if ($value == 'required') {
-            return validateFilled($key);
-        } elseif ($value == 'url') {
-            return validateUrl($key);
-        } elseif ($value == 'file') {
-            return validateFile($key);
+foreach ($_POST as $key => $value) {
+    if (isset($rules[$key])) {
+        if (in_array('required', $rules[$key])) {
+            $errors[$key] = validateFilled($key);
+        } elseif (in_array('url', $rules[$key])) {
+            $errors[$key] = validateUrl($key);
+        } elseif (in_array('file', $rules[$key])) {
+            $errors[$key] = validateFile($key);
+        } elseif (in_array('tag', $rules[$key])) {
+            $errors[$key] = validateTags($key);
         };
-
     };
 };
+$errors = array_filter($errors);
+var_dump($errors);
+
 
 $adding_post = include_template('adding-post.php', ['active_form' => $active_form, 'types' => $sql_types, 'content_type_id' => $content_type_id, 'one_type' => $sql_one_type, 'url' => $add_url]);
 

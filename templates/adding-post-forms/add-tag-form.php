@@ -1,7 +1,7 @@
 <div class="adding-post__input-wrapper form__input-wrapper">
     <label class="adding-post__label form__label" for="<?php echo($one_type['classname']);?>-tags">Теги</label>
     <div class="form__input-section">
-        <input class="adding-post__input form__input" id="<?php echo($one_type['classname']);?>-tags" type="text" name="<?php echo($one_type['classname']);?>-heading" placeholder="Введите ссылку" value="<?php echo(getPostVal($one_type['classname'] . '-heading'));?>">
+        <input class="adding-post__input form__input" id="<?php echo($one_type['classname']);?>-tags" type="text" name="<?php echo($one_type['classname']);?>-tags" placeholder="Введите теги" value="<?php echo(getPostVal($one_type['classname'] . '-tags'));?>">
         <button class="form__error-button button" type="button">!
             <span class="visually-hidden">Информация об ошибке</span>
         </button>
