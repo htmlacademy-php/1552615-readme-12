@@ -324,13 +324,13 @@ function getPostVal($name) {
  */
 function validateFilled($name) {
     if (empty($_POST[$name])) {
-        return "Это поле должно быть заполнено";
+        return 'Это поле должно быть заполнено';
     };
 }
 
 /**
  * Функция проверки правильности ссылки url
- * @param $name - атрибут name для input
+ * @param $name - значение соответствующего поля input
  */
 function validateUrl($name) {
     if (!filter_input(INPUT_POST, $name, FILTER_VALIDATE_URL)) {
@@ -359,13 +359,11 @@ function validateFile($name) {
  * @param $name - атрибут name для input
  */
 function uploadFile($name) {
-    if (isset($_FILES[$name])) {
+    if (!empty($_FILES[$name])) {
         $_POST['photo-url'] = '';
         $file_name = $_FILES[$name]['name'];
         $file_path = __DIR__ . '/uploads/';
-        $file_url = '/uploads/' . $file_name;
         move_uploaded_file($_FILES[$name]['tmp_name'], $file_path . $file_name);
-        return $file_url;
     };
 }
 
@@ -373,24 +371,22 @@ function uploadFile($name) {
  * Функция загрузки файла по указанной ссылке
  * @param $name - атрибут name для input
  */
-function downloadFile($name) {
+function downloadFileFromUrl($name) {
     if (isset($_POST[$name])) {
         $file = file_get_contents($_POST[$name]);
-        if ($file === false) {
+        if ($file == false) {
             return 'Не удалось загрузить файл';
         };
         $file_path = __DIR__ . '/uploads/';
-        $file_url = '/uploads/' . $name;
         file_put_contents($file_path, $file);
-        return $file_url;
     };
 }
 
 /**
  * Функция валидации полей загрузки фото
  */
-function validateFilledPhoto ($name) {
-    if (empty($_POST[$name]) && empty($_FILES[$name])) {
+function validateFilledPhoto () {
+    if (empty($_POST['photo-url']) && empty($_FILES['userpic-file-photo'])) {
         return 'Необходимо загрузить изображение или ввести ссылку';
     };
 }
@@ -399,10 +395,38 @@ function validateFilledPhoto ($name) {
  * Функция валидации хэштегов
  */
 function validateTags ($name) {
-    if (isset($_POST[$name])) {
+    if(!empty($_POST[$name])) {
         $tags = explode(' ', htmlspecialchars($_POST[$name]));
-        if (count($tags) == 0) {
+        if (count($tags)) {
             return 'Должен быть хотя бы один тег';
-        }
+        };
     };
 }
+
+/**
+ * Функция перевода названия полей
+ */
+function translateInputName ($name) {
+    $translatedName = '';
+    if ($name === 'heading') {
+        $translatedName = 'Заголовок';
+    } elseif ($name === 'cite-text') {
+        $translatedName = 'Текст цитаты';
+    } elseif ($name === 'quote-author') {
+        $translatedName = 'Автор';
+    } elseif ($name === 'video-url') {
+        $translatedName = 'Ссылка Youtube';
+    } elseif ($name === 'post-text') {
+        $translatedName = 'Текст поста';
+    } elseif ($name === 'post-link') {
+        $translatedName = 'Ссылка';
+    } elseif ($name === 'photo-url') {
+        $translatedName = 'Ссылка из интернета';
+    } elseif ($name === 'userpic-file-photo') {
+        $translatedName = 'Картинка пользователя';
+    } elseif ($name === 'tags') {
+        $translatedName = 'Теги';
+    }
+    return $translatedName;
+}
+

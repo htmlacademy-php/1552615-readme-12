@@ -34,23 +34,32 @@
                 <?php endforeach;?>
                 </ul>
             </div>
-            <div class="adding-post__tab-content">
-
-                <section class="adding-post__<?php echo($one_type['classname']);?> tabs__content tabs__content--active">
-                    <h2 class="visually-hidden">
-                        Форма добавления <?=$one_type['title'];?>
-                    </h2>
-                    <form class="adding-post__form form" action="add.php" method="post" enctype="multipart/form-data" name="<?php echo($one_type['classname']);?>">
-                        <?=$active_form;?>
-
-                        <div class="adding-post__buttons">
-                            <button class="adding-post__submit button button--main" type="submit">Опубликовать</button>
-                            <a class="adding-post__close" href="#">Закрыть</a>
-                        </div>
-                    </form>
-                </section>
-
-            </div>
+            <?php foreach($types as $type): ?>
+                <div class="adding-post__tab-content">
+                    <?php if ($type['id'] == $content_type_id): ?>
+                    <section class="adding-post__<?php echo($type['classname']);?> tabs__content tabs__content--active">
+                        <h2 class="visually-hidden">
+                            Форма добавления <?=$type['title'];?>
+                        </h2>
+                        <form class="adding-post__form form" action="add.php" method="post"
+                            <?php if($type['classname'] == 'photo'):?>
+                                <?php echo'enctype="multipart/form-data"';?>
+                            <?php else: ?>
+                                <?php echo '';?>
+                            <?php endif; ?>
+                            name="<?php echo($type['classname']);?>">
+                            <?=$active_form;?>
+                            <input type="hidden" name="id" value="<?php echo($type['id']);?>">
+                            <input type="hidden" name="classname" value="<?php echo($type['classname']);?>">
+                            <div class="adding-post__buttons">
+                                <button class="adding-post__submit button button--main" type="submit">Опубликовать</button>
+                                <a class="adding-post__close" href="#">Закрыть</a>
+                            </div>
+                        </form>
+                    </section>
+                    <?php endif;?>
+                </div>
+            <?php endforeach;?>
         </div>
     </div>
 </div>

@@ -3,25 +3,21 @@
         <?=$form_header;?>
         <div class="adding-post__input-wrapper form__input-wrapper">
             <label class="adding-post__label form__label" for="photo-url">Ссылка из интернета</label>
-            <div class="form__input-section">
+            <?php $input_err = isset($errors['photo-url']) ? "form__input-section--error" : ""; ?>
+            <div class="form__input-section <?php echo $input_err;?>">
                 <input class="adding-post__input form__input" id="photo-url" type="text" name="photo-url" placeholder="Введите ссылку" value="<?php echo(getPostVal('photo-url'));?>">
                 <button class="form__error-button button" type="button">!
                     <span class="visually-hidden">Информация об ошибке</span>
                 </button>
                 <div class="form__error-text">
-                    <h3 class="form__error-title">Заголовок сообщения</h3>
-                    <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
+                    <h3 class="form__error-title">Ошибка!</h3>
+                    <p class="form__error-desc"><?=$errors['photo-url'];?></p>
                 </div>
             </div>
         </div>
         <?=$tag_form;?>
     </div>
-    <div class="form__invalid-block">
-        <b class="form__invalid-slogan">Пожалуйста, исправьте следующие ошибки:</b>
-        <ul class="form__invalid-list">
-            <li class="form__invalid-item">Заголовок. Это поле должно быть заполнено.</li>
-        </ul>
-    </div>
+    <?=$form_errors;?>
 </div>
 <div class="adding-post__input-file-container form__input-container form__input-container--file">
     <div class="adding-post__input-file-wrapper form__input-file-wrapper">
