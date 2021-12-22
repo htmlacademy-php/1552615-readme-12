@@ -7,7 +7,7 @@
         </label>
         <?php $input_err = isset($errors['post-text']) ? "form__input-section--error" : ""; ?>
         <div class="form__input-section <?php echo $input_err;?>">
-            <textarea class="adding-post__textarea form__textarea form__input" id="post-text" placeholder="Введите текст публикации" name="post-text"><?=getPostVal('post-text');?></textarea>
+            <textarea class="adding-post__textarea form__textarea form__input" id="post-text" placeholder="Введите текст публикации" name="post-text"><?=getPostVal($oldData,'post-text');?></textarea>
             <button class="form__error-button button" type="button">!
                 <span class="visually-hidden">Информация об ошибке</span>
             </button>

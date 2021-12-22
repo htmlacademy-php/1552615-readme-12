@@ -5,7 +5,7 @@
     </label>
     <?php $input_err = isset($errors['heading']) ? "form__input-section--error" : ""; ?>
     <div class="form__input-section <?php echo $input_err;?>">
-        <input class="adding-post__input form__input " id="heading'" type="text" name="heading" placeholder="Введите заголовок" value="<?php echo(getPostVal('heading'));?>">
+        <input class="adding-post__input form__input " id="heading'" type="text" name="heading" placeholder="Введите заголовок" value="<?php echo(getPostVal($oldData, 'heading'));?>">
         <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
         <div class="form__error-text">
             <h3 class="form__error-title">Ошибка!</h3>

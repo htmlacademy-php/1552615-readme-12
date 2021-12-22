@@ -10,7 +10,7 @@
                     <li class="adding-post__tabs-item filters__item">
                         <a class="adding-post__tabs-link filters__button filters__button--<?php echo $type['classname'];?>
                         tabs__item button
-                        <?php if ($type['id'] == $content_type_id):?>
+                        <?php if ($type['classname'] == $classname):?>
                             <?php echo ('filters__button--active tabs__item--active');?>
                         <?php endif;?>"
                         href="<?php echo ($url . '?id=' . $type['id']);?>">
@@ -36,7 +36,7 @@
             </div>
             <?php foreach($types as $type): ?>
                 <div class="adding-post__tab-content">
-                    <?php if ($type['id'] == $content_type_id): ?>
+                    <?php if ($type['classname'] == $classname): ?>
                     <section class="adding-post__<?php echo($type['classname']);?> tabs__content tabs__content--active">
                         <h2 class="visually-hidden">
                             Форма добавления <?=$type['title'];?>
@@ -49,7 +49,6 @@
                             <?php endif; ?>
                             name="<?php echo($type['classname']);?>">
                             <?=$active_form;?>
-                            <input type="hidden" name="id" value="<?php echo($type['id']);?>">
                             <input type="hidden" name="classname" value="<?php echo($type['classname']);?>">
                             <div class="adding-post__buttons">
                                 <button class="adding-post__submit button button--main" type="submit">Опубликовать</button>

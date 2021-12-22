@@ -311,21 +311,22 @@ function get_total_from_db ($count, $table, $group_by, $equals, $sql_connect) {
 
 /**
  * Функция для сохранения написанного пользователем в форме
- * @param $name - string, атрибут name для input
+ * @param $array - array, массив данных полученных ранее из формы
+ * @param $name - string, значение name для input
  *
  */
-function getPostVal($name) {
-    return $_POST[$name] ?? "";
+function getPostVal($array, $name) {
+    return $array[$name] ?? "";
 }
 
 /**
  * Функция проверки заполненности формы
- * @param $name - атрибут name для input
+ * @param $name - значение соответствующего поля input
  */
 function validateFilled($name) {
-    if (empty($_POST[$name])) {
+    if (empty($name)) {
         return 'Это поле должно быть заполнено';
-    };
+    }
 }
 
 /**
@@ -333,74 +334,83 @@ function validateFilled($name) {
  * @param $name - значение соответствующего поля input
  */
 function validateUrl($name) {
-    if (!filter_input(INPUT_POST, $name, FILTER_VALIDATE_URL)) {
+    if (!filter_var($name, FILTER_VALIDATE_URL)) {
         return 'Ссылка должна быть корректной';
-    };
+    }
 }
 
 /**
  * Функция валидации загружаемого пользователем файла
- * @param $name - атрибут name для input
+ * @param $name - значение соответствующего поля input
  */
 function validateFile($name) {
-    if (isset($_FILES[$name])) {
+    if (!empty($name['name'])) {
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $file_name = $_FILES[$name]['tmp_name'];
-        $file_type = finfo_file($finfo, $file_name);
-
-        if ($file_type !== 'image/jpeg' || $file_type !== 'image/png' || $file_type !== 'image/gif') {
+        $tmp_name = $name['tmp_name'];
+        $file_type = finfo_file($finfo, $tmp_name);
+        $types = [
+            'image/jpeg',
+            'image/png',
+            'image/gif'];
+            $res = in_array($file_type, $types);
+        if (!$res) {
             return 'Загрузите картинку в формате JPEG, PNG или GIF';
-        };
-    };
+        }
+    }
 }
 
 /**
  * Функция загрузки файла пользователем
- * @param $name - атрибут name для input
+ * @param $name - значение соответствующего поля input
  */
 function uploadFile($name) {
-    if (!empty($_FILES[$name])) {
+    if (!empty($name['name'])) {
         $_POST['photo-url'] = '';
-        $file_name = $_FILES[$name]['name'];
+        $file_name = $name['name'];
         $file_path = __DIR__ . '/uploads/';
-        move_uploaded_file($_FILES[$name]['tmp_name'], $file_path . $file_name);
-    };
+        $res = move_uploaded_file($name['tmp_name'], $file_path . $file_name);
+        if(!$res) {
+            return 'Не удалось загрузить файл';
+        }
+    }
 }
 
 /**
  * Функция загрузки файла по указанной ссылке
- * @param $name - атрибут name для input
+ * @param $name - значение соответствующего поля input
  */
 function downloadFileFromUrl($name) {
-    if (isset($_POST[$name])) {
-        $file = file_get_contents($_POST[$name]);
-        if ($file == false) {
+    if (isset($name)) {
+        $file = file_get_contents($name);
+        if ($file === false) {
             return 'Не удалось загрузить файл';
-        };
-        $file_path = __DIR__ . '/uploads/';
-        file_put_contents($file_path, $file);
-    };
+        }
+        $file_name = pathinfo($name, PATHINFO_BASENAME);
+        $file_path = __DIR__ . '/uploads/' . $file_name;
+        $res = file_put_contents($file_path, $file);
+        if (!$res) {
+            return 'Не удалось загрузить файл';
+        }
+    }
 }
 
 /**
  * Функция валидации полей загрузки фото
  */
 function validateFilledPhoto () {
-    if (empty($_POST['photo-url']) && empty($_FILES['userpic-file-photo'])) {
+    if (empty($_POST['photo-url']) && empty($_FILES['userpic-file-photo']['name'])) {
         return 'Необходимо загрузить изображение или ввести ссылку';
-    };
+    }
 }
 
 /**
  * Функция валидации хэштегов
  */
 function validateTags ($name) {
-    if(!empty($_POST[$name])) {
-        $tags = explode(' ', htmlspecialchars($_POST[$name]));
-        if (count($tags)) {
-            return 'Должен быть хотя бы один тег';
-        };
-    };
+    $tags = explode(' ', htmlspecialchars($name));
+    if (empty($name)) {
+        return 'Должен быть хотя бы один тег';
+    }
 }
 
 /**

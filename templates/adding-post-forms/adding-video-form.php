@@ -7,7 +7,7 @@
             </label>
             <?php $input_err = isset($errors['video-url']) ? "form__input-section--error" : ""; ?>
             <div class="form__input-section <?php echo $input_err;?>">
-                <input class="adding-post__input form__input" id="video-url" type="text" name="video-url" placeholder="Введите ссылку" value="<?php echo(getPostVal('video-url'));?>">
+                <input class="adding-post__input form__input" id="video-url" type="text" name="video-url" placeholder="Введите ссылку" value="<?php echo(getPostVal($oldData,'video-url'));?>">
                 <button class="form__error-button button" type="button">!
                     <span class="visually-hidden">Информация об ошибке</span>
                 </button>

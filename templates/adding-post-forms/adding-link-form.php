@@ -7,7 +7,7 @@
             </label>
             <?php $input_err = isset($errors['post-link']) ? "form__input-section--error" : ""; ?>
             <div class="form__input-section <?php echo $input_err;?>">
-                <input class="adding-post__input form__input" id="post-link" type="text" name="post-link" value="<?php echo(getPostVal('post-link'));?>">
+                <input class="adding-post__input form__input" id="post-link" type="text" name="post-link" value="<?php echo(getPostVal($oldData,'post-link'));?>">
                 <button class="form__error-button button" type="button">!
                     <span class="visually-hidden">Информация об ошибке</span>
                 </button>
