@@ -1,6 +1,7 @@
 <?php
 require_once('helpers.php');
-
+$is_auth = rand(0, 1);
+$user_name = 'Ильнур';
 $connect = mysqli_connect("localhost", "root", "root", "readme");
 if ($connect == false) {
     die("Connection error: " . mysqli_connect_error());
@@ -12,6 +13,9 @@ $post_url = '/' . $scriptname;
 
 if (isset($_GET['post_id'])) {
     $post_id = intval($_GET['post_id']);
+} else {
+    http_response_code(404);
+    die('Такой страницы не существует!');
 };
 
 $sql_post_id_query = "SELECT id FROM post WHERE id = $post_id";

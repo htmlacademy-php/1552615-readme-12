@@ -45,7 +45,7 @@ $posts = [
         'published_at' => date_create(generate_random_date(4)),
     ],
 ];
-
+$content_type_id = '';
 function get_cut_text($text, $symbol_amount = 300)
 {
     $link = '<a class="post-text__more-link" href="#">Читать далее</a>';
@@ -113,7 +113,7 @@ $sql_posts_query = "SELECT post.*, u.user_login, u.avatar, ct.classname
 $sql_types = db_get_query('all', $connect, $sql_types_query);
 $sql_posts = db_get_query('all', $connect, $sql_posts_query);
 
-$popular_content = include_template('main.php', ['posts' => $sql_posts, 'types' => $sql_types, 'url' => $url, 'active_btn' => $active_btn, 'active_btn_all' => $active_btn_all, 'content_type_id' => $content_type_id]);
+$popular_content = include_template('main.php', ['posts' => $sql_posts, 'types' => $sql_types, 'url' => $url, 'content_type_id' => $content_type_id]);
 
 $layout = include_template('layout.php', ['content' => $popular_content, 'title' => 'readme: популярное', 'is_auth' => $is_auth, 'user_name' => $user_name]);
 

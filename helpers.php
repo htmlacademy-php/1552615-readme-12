@@ -263,13 +263,13 @@ function generate_random_date($index)
     return $dt;
 }
 
-/** Принимает
- * - value - требуемое значение на выходе - двумерный массив или ассоциативный массив
- * - $connect - соединение с БД
- * - $sql - sql запрос
- *
- * возвращает двумерный массив с данными из базы данных если value = 'all'
+/**
+ * Возвращает двумерный массив с данными из базы данных если value = 'all'
  * и значение если 'assoc'
+ * @param $value - требуемое значение на выходе - двумерный массив или ассоциативный массив
+ * @param $connect - соединение с БД
+ * @param $sql - sql запрос
+ * @return array
  */
 function db_get_query($value, $connect, $sql) {
     $result = mysqli_query($connect, $sql);
@@ -285,16 +285,20 @@ function db_get_query($value, $connect, $sql) {
     };
 };
 
-/**Функция для получения общего количества
+/**
+ * Функция для получения общего количества
  * чего-либо из sql запроса (лайки, подписчики, публикации)
- * Принимает
- * $count - строка, поля которые нужно посчитать
- * $table - строка, таблица, из которой необходимо вывести значения
- * $group_by - строка, поле по которому группируем значения
- * $equals - строка, значение, которому равно значение искомого поля
- * $sql_connect - созданное sql соединение
- * возвращает либо значение общего количества,
+ * Возвращает либо значение общего количества,
  * либо 0 в случае пустого массива
+ * @param $count - строка, поля которые нужно посчитать
+ * @param $table - строка, таблица, из которой необходимо
+ * вывести значения
+ * @param $group_by - строка, поле по которому группируем
+ * значения
+ * @param $equals - строка, значение, которому равно значение
+ * искомого поля
+ * @param $sql_connect - созданное sql соединение
+ * @return string
  */
 function get_total_from_db ($count, $table, $group_by, $equals, $sql_connect) {
     $sql_total_posts_query = "SELECT COUNT($count) AS total
@@ -302,9 +306,137 @@ function get_total_from_db ($count, $table, $group_by, $equals, $sql_connect) {
     WHERE $group_by = $equals
     GROUP BY $group_by";
     $result = db_get_query('assoc', $sql_connect, $sql_total_posts_query);
-    if ($result == '') {
-        return '0';
-    };
-    return $result['total'];
+    return $result['total'] ?? '0';
+}
+
+/**
+ * Функция для сохранения написанного пользователем в форме
+ * @param $array - array, массив данных полученных ранее из формы
+ * @param $name - string, значение name для input
+ *
+ */
+function getPostVal($array, $name) {
+    return $array[$name] ?? "";
+}
+
+/**
+ * Функция проверки заполненности формы
+ * @param $name - значение соответствующего поля input
+ */
+function validateFilled($name) {
+    if (empty($name)) {
+        return 'Это поле должно быть заполнено';
+    }
+}
+
+/**
+ * Функция проверки правильности ссылки url
+ * @param $name - значение соответствующего поля input
+ */
+function validateUrl($name) {
+    if (!filter_var($name, FILTER_VALIDATE_URL)) {
+        return 'Ссылка должна быть корректной';
+    }
+}
+
+/**
+ * Функция валидации загружаемого пользователем файла
+ * @param $name - значение соответствующего поля input
+ */
+function validateFile($name) {
+    if (!empty($name['name'])) {
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $tmp_name = $name['tmp_name'];
+        $file_type = finfo_file($finfo, $tmp_name);
+        $types = [
+            'image/jpeg',
+            'image/png',
+            'image/gif'
+        ];
+        $res = in_array($file_type, $types);
+        if (!$res) {
+            return 'Загрузите картинку в формате JPEG, PNG или GIF';
+        }
+    }
+}
+
+/**
+ * Функция загрузки файла пользователем
+ * @param $name - значение соответствующего поля input
+ */
+function uploadFile($name) {
+    if (!empty($name['name'])) {
+        $_POST['photo-url'] = '';
+        $file_name = $name['name'];
+        $file_path = __DIR__ . '/uploads/';
+        $res = move_uploaded_file($name['tmp_name'], $file_path . $file_name);
+        if(!$res) {
+            return 'Не удалось загрузить файл';
+        }
+    }
+}
+
+/**
+ * Функция загрузки файла по указанной ссылке
+ * @param $name - значение соответствующего поля input
+ */
+function downloadFileFromUrl($name) {
+    if (isset($name)) {
+        $file = file_get_contents($name);
+        if ($file === false) {
+            return 'Не удалось загрузить файл';
+        }
+        $file_name = pathinfo($name, PATHINFO_BASENAME);
+        $file_path = __DIR__ . '/uploads/' . $file_name;
+        $res = file_put_contents($file_path, $file);
+        if (!$res) {
+            return 'Не удалось загрузить файл';
+        }
+    }
+}
+
+/**
+ * Функция валидации полей загрузки фото
+ */
+function validateFilledPhoto () {
+    if (empty($_POST['photo-url']) && empty($_FILES['userpic-file-photo']['name'])) {
+        return 'Необходимо загрузить изображение или ввести ссылку';
+    }
+}
+
+/**
+ * Функция валидации хэштегов
+ */
+function validateTags ($name) {
+    if (empty($name)) {
+        return 'Должен быть хотя бы один тег';
+    }
+}
+
+/**
+ * Функция перевода названия полей
+ */
+function translateInputName ($name) {
+    $translatedName = '';
+    if ($name === 'heading') {
+        $translatedName = 'Заголовок';
+    } elseif ($name === 'cite-text') {
+        $translatedName = 'Текст цитаты';
+    } elseif ($name === 'quote-author') {
+        $translatedName = 'Автор';
+    } elseif ($name === 'video-url') {
+        $translatedName = 'Ссылка Youtube';
+    } elseif ($name === 'post-text') {
+        $translatedName = 'Текст поста';
+    } elseif ($name === 'post-link') {
+        $translatedName = 'Ссылка';
+    } elseif ($name === 'photo-url') {
+        $translatedName = 'Ссылка из интернета';
+    } elseif ($name === 'userpic-file-photo') {
+        $translatedName = 'Картинка пользователя';
+    } elseif ($name === 'tags') {
+        $translatedName = 'Теги';
+    }
+    return $translatedName;
 }
 
