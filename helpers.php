@@ -351,8 +351,9 @@ function validateFile($name) {
         $types = [
             'image/jpeg',
             'image/png',
-            'image/gif'];
-            $res = in_array($file_type, $types);
+            'image/gif'
+        ];
+        $res = in_array($file_type, $types);
         if (!$res) {
             return 'Загрузите картинку в формате JPEG, PNG или GIF';
         }
@@ -407,7 +408,6 @@ function validateFilledPhoto () {
  * Функция валидации хэштегов
  */
 function validateTags ($name) {
-    $tags = explode(' ', htmlspecialchars($name));
     if (empty($name)) {
         return 'Должен быть хотя бы один тег';
     }
