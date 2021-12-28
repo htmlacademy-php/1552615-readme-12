@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $errors['userpic-file'] = validateFile($_FILES['userpic-file']);
     }
     if (empty($errors['userpic-file'])) {
-        $errors['userpic-file'] = uploadFile($_FILES['userpic-file']);
+        $errors['userpic-file'] = uploadFile($_FILES['userpic-file'], 'uploads/avatars');
     }
 
     $errors = array_filter($errors);

@@ -363,12 +363,13 @@ function validateFile($name) {
 /**
  * Функция загрузки файла пользователем
  * @param $name - значение соответствующего поля input
+ * @param $dirName - название папки, в которую грузится файл
  */
-function uploadFile($name) {
+function uploadFile($name, $dirName) {
     if (!empty($name['name'])) {
         $_POST['photo-url'] = '';
         $file_name = $name['name'];
-        $file_path = __DIR__ . '/uploads/';
+        $file_path = __DIR__ . '/' . $dirName . '/';
         $res = move_uploaded_file($name['tmp_name'], $file_path . $file_name);
         if(!$res) {
             return 'Не удалось загрузить файл';

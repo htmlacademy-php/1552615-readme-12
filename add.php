@@ -86,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $errors['userpic-file-photo'] = validateFile($_FILES['userpic-file-photo']);
         }
         if (empty($errors['userpic-file-photo'])) {
-            $errors['userpic-file-photo'] = uploadFile($_FILES['userpic-file-photo']);
+            $errors['userpic-file-photo'] = uploadFile($_FILES['userpic-file-photo'], 'uploads');
         }
     }
 
