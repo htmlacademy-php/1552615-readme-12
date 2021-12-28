@@ -7,7 +7,7 @@ CREATE TABLE user (
     UNIQUE INDEX email_ind (email),
     user_login VARCHAR(45) NOT NULL,
     UNIQUE INDEX user_login_ind (user_login),
-    user_password VARCHAR(45),
+    user_password VARCHAR(200),
     avatar VARCHAR(100)
 );
 CREATE TABLE content_type (

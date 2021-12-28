@@ -436,7 +436,26 @@ function translateInputName ($name) {
         $translatedName = 'Картинка пользователя';
     } elseif ($name === 'tags') {
         $translatedName = 'Теги';
+    } elseif ($name === 'login') {
+        $translatedName = 'Логин';
+    } elseif ($name === 'email') {
+        $translatedName = 'Электронная почта';
+    } elseif ($name === 'password') {
+        $translatedName = 'Пароль';
+    } elseif ($name === 'password-repeat') {
+        $translatedName = 'Повтор пароля';
+    } elseif ($name === 'userpic-file') {
+        $translatedName = 'Аватар';
     }
     return $translatedName;
 }
 
+/**
+ * Функция валидации email
+ * @param $name - значение соответствующего поля input
+ */
+function validateEmail($name) {
+    if (!filter_var($name, FILTER_VALIDATE_EMAIL)) {
+        return 'E-mail должен быть корректным';
+    }
+}

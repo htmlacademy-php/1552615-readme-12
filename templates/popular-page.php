@@ -97,7 +97,7 @@
 
                     <?php elseif ($post['classname'] === 'photo'): ?>
                     <div class="post-photo__image-wrapper">
-                        <img src="img/<?=htmlspecialchars($post['picture']);?>" alt="Фото от пользователя" width="360" height="240">
+                        <img src="uploads/<?=htmlspecialchars($post['picture']);?>" alt="Фото от пользователя" width="360" height="240">
                     </div>
 
                     <?php elseif ($post['classname'] === 'video'): ?>
