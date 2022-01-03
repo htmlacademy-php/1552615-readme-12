@@ -16,13 +16,14 @@ $errors = [];
 $form_errors = '';
 $post = [];
 
-$sql_users = db_get_query('all', $connect, "SELECT * FROM user");
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $post = $_POST;
     // определяем правила для полей
     $rules = [
         'email' => function () {
+            if (!validateFilled($_POST['email'])) {
+                return validateEmail($_POST['email']);
+            }
             return validateFilled($_POST['email']);
         },
         'login' => function () {
@@ -48,13 +49,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         !$errors['password'] = 'Пароли не совпадают';
         !$errors['password-repeat'] = 'Пароли не совпадают';
     }
-    // проверяем на наличие передаваемого email в бд
-    foreach ($sql_users as $user) {
-        if ($_POST['email'] == $user['email']) {
-            $errors['email'] = 'Пользователь с таким email уже зарегистрирован';
-        }
-        if ($_POST['login'] == $user['user_login']) {
-            $errors['login'] = 'Пользователь с таким логином уже зарегистрирован';
+    // проверяем на наличие передаваемого email и логина в бд
+    $email = $_POST['email'];
+    $login = $_POST['login'];
+    $sql_check_query = "SELECT * FROM user
+                        WHERE email = '$email'
+                        ||
+                        user_login = '$login'";
+
+    $results = db_get_query('all', $connect, $sql_check_query) ?? '';
+    foreach ($results as $result) {
+        if ($result) {
+            if (in_array($email, $result)) {
+                $errors['email'] = 'Пользователь с таким email уже зарегистрирован';
+            }
+            if (in_array($login, $result)) {
+                $errors['login'] = 'Пользователь с таким логином уже зарегистрирован';
+            }
         }
     }
 
@@ -84,7 +95,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $result = mysqli_stmt_execute($stmt);
 
         if ($result) {
-            $db_post_id = mysqli_insert_id($connect);
             header("Location: main.php");
 
         } else {

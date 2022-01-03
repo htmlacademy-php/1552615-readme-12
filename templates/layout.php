@@ -115,7 +115,7 @@
                         <a class="header__user-button header__authorization-button button" href="main.php">Вход</a>
                     </li>
                     <li>
-                        <a class="header__user-button header__user-button--active header__register-button button">Регистрация</a>
+                        <a class="header__user-button header__register-button button" href="registration.php">Регистрация</a>
                     </li>
                 </ul>
                 <?php endif;?>
