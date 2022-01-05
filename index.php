@@ -113,7 +113,7 @@ $sql_posts_query = "SELECT post.*, u.user_login, u.avatar, ct.classname
 $sql_types = db_get_query('all', $connect, $sql_types_query);
 $sql_posts = db_get_query('all', $connect, $sql_posts_query);
 
-$popular_content = include_template('main.php', ['posts' => $sql_posts, 'types' => $sql_types, 'url' => $url, 'content_type_id' => $content_type_id]);
+$popular_content = include_template('popular-page.php', ['posts' => $sql_posts, 'types' => $sql_types, 'url' => $url, 'content_type_id' => $content_type_id]);
 
 $layout = include_template('layout.php', ['content' => $popular_content, 'title' => 'readme: популярное', 'is_auth' => $is_auth, 'user_name' => $user_name]);
 

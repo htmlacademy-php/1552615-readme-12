@@ -13,20 +13,23 @@ $scriptname = pathinfo(__FILE__, PATHINFO_BASENAME);
 $add_url = '/' . $scriptname;
 $errors = [];
 $classname = 'text';
-$type_id = '';
-$content_type_id = '';
+$content_type_id = intval($_GET['id']) ?? '';
 $form_errors = '';
 $oldData = [];
 
 $sql_types = db_get_query('all', $connect, "SELECT * FROM content_type");
 
-if (isset($_GET['id'])) {
-    $content_type_id = intval($_GET['id']);
-}
-
 foreach ($sql_types as $type) {
-    if ($content_type_id == $type['id']) {
-        $classname = $type['classname'];
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if ($_POST['classname'] == $type['classname']) {
+            $content_type_id == $type['id'];
+        }
+
+        $classname = $_POST['classname'];
+    } else {
+        if ($content_type_id == $type['id']) {
+            $classname = $type['classname'];
+        }
     }
 }
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -82,17 +85,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (!empty($_FILES['userpic-file-photo']['name'])) {
             $errors['userpic-file-photo'] = validateFile($_FILES['userpic-file-photo']);
         }
-        if (!validateFile($_FILES['userpic-file-photo'])) {
-            $errors['userpic-file-photo'] = uploadFile($_FILES['userpic-file-photo']);
+        if (empty($errors['userpic-file-photo'])) {
+            $errors['userpic-file-photo'] = uploadFile($_FILES['userpic-file-photo'], 'uploads');
         }
     }
 
     // если нет ошибок добавляем картинки из ссылки
-    if (!empty($_POST['photo-url']) && !$errors['photo-url']) {
+    if (!empty($_POST['photo-url']) && empty($errors['photo-url'])) {
         $errors['photo-url'] = downloadFileFromUrl($_POST['photo-url']);
     }
     //если нет ошибок добавляем проверяем существует ли ссылка на видео в Youtube
-    if (!empty($_POST['video-url']) && !$errors['video-url']) {
+    if (!empty($_POST['video-url']) && empty($errors['video-url'])) {
         $result = check_youtube_url($_POST['video-url']);
         if ($result !== true) {
             $errors['video-url'] = $result;
@@ -115,11 +118,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $db_post['video'] = $_POST['video-url'] ?? null;
         $db_post['link'] = $_POST['post-link'] ?? null;
 
-        foreach ($sql_types as $type) {
-            if ($_POST['classname'] == $type['classname']) {
-                $content_type_id = $type['id'];
-            }
-        }
         if (isset($_POST['post-text'])) {
             $db_post['text_content'] = $_POST['post-text'];
         } elseif (isset($_POST['cite-text'])) {
@@ -145,7 +143,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     } else {
         $classname = $_POST['classname'];
-        $form_errors = include_template('adding-post-forms/form-errors.php', ['errors' => $errors]);
+        $form_errors = include_template('form-errors.php', ['errors' => $errors]);
     }
 }
 

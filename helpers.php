@@ -283,7 +283,7 @@ function db_get_query($value, $connect, $sql) {
     } else {
         die ("Уточните передаваемые данные");
     };
-};
+}
 
 /**
  * Функция для получения общего количества
@@ -363,12 +363,13 @@ function validateFile($name) {
 /**
  * Функция загрузки файла пользователем
  * @param $name - значение соответствующего поля input
+ * @param $dirName - название папки, в которую грузится файл
  */
-function uploadFile($name) {
+function uploadFile($name, $dirName) {
     if (!empty($name['name'])) {
         $_POST['photo-url'] = '';
         $file_name = $name['name'];
-        $file_path = __DIR__ . '/uploads/';
+        $file_path = __DIR__ . '/' . $dirName . '/';
         $res = move_uploaded_file($name['tmp_name'], $file_path . $file_name);
         if(!$res) {
             return 'Не удалось загрузить файл';
@@ -436,7 +437,41 @@ function translateInputName ($name) {
         $translatedName = 'Картинка пользователя';
     } elseif ($name === 'tags') {
         $translatedName = 'Теги';
+    } elseif ($name === 'login') {
+        $translatedName = 'Логин';
+    } elseif ($name === 'email') {
+        $translatedName = 'Электронная почта';
+    } elseif ($name === 'password') {
+        $translatedName = 'Пароль';
+    } elseif ($name === 'password-repeat') {
+        $translatedName = 'Повтор пароля';
+    } elseif ($name === 'userpic-file') {
+        $translatedName = 'Аватар';
     }
     return $translatedName;
 }
 
+/**
+ * Функция валидации email
+ * @param $name - значение соответствующего поля input
+ */
+function validateEmail($name) {
+    if (!filter_var($name, FILTER_VALIDATE_EMAIL)) {
+        return 'E-mail должен быть корректным';
+    }
+}
+
+/**
+ * Функция проверки на наличие значения в базе данных
+ * @param $value - значение, которое надо найти в БД
+ * @param $table - таблица в БД, в которой нужно найти значение
+ * @param $field - поле в таблице БД, в котором ищется значение
+ * @param $connect - соединение с БД
+ */
+function sql_value_search($value, $table, $field, $connect) {
+    $sql = "SELECT $field FROM $table WHERE $field = $value";
+    $res = db_get_query('assoc', $connect, $sql);
+    if ($res) {
+        return 'Такой пользователь уже зарегистрирован';
+    }
+}

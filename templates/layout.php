@@ -23,6 +23,7 @@
             </p>
         </div>
         <form class="header__search-form form" action="#" method="get">
+            <?php if ($is_auth == 1): ?>
             <div class="header__search">
                 <label class="visually-hidden">Поиск</label>
                 <input class="header__search-input form__input" type="search">
@@ -33,11 +34,12 @@
                     <span class="visually-hidden">Начать поиск</span>
                 </button>
             </div>
+            <?php endif; ?>
         </form>
         <div class="header__nav-wrapper">
             <!-- здесь должен быть PHP код, который показывает следующий тег по условию -->
-            <?php if ($is_auth == 1): ?>
             <nav class="header__nav">
+                <?php if ($is_auth == 1): ?>
                 <ul class="header__my-nav">
                     <li class="header__my-page header__my-page--popular">
                         <a class="header__page-link header__page-link--active" title="Популярный контент">
@@ -55,6 +57,7 @@
                         </a>
                     </li>
                 </ul>
+
                 <!-- здесь должен быть PHP код, который показывает следующий тег по условию -->
                 <ul class="header__user-nav">
                     <li class="header__profile">
@@ -106,8 +109,17 @@
                         <a class="header__post-button button button--transparent" href="add.php">Пост</a>
                     </li>
                 </ul>
+                <?php else: ?>
+                <ul class="header__user-nav">
+                    <li class="header__authorization">
+                        <a class="header__user-button header__authorization-button button" href="main.php">Вход</a>
+                    </li>
+                    <li>
+                        <a class="header__user-button header__register-button button" href="registration.php">Регистрация</a>
+                    </li>
+                </ul>
+                <?php endif;?>
             </nav>
-            <?php endif;?>
 
         </div>
     </div>
