@@ -46,19 +46,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             return validateFilled($_POST['quote-author']);
         },
         'video-url' => function () {
-            if (!validateFilled($_POST['video-url'])) {
-                return validateUrl($_POST['video-url']);
-            }
-            return validateFilled($_POST['video-url']);
+            return validateFilled($_POST['video-url']) ?? validateUrl($_POST['video-url']);
         },
         'post-text' => function () {
             return validateFilled($_POST['post-text']);
         },
         'post-link' => function () {
-            if (!validateFilled($_POST['post-link'])) {
-                return validateUrl($_POST['post-link']);
-            };
-            return validateFilled($_POST['post-link']);
+            return validateFilled($_POST['post-link']) ?? validateUrl($_POST['post-link']);
         },
         'photo-url' => function () {
             if (!empty($_POST['photo-url'])) {

@@ -21,10 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // определяем правила для полей
     $rules = [
         'email' => function () {
-            if (!validateFilled($_POST['email'])) {
-                return validateEmail($_POST['email']);
-            }
-            return validateFilled($_POST['email']);
+            return validateFilled($_POST['email']) ?? validateEmail($_POST['email']);
         },
         'login' => function () {
             return validateFilled($_POST['login']);
@@ -50,8 +47,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         !$errors['password-repeat'] = 'Пароли не совпадают';
     }
     // проверяем на наличие передаваемого email и логина в бд
-    $email = $_POST['email'];
-    $login = $_POST['login'];
+    $email = htmlspecialchars($_POST['email']);
+    $login = htmlspecialchars($_POST['login']);
     $sql_check_query = "SELECT * FROM user
                         WHERE email = '$email'
                         ||

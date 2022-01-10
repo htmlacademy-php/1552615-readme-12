@@ -460,18 +460,3 @@ function validateEmail($name) {
         return 'E-mail должен быть корректным';
     }
 }
-
-/**
- * Функция проверки на наличие значения в базе данных
- * @param $value - значение, которое надо найти в БД
- * @param $table - таблица в БД, в которой нужно найти значение
- * @param $field - поле в таблице БД, в котором ищется значение
- * @param $connect - соединение с БД
- */
-function sql_value_search($value, $table, $field, $connect) {
-    $sql = "SELECT $field FROM $table WHERE $field = $value";
-    $res = db_get_query('assoc', $connect, $sql);
-    if ($res) {
-        return 'Такой пользователь уже зарегистрирован';
-    }
-}
