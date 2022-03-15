@@ -1,8 +1,11 @@
 <?php
+session_start();
+$user = $_SESSION['user'] ?? null;
+$user_name = $user['user_login'] ?? null;
+$is_auth = $user ? 1 : 0;
+
 require_once('helpers.php');
 
-$is_auth = rand(0, 1);
-$user_name = 'Ильнур'; // укажите здесь ваше имя
 $posts = [
     [
         'title' => 'Цитата',
@@ -85,11 +88,7 @@ function get_date_interval_format($date) {
     return $date_interval->i . " " . get_noun_plural_form($date_interval->i, 'минута', 'минуты', 'минут') . " назад";
 }
 
-$connect = mysqli_connect("localhost", "root", "root", "readme");
-if ($connect == false) {
-    die("Connection error: " . mysqli_connect_error());
-};
-mysqli_set_charset($connect, "utf8");
+$connect = db_set_connection();
 
 $scriptname = pathinfo(__FILE__, PATHINFO_BASENAME);
 $url = "/" . $scriptname;

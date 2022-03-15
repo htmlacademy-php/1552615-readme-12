@@ -1,6 +1,7 @@
+<main class="page__main page__main--popular">
     <div class="container">
-        <h1 class="page__title page__title--popular">Популярное</h1>
-    </div>
+            <h1 class="page__title page__title--popular">Популярное</h1>
+        </div>
     <div class="popular container">
         <div class="popular__filters-wrapper">
             <div class="popular__sorting sorting">
@@ -163,3 +164,4 @@
 
         </div>
     </div>
+</main>

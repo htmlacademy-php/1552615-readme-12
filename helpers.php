@@ -460,3 +460,15 @@ function validateEmail($name) {
         return 'E-mail должен быть корректным';
     }
 }
+
+/**
+ * Функиця установления соединения с базой данных
+ */
+function db_set_connection () {
+    $connect = mysqli_connect("localhost", "root", "root", "readme");
+    if ($connect == false) {
+        die('Connection error: ' . mysqli_connect_error());
+    }
+    mysqli_set_charset($connect, "utf8");
+    return $connect;
+}
