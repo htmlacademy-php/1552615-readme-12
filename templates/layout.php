@@ -15,7 +15,7 @@
 <header class="header">
     <div class="header__wrapper container">
         <div class="header__logo-wrapper">
-            <a class="header__logo-link" href="main.php">
+            <a class="header__logo-link" href="index.php">
                 <img class="header__logo" src="img/logo.svg" alt="Логотип readme" width="128" height="24">
             </a>
             <p class="header__topic">
@@ -41,18 +41,19 @@
             <nav class="header__nav">
                 <?php if ($is_auth == 1): ?>
                 <ul class="header__my-nav">
+
                     <li class="header__my-page header__my-page--popular">
-                        <a class="header__page-link header__page-link--active" title="Популярный контент">
+                        <a class="header__page-link <?php if ($path == 'popular.php'): ?><?php echo ('header__page-link--active'); ?><?php endif; ?>" href="popular.php" title="Популярный контент">
                             <span class="visually-hidden">Популярный контент</span>
                         </a>
                     </li>
                     <li class="header__my-page header__my-page--feed">
-                        <a class="header__page-link" href="feed.html" title="Моя лента">
+                        <a class="header__page-link <?php if ($path == 'feed.php'): ?><?php echo ('header__page-link--active'); ?><?php endif; ?>" href="feed.php" title="Моя лента">
                             <span class="visually-hidden">Моя лента</span>
                         </a>
                     </li>
                     <li class="header__my-page header__my-page--messages">
-                        <a class="header__page-link" href="messages.html" title="Личные сообщения">
+                        <a class="header__page-link <?php if ($path == 'messages.php'): ?><?php echo ('header__page-link--active'); ?><?php endif; ?>" href="messages.html" title="Личные сообщения">
                             <span class="visually-hidden">Личные сообщения</span>
                         </a>
                     </li>
@@ -63,7 +64,9 @@
                     <li class="header__profile">
                         <a class="header__profile-link" href="#">
                             <div class="header__avatar-wrapper">
-                                <img class="header__profile-avatar" src="img/userpic-medium.jpg" alt="Аватар профиля">
+                                <?php if (!empty($avatar)): ?>
+                                    <?php echo ('<img class="header__profile-avatar" src="(uploads/avatars/' . $avatar . '" alt="Аватар профиля">'); ?>
+                                <?php endif; ?>
                             </div>
                             <div class="header__profile-name">
                                 <span>
@@ -112,10 +115,10 @@
                 <?php else: ?>
                 <ul class="header__user-nav">
                     <li class="header__authorization">
-                        <a class="header__user-button header__authorization-button button" href="main.php">Вход</a>
+                        <a class="header__user-button header__authorization-button button" href="index.php">Вход</a>
                     </li>
                     <li>
-                        <a class="header__user-button header__register-button button" href="registration.php">Регистрация</a>
+                        <a class="header__user-button header__register-button button" href="/registration.php">Регистрация</a>
                     </li>
                 </ul>
                 <?php endif;?>

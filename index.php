@@ -1,11 +1,16 @@
 <?php
+
 session_start();
-$user = $_SESSION['user'] ?? null;
+if (isset($_SESSION['user'])) {
+    header("Location: /feed.php");
+    exit();
+}
 
 require_once('helpers.php');
 
 $connect = db_set_connection();
 $errors = [];
+$post = [];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $post = $_POST;

@@ -1,10 +1,9 @@
 <?php
-session_start();
-$user = $_SESSION['user'] ?? null;
-$user_name = $user['user_login'] ?? null;
-$is_auth = $user ? 1 : 0;
 
+require_once('auth.php');
 require_once('helpers.php');
+
+$path = (pathinfo(__FILE__, PATHINFO_BASENAME));
 
 $posts = [
     [
@@ -114,6 +113,6 @@ $sql_posts = db_get_query('all', $connect, $sql_posts_query);
 
 $popular_content = include_template('popular-page.php', ['posts' => $sql_posts, 'types' => $sql_types, 'url' => $url, 'content_type_id' => $content_type_id]);
 
-$layout = include_template('layout.php', ['content' => $popular_content, 'title' => 'readme: популярное', 'is_auth' => $is_auth, 'user_name' => $user_name]);
+$layout = include_template('layout.php', ['content' => $popular_content, 'title' => 'readme: популярное', 'is_auth' => $is_auth, 'user_name' => $user_name, 'avatar' => $user_avatar, 'path' => $path]);
 
 print($layout);

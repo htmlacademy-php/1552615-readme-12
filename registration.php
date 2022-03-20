@@ -1,10 +1,13 @@
 <?php
+
 session_start();
-$user = $_SESSION['user'] ?? null;
-$user_name = $user['user_login'] ?? null;
+if (isset($_SESSION['user'])) {
+    header("Location: /feed.php");
+    exit();
+}
 $is_auth = 0;
 
-include_once('helpers.php');
+require_once('helpers.php');
 
 $connect = db_set_connection();
 
@@ -91,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $result = mysqli_stmt_execute($stmt);
 
         if ($result) {
-            header("Location: main.php");
+            header("Location: index.php");
 
         } else {
             die(print_r(mysqli_stmt_error_list($stmt)));

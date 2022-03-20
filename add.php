@@ -1,9 +1,6 @@
 <?php
-session_start();
-$user = $_SESSION['user'] ?? null;
-$user_name = $user['user_login'] ?? null;
-$is_auth = $user ? 1 : 0;
 
+require_once('auth.php');
 require_once('helpers.php');
 
 $connect = mysqli_connect("localhost", "root", "root", "readme");
@@ -150,6 +147,6 @@ $active_form = include_template('adding-post-forms/adding-' . $classname . '-for
 
 $adding_post = include_template('adding-post.php', ['active_form' => $active_form, 'types' => $sql_types, 'url' => $add_url, 'classname' => $classname]);
 
-$add_post_layout = include_template('layout.php', ['content' => $adding_post, 'title' => 'readme: добавление публикации', 'is_auth' => $is_auth, 'user_name' => $user_name]);
+$add_post_layout = include_template('layout.php', ['content' => $adding_post, 'title' => 'readme: добавление публикации', 'is_auth' => $is_auth, 'user_name' => $user_name, 'avatar' => $user_avatar]);
 
 print($add_post_layout);

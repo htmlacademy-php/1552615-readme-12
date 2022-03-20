@@ -4,7 +4,7 @@
     </div>
     <section class="registration container">
         <h2 class="visually-hidden">Форма регистрации</h2>
-        <form class="registration__form form" action="registation.php" method="post" enctype="multipart/form-data">
+        <form class="registration__form form" action="registration.php" method="post" enctype="multipart/form-data">
         <div class="form__text-inputs-wrapper">
             <div class="form__text-inputs">
             <div class="registration__input-wrapper form__input-wrapper">

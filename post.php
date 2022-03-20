@@ -1,9 +1,6 @@
 <?php
-session_start();
-$user = $_SESSION['user'] ?? null;
-$user_name = $user['user_login'] ?? null;
-$is_auth = $user ? 1 : 0;
 
+require_once('auth.php');
 require_once('helpers.php');
 
 $connect = db_set_connection();
@@ -44,6 +41,6 @@ $active_post = include_template('post-' . $sql_post['classname'] . '.php', ['pos
 
 $post_details = include_template('post-details.php', ['active_post' => $active_post, 'post' => $sql_post, 'totalpost' => $sql_total_posts, 'likes' => $sql_total_likes, 'subs' => $sql_total_subs]);
 
-$post_layout = include_template('layout.php', ['content' => $post_details, 'title' => 'readme: публикация', 'is_auth' => $is_auth, 'user_name' => $user_name]);
+$post_layout = include_template('layout.php', ['content' => $post_details, 'title' => 'readme: публикация', 'is_auth' => $is_auth, 'user_name' => $user_name, 'avatar' => $user_avatar]);
 
 print($post_layout);
