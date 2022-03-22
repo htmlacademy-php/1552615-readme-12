@@ -1,12 +1,9 @@
 <?php
+
+require_once('auth.php');
 require_once('helpers.php');
-$is_auth = rand(0, 1);
-$user_name = 'Ильнур';
-$connect = mysqli_connect("localhost", "root", "root", "readme");
-if ($connect == false) {
-    die("Connection error: " . mysqli_connect_error());
-};
-mysqli_set_charset($connect, "utf8");
+
+$connect = db_set_connection();
 
 $scriptname = pathinfo(__FILE__, PATHINFO_BASENAME);
 $post_url = '/' . $scriptname;
@@ -44,6 +41,6 @@ $active_post = include_template('post-' . $sql_post['classname'] . '.php', ['pos
 
 $post_details = include_template('post-details.php', ['active_post' => $active_post, 'post' => $sql_post, 'totalpost' => $sql_total_posts, 'likes' => $sql_total_likes, 'subs' => $sql_total_subs]);
 
-$post_layout = include_template('layout.php', ['content' => $post_details, 'title' => 'readme: публикация', 'is_auth' => $is_auth, 'user_name' => $user_name]);
+$post_layout = include_template('layout.php', ['content' => $post_details, 'title' => 'readme: публикация', 'is_auth' => $is_auth, 'user_name' => $user_name, 'avatar' => $user_avatar]);
 
 print($post_layout);

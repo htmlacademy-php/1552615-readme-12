@@ -1,13 +1,15 @@
 <?php
 
-include_once('helpers.php');
-
-$is_auth = 0;
-$connect = mysqli_connect("localhost", "root", "root", "readme");
-if ($connect == false) {
-    die('Connection error: ' . mysqli_connect_error());
+session_start();
+if (isset($_SESSION['user'])) {
+    header("Location: /feed.php");
+    exit();
 }
-mysqli_set_charset($connect, "utf8");
+$is_auth = 0;
+
+require_once('helpers.php');
+
+$connect = db_set_connection();
 
 $scriptname = pathinfo(__FILE__, PATHINFO_BASENAME);
 $post_url = '/' . $scriptname;
@@ -21,10 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // определяем правила для полей
     $rules = [
         'email' => function () {
-            if (!validateFilled($_POST['email'])) {
-                return validateEmail($_POST['email']);
-            }
-            return validateFilled($_POST['email']);
+            return validateFilled($_POST['email']) ?? validateEmail($_POST['email']);
         },
         'login' => function () {
             return validateFilled($_POST['login']);
@@ -50,8 +49,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         !$errors['password-repeat'] = 'Пароли не совпадают';
     }
     // проверяем на наличие передаваемого email и логина в бд
-    $email = $_POST['email'];
-    $login = $_POST['login'];
+    $email = htmlspecialchars($_POST['email']);
+    $login = htmlspecialchars($_POST['login']);
     $sql_check_query = "SELECT * FROM user
                         WHERE email = '$email'
                         ||
@@ -95,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $result = mysqli_stmt_execute($stmt);
 
         if ($result) {
-            header("Location: main.php");
+            header("Location: index.php");
 
         } else {
             die(print_r(mysqli_stmt_error_list($stmt)));

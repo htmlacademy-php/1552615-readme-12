@@ -462,16 +462,13 @@ function validateEmail($name) {
 }
 
 /**
- * Функция проверки на наличие значения в базе данных
- * @param $value - значение, которое надо найти в БД
- * @param $table - таблица в БД, в которой нужно найти значение
- * @param $field - поле в таблице БД, в котором ищется значение
- * @param $connect - соединение с БД
+ * Функиця установления соединения с базой данных
  */
-function sql_value_search($value, $table, $field, $connect) {
-    $sql = "SELECT $field FROM $table WHERE $field = $value";
-    $res = db_get_query('assoc', $connect, $sql);
-    if ($res) {
-        return 'Такой пользователь уже зарегистрирован';
+function db_set_connection () {
+    $connect = mysqli_connect("localhost", "root", "root", "readme");
+    if ($connect == false) {
+        die('Connection error: ' . mysqli_connect_error());
     }
+    mysqli_set_charset($connect, "utf8");
+    return $connect;
 }

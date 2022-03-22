@@ -1,8 +1,8 @@
 <?php
+
+require_once('auth.php');
 require_once('helpers.php');
 
-$is_auth = rand(0, 1);
-$user_name = 'Ильнур';
 $connect = mysqli_connect("localhost", "root", "root", "readme");
 if ($connect == false) {
     die('Connection error: ' . mysqli_connect_error());
@@ -46,19 +46,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             return validateFilled($_POST['quote-author']);
         },
         'video-url' => function () {
-            if (!validateFilled($_POST['video-url'])) {
-                return validateUrl($_POST['video-url']);
-            }
-            return validateFilled($_POST['video-url']);
+            return validateFilled($_POST['video-url']) ?? validateUrl($_POST['video-url']);
         },
         'post-text' => function () {
             return validateFilled($_POST['post-text']);
         },
         'post-link' => function () {
-            if (!validateFilled($_POST['post-link'])) {
-                return validateUrl($_POST['post-link']);
-            };
-            return validateFilled($_POST['post-link']);
+            return validateFilled($_POST['post-link']) ?? validateUrl($_POST['post-link']);
         },
         'photo-url' => function () {
             if (!empty($_POST['photo-url'])) {
@@ -153,6 +147,6 @@ $active_form = include_template('adding-post-forms/adding-' . $classname . '-for
 
 $adding_post = include_template('adding-post.php', ['active_form' => $active_form, 'types' => $sql_types, 'url' => $add_url, 'classname' => $classname]);
 
-$add_post_layout = include_template('layout.php', ['content' => $adding_post, 'title' => 'readme: добавление публикации', 'is_auth' => $is_auth, 'user_name' => $user_name]);
+$add_post_layout = include_template('layout.php', ['content' => $adding_post, 'title' => 'readme: добавление публикации', 'is_auth' => $is_auth, 'user_name' => $user_name, 'avatar' => $user_avatar]);
 
 print($add_post_layout);
