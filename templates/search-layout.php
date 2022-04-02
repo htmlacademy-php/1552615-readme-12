@@ -73,7 +73,7 @@
                                 <cite><?=$post['quote_author'];?></cite>
                             </blockquote>
 
-                        <?php elseif ($post['classname'] === 'quote'):?>
+                        <?php elseif ($post['classname'] === 'link'):?>
                             <div class="post-link__wrapper">
                                 <a class="post-link__external" href="<?php echo $post['link']; ?>" title="Перейти по ссылке">
                                     <div class="post-link__icon-wrapper">
