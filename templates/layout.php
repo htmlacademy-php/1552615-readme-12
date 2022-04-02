@@ -15,18 +15,18 @@
 <header class="header">
     <div class="header__wrapper container">
         <div class="header__logo-wrapper">
-            <a class="header__logo-link" href="index.php">
+            <a class="header__logo-link" href="/index.php">
                 <img class="header__logo" src="img/logo.svg" alt="Логотип readme" width="128" height="24">
             </a>
             <p class="header__topic">
                 micro blogging
             </p>
         </div>
-        <form class="header__search-form form" action="#" method="get">
+        <form class="header__search-form form" action="/search.php" method="get">
             <?php if ($is_auth == 1): ?>
             <div class="header__search">
                 <label class="visually-hidden">Поиск</label>
-                <input class="header__search-input form__input" type="search">
+                <input class="header__search-input form__input" type="search" name="q">
                 <button class="header__search-button button" type="submit">
                     <svg class="header__search-icon" width="18" height="18">
                         <use xlink:href="#icon-search"></use>
@@ -65,7 +65,7 @@
                         <a class="header__profile-link" href="#">
                             <div class="header__avatar-wrapper">
                                 <?php if (!empty($avatar)): ?>
-                                    <?php echo ('<img class="header__profile-avatar" src="(uploads/avatars/' . $avatar . '" alt="Аватар профиля">'); ?>
+                                    <?php echo ('<img class="header__profile-avatar" src="uploads/avatars/' . $avatar . '" alt="Аватар профиля">'); ?>
                                 <?php endif; ?>
                             </div>
                             <div class="header__profile-name">
@@ -109,13 +109,13 @@
                         </div>
                     </li>
                     <li>
-                        <a class="header__post-button button button--transparent" href="add.php">Пост</a>
+                        <a class="header__post-button button button--transparent" href="/add.php">Пост</a>
                     </li>
                 </ul>
                 <?php else: ?>
                 <ul class="header__user-nav">
                     <li class="header__authorization">
-                        <a class="header__user-button header__authorization-button button" href="index.php">Вход</a>
+                        <a class="header__user-button header__authorization-button button" href="/index.php">Вход</a>
                     </li>
                     <li>
                         <a class="header__user-button header__register-button button" href="/registration.php">Регистрация</a>

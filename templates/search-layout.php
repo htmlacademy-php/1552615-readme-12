@@ -1,41 +1,45 @@
-<main class="page__main page__main--feed">
-    <div class="container">
-        <h1 class="page__title page__title--feed">Моя лента</h1>
-    </div>
-    <div class="page__main-wrapper container">
-        <section class="feed">
-            <h2 class="visually-hidden">Лента</h2>
-            <div class="feed__main-wrapper">
-                <div class="feed__wrapper">
+<main class="page__main page__main--search-results">
+    <h1 class="visually-hidden">Страница результатов поиска</h1>
+    <section class="search">
+        <h2 class="visually-hidden">Результаты поиска</h2>
+        <div class="search__query-wrapper">
+            <div class="search__query container">
+                <span>Вы искали:</span>
+                <span class="search__query-text"><?=$search;?></span>
+            </div>
+        </div>
+        <div class="search__results-wrapper">
 
+            <?php if($posts): ?>
+            <div class="container">
+                <div class="search__content">
                     <?php foreach ($posts as $post): ?>
-                    <article class="feed__post post post-<?php echo $post['classname']; ?>">
+                    <article class="search__post post post-<?php echo $post['classname'];?>">
                         <header class="post__header post__author">
                             <a class="post__author-link" href="#" title="Автор">
                                 <div class="post__avatar-wrapper">
-                                    <?php if (isset($post['avatar'])): ?>
-                                    <img class="post__author-avatar" src="../uploads/avatars/<?php echo $post['avatar']; ?>" alt="Аватар пользователя" width="60" height="60">
-                                    <?php endif; ?>
+                                    <?php if (isset($post['avatar'])):?>
+                                    <img class="post__author-avatar" src="../uploads/avatars/<?php echo $post['avatar'];?>" alt="Аватар пользователя" width="60" height="60">
+                                    <?php endif;?>
                                 </div>
                                 <div class="post__info">
-                                    <b class="post__author-name"><?=$post['user_login']; ?></b>
+                                    <b class="post__author-name"><?=$post['user_login'];?></b>
                                     <span class="post__time"><?=get_date_interval_format(date_create($post['published_at']));?></span>
                                 </div>
                             </a>
                         </header>
                         <div class="post__main">
-
-                        <?php if ($post['classname'] === 'photo'): ?>
+                        <?php if ($post['classname'] === 'photo'):?>
                             <h2><a href="#"><?=$post['title'];?></a></h2>
                             <div class="post-photo__image-wrapper">
-                                <img src="uploads/<?php echo $post['picture'];?>" alt="Фото от пользователя" width="760" height="396">
+                                <img src="../uploads/<?php echo $post['picture'];?>" alt="Фото от пользователя" width="760" height="396">
                             </div>
 
-                        <?php elseif ($post['classname'] === 'text'): ?>
+                        <?php elseif ($post['classname'] === 'text'):?>
                             <h2><a href="#"><?=$post['title'];?></a></h2>
                             <p><?=get_cut_text($post['text_content']);?></p>
 
-                        <?php elseif ($post['classname'] === 'video'): ?>
+                        <?php elseif ($post['classname'] === 'video'):?>
                             <div class="post-video__block">
                                 <div class="post-video__preview">
                                     <img src="<?php echo embed_youtube_cover($post['video']);?>" alt="Превью к видео" width="760" height="396">
@@ -61,7 +65,7 @@
                                 </button>
                             </div>
 
-                        <?php elseif ($post['classname'] === 'quote'): ?>
+                        <?php elseif ($post['classname'] === 'quote'):?>
                             <blockquote>
                                 <p>
                                     <?=$post['text_content'];?>
@@ -69,7 +73,7 @@
                                 <cite><?=$post['quote_author'];?></cite>
                             </blockquote>
 
-                        <?php elseif ($post['classname'] === 'link'): ?>
+                        <?php elseif ($post['classname'] === 'quote'):?>
                             <div class="post-link__wrapper">
                                 <a class="post-link__external" href="<?php echo $post['link']; ?>" title="Перейти по ссылке">
                                     <div class="post-link__icon-wrapper">
@@ -84,7 +88,7 @@
                                     </svg>
                                 </a>
                             </div>
-                        <?php endif; ?>
+                        <?php endif;?>
                         </div>
                         <footer class="post__footer post__indicators">
                             <div class="post__buttons">
@@ -105,84 +109,25 @@
                                     <span><?=$post['total_comm'];?></span>
                                     <span class="visually-hidden">количество комментариев</span>
                                 </a>
-                                <a class="post__indicator post__indicator--repost button" href="#" title="Репост">
-                                    <svg class="post__indicator-icon" width="19" height="17">
-                                        <use xlink:href="#icon-repost"></use>
-                                    </svg>
-                                    <span>5</span>
-                                    <span class="visually-hidden">количество репостов</span>
-                                </a>
                             </div>
-                            <ul class="post__tags">
-                                <?php foreach ($hashtags as $hashtag): ?>
-                                    <?php if ($hashtag['post_id'] == $post['id']) :?><li><a href="<?php echo ('search.php' . '?q=%23' . $hashtag['hashtag']);?>">#<?php echo $hashtag['hashtag'];?><?php endif; ?></a></li>
-                                <?php endforeach; ?>
-                            </ul>
                         </footer>
                     </article>
-                    <?php endforeach; ?>
-
+                    <?php endforeach;?>
                 </div>
             </div>
-            <ul class="feed__filters filters">
-                <li class="feed__filters-item filters__item">
-                    <a class="filters__button <?php if($type_classname == ''): echo ('filters__button--active');?>
-                        <?php endif; ?>" href="<?php echo $url; ?>">
-                        <span>Все</span>
-                    </a>
-                </li>
 
-                <?php foreach ($types as $type):?>
-                <li class="feed__filters-item filters__item">
-                    <a class="filters__button filters__button--<?php echo $type['classname']; ?> button <?php if ($type['classname'] === $type_classname):?><?php echo ('filters__button--active');?><?php endif;?>" href="<?php echo ($url . '?type=' . $type['classname']);?>">
-                        <span class="visually-hidden"><?php echo $type['title']; ?></span>
-                        <svg class="filters__icon"
-                        <?php if ($type['classname'] === 'photo'): ?>
-                            <?php echo 'width="22" height="18"'; ?>
-                        <?php elseif ($type['classname'] === 'video'): ?>
-                            <?php echo 'width="24" height="16"'; ?>
-                        <?php elseif ($type['classname'] === 'text'): ?>
-                            <?php echo 'width="20" height="21"'; ?>
-                        <?php elseif ($type['classname'] === 'quote'): ?>
-                            <?php echo 'width="21" height="20"'; ?>
-                        <?php elseif ($type['classname'] === 'link'): ?>
-                            <?php echo 'width="21" height="18"'; ?>
-                        <?php endif; ?>>
-                            <use xlink:href="#icon-filter-<?php echo $type['classname']; ?>"></use>
-                        </svg>
-                    </a>
-                </li>
-                <?php endforeach; ?>
-            </ul>
-        </section>
-        <aside class="promo">
-            <article class="promo__block promo__block--barbershop">
-                <h2 class="visually-hidden">Рекламный блок</h2>
-                <p class="promo__text">
-                    Все еще сидишь на окладе в офисе? Открой свой барбершоп по нашей франшизе!
+            <?php else: ?>
+            <div class="search__no-results container">
+                <p class="search__no-results-info">К сожалению, ничего не найдено.</p>
+                <p class="search__no-results-desc">
+                Попробуйте изменить поисковый запрос или просто зайти в раздел &laquo;Популярное&raquo;, там живет самый крутой контент.
                 </p>
-                <a class="promo__link" href="#">
-                    Подробнее
-                </a>
-            </article>
-            <article class="promo__block promo__block--technomart">
-                <h2 class="visually-hidden">Рекламный блок</h2>
-                <p class="promo__text">
-                    Товары будущего уже сегодня в онлайн-сторе Техномарт!
-                </p>
-                <a class="promo__link" href="#">
-                    Перейти в магазин
-                </a>
-            </article>
-            <article class="promo__block">
-                <h2 class="visually-hidden">Рекламный блок</h2>
-                <p class="promo__text">
-                    Здесь<br> могла быть<br> ваша реклама
-                </p>
-                <a class="promo__link" href="#">
-                    Разместить
-                </a>
-            </article>
-        </aside>
-    </div>
+                <div class="search__links">
+                    <a class="search__popular-link button button--main" href="/popular.php">Популярное</a>
+                    <a class="search__back-link" href="#">Вернуться назад</a>
+                </div>
+            </div>
+            <?php endif; ?>
+        </div>
+    </section>
 </main>

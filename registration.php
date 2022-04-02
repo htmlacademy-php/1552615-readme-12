@@ -11,8 +11,8 @@ require_once('helpers.php');
 
 $connect = db_set_connection();
 
-$scriptname = pathinfo(__FILE__, PATHINFO_BASENAME);
-$post_url = '/' . $scriptname;
+$path = pathinfo(__FILE__, PATHINFO_BASENAME);
+$post_url = '/' . $path;
 
 $errors = [];
 $form_errors = '';
@@ -105,8 +105,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 }
 
-$reg_page = include_template('reg-page.php', ['form_errors' => $form_errors, 'post' => $post, 'errors' => $errors]);
+$reg_layout = include_template('reg-layout.php', ['form_errors' => $form_errors, 'post' => $post, 'errors' => $errors]);
 
-$reg_page_layout = include_template('layout.php', ['content' => $reg_page, 'title' => 'readme: регистрация', 'is_auth' => $is_auth]);
+$layout = include_template('layout.php', ['content' => $reg_layout, 'title' => 'readme: регистрация', 'is_auth' => $is_auth]);
 
-print($reg_page_layout);
+print($layout);
