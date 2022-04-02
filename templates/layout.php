@@ -109,7 +109,7 @@
                         </div>
                     </li>
                     <li>
-                        <a class="header__post-button button button--transparent" href="/add.php">Пост</a>
+                        <a class="header__post-button button button--transparent" href="<?php echo '/add.php' . '?id=1';?>">Пост</a>
                     </li>
                 </ul>
                 <?php else: ?>
