@@ -11,7 +11,7 @@ $search = trim(filter_input(INPUT_GET, 'q')) ?? NULL;
 $posts = [];
 if ($search) {
 
-    $is_hashtag = (substr($search, 0, -(strlen($search) - 1)) === '#') ? substr($search, 1) : NULL;
+    $is_hashtag = ((substr($search, 0, 1)) === '#') ? substr($search, 1) : NULL;
 
     $sql_query = "SELECT post.*, u.user_login, u.avatar, ct.classname,
     (SELECT COUNT(id) FROM comments WHERE comments.post_id = post.id) AS total_comm,
@@ -32,7 +32,8 @@ if ($search) {
             LEFT JOIN post ON hp.post_id = post.id
             LEFT JOIN user u ON post.user_id = u.id
             LEFT JOIN content_type ct ON post.type_id = ct.id
-        WHERE hashtag.hashtag LIKE '$is_hashtag'";
+        WHERE hashtag.hashtag LIKE '$is_hashtag'
+        ORDER BY published_at";
     }
 
     $posts = db_get_query('all', $connect, $sql_query);
@@ -40,6 +41,6 @@ if ($search) {
 
 $search_content = include_template('search-layout.php', ['search' => $search, 'posts' => $posts]);
 
-$layout = include_template('layout.php', ['content' => $search_content, 'title' => 'readme: страница результатов поиска', 'is_auth' => $is_auth, 'user_name' => $user_name, 'avatar' => $user_avatar, 'path' => $path]);
+$layout = include_template('layout.php', ['content' => $search_content, 'title' => 'readme: страница результатов поиска', 'is_auth' => $is_auth, 'user_name' => $user_name, 'avatar' => $user_avatar, 'path' => $path, 'search' => $search]);
 
 print($layout);

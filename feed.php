@@ -2,6 +2,7 @@
 
 require_once('auth.php');
 require_once('helpers.php');
+require_once('hashtags.php');
 
 $path = (pathinfo(__FILE__, PATHINFO_BASENAME));
 $url = "/" . $path;
@@ -30,13 +31,7 @@ FROM post
     LEFT JOIN content_type ct ON type_id = ct.id $query_condition";
 $sql_posts = db_get_query('all', $connect, $sql_posts_query);
 
-
-$sql_hashtag_query = "SELECT hashtag.*, hp.post_id
-                      FROM hashtag
-                            LEFT JOIN hashtags_posts hp ON hashtag.id = hp.hashtag_id";
-$sql_hashtags = db_get_query('all', $connect, $sql_hashtag_query);
-
-$feed_layout = include_template('feed-layout.php', ['types' => $sql_types, 'posts' => $sql_posts, 'hashtags' => $sql_hashtags, 'type_classname' => $type_classname, 'url' => $url, 'path' => $path]);
+$feed_layout = include_template('feed-layout.php', ['types' => $sql_types, 'posts' => $sql_posts, 'hashtags' => $hashtags, 'type_classname' => $type_classname, 'url' => $url, 'path' => $path]);
 
 $layout = include_template('layout.php', ['content' => $feed_layout, 'title' => 'readme: моя лента', 'is_auth' => $is_auth, 'user_name' => $user_name, 'avatar' => $user_avatar, 'path' => $path]);
 

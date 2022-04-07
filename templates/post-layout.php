@@ -38,9 +38,10 @@
                         <span class="post__view"><?=$post['watch_count'] ?> просмотров</span>
                     </div>
                     <ul class="post__tags">
-                    <?php foreach ($hashtags as $hashtag): ?>
-                        <?php if ($hashtag['post_id'] == $post['id']) :?><li><a href="<?php echo ('search.php' . '?q=%23' . $hashtag['hashtag']);?>">#<?php echo $hashtag['hashtag'];?><?php endif; ?></a></li>
-                    <?php endforeach; ?>
+                    <?php if (key_exists($post['id'], $hashtags)):?><?php foreach ($hashtags[$post['id']] as $hashtag): ?>
+                        <li><a href="<?php echo ('search.php' . '?q=%23' . $hashtag);?>">#<?=$hashtag;?>
+                        <?php endforeach;?></a></li>
+                    <?php endif;?>
                     </ul>
                     <div class="comments">
                         <form class="comments__form form" action="#" method="post">
