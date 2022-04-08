@@ -37,7 +37,7 @@
                 <b class="popular__filters-caption filters__caption">Тип контента:</b>
                 <ul class="popular__filters-list filters__list">
                     <li class="popular__filters-item popular__filters-item--all filters__item filters__item--all">
-                        <a class="filters__button filters__button--ellipse filters__button--all <?php if($content_type_id == ''): echo ('filters__button--active');?>
+                        <a class="filters__button filters__button--ellipse filters__button--all <?php if($type_classname === ''): echo ('filters__button--active');?>
                         <?php endif; ?>"
                             href="<?php echo $url; ?>">
                             <span>Все</span>
@@ -47,10 +47,10 @@
                     <?php foreach ($types as $type):?>
                     <li class="popular__filters-item filters__item">
                         <a class="filters__button filters__button--<?php echo $type['classname']; ?> button
-                        <?php if ($type['id'] == $content_type_id):
+                        <?php if ($type['classname'] === $type_classname):
                             echo ('filters__button--active'); ?>
                         <?php endif; ?>"
-                        href="<?php echo ($url . '?id=' . $type['id']);?>">
+                        href="<?php echo ($url . '?type=' . $type['classname']);?>">
                             <span class="visually-hidden"><?=$type['title']?></span>
                             <svg class="filters__icon" width="22" height="18">
                                 <use xlink:href="#icon-filter-<?php echo $type['classname']?>"></use>
@@ -129,7 +129,9 @@
                         <a class="post__author-link" href="#" title="Автор">
                             <div class="post__avatar-wrapper">
                                 <!--укажите путь к файлу аватара-->
-                                <img class="post__author-avatar" src="img/<?=$post['avatar'];?>" alt="Аватар пользователя">
+                            <?php if (isset($post['avatar'])): ?>
+                                <img class="post__author-avatar" src="../uploads/avatars/<?=$post['avatar'];?>" alt="Аватар пользователя">
+                            <?php endif; ?>
                             </div>
                             <div class="post__info">
                                 <b class="post__author-name"><?=htmlspecialchars($post['user_login'])?></b>
@@ -146,14 +148,14 @@
                                 <svg class="post__indicator-icon post__indicator-icon--like-active" width="20" height="17">
                                     <use xlink:href="#icon-heart-active"></use>
                                 </svg>
-                                <span>0</span>
+                                <span><?=$post['total_likes'];?></span>
                                 <span class="visually-hidden">количество лайков</span>
                             </a>
                             <a class="post__indicator post__indicator--comments button" href="#" title="Комментарии">
                                 <svg class="post__indicator-icon" width="19" height="17">
                                     <use xlink:href="#icon-comment"></use>
                                 </svg>
-                                <span>0</span>
+                                <span><?=$post['total_comm'];?></span>
                                 <span class="visually-hidden">количество комментариев</span>
                             </a>
                         </div>

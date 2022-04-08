@@ -2,11 +2,13 @@
 
 require_once('auth.php');
 require_once('helpers.php');
+require_once('hashtags.php');
 
 $connect = db_set_connection();
 
-$scriptname = pathinfo(__FILE__, PATHINFO_BASENAME);
-$post_url = '/' . $scriptname;
+$path = (pathinfo(__FILE__, PATHINFO_BASENAME));
+
+$post_url = '/' . $path;
 
 if (isset($_GET['post_id'])) {
     $post_id = intval($_GET['post_id']);
@@ -39,8 +41,8 @@ $sql_total_subs = get_total_from_db ('user_id', 'subscribtions', 'to_user_id', $
 
 $active_post = include_template('post-' . $sql_post['classname'] . '.php', ['post' => $sql_post]);
 
-$post_details = include_template('post-details.php', ['active_post' => $active_post, 'post' => $sql_post, 'totalpost' => $sql_total_posts, 'likes' => $sql_total_likes, 'subs' => $sql_total_subs]);
+$post_layout = include_template('post-layout.php', ['active_post' => $active_post, 'post' => $sql_post, 'totalpost' => $sql_total_posts, 'likes' => $sql_total_likes, 'subs' => $sql_total_subs, 'hashtags' => $hashtags]);
 
-$post_layout = include_template('layout.php', ['content' => $post_details, 'title' => 'readme: публикация', 'is_auth' => $is_auth, 'user_name' => $user_name, 'avatar' => $user_avatar]);
+$layout = include_template('layout.php', ['content' => $post_layout, 'title' => 'readme: публикация', 'is_auth' => $is_auth, 'user_name' => $user_name, 'avatar' => $user_avatar, 'path' => $path]);
 
-print($post_layout);
+print($layout);

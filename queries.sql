@@ -83,3 +83,37 @@ INSERT INTO subscribtions
   VALUES (NULL, 1, 1);
 DELETE FROM subscribtions
   WHERE id = 3;
+
+CREATE FULLTEXT INDEX post_ft_search ON post(title, text_content);
+
+INSERT INTO hashtag
+  VALUES (NULL, 'шикарныйвид');
+INSERT INTO hashtag
+  VALUES (NULL, 'крутосказано');
+INSERT INTO hashtag
+  VALUES (NULL, 'полезнаяссылка');
+INSERT INTO hashtag
+  VALUES (NULL, 'крутойсериал');
+INSERT INTO hashtag
+  VALUES (NULL, 'игрпрестолов');
+INSERT INTO hashtag
+  VALUES (NULL, 'лучшеефото');
+INSERT INTO hashtag
+  VALUES (NULL, 'nature');
+
+INSERT INTO hashtags_posts
+  VALUES (NULL, 2, 1);
+INSERT INTO hashtags_posts
+  VALUES (NULL, 4, 2);
+INSERT INTO hashtags_posts
+  VALUES (NULL, 5, 2);
+INSERT INTO hashtags_posts
+  VALUES (NULL, 3, 5);
+INSERT INTO hashtags_posts
+  VALUES (NULL, 6, 3);
+INSERT INTO hashtags_posts
+  VALUES (NULL, 7, 3);
+INSERT INTO hashtags_posts
+  VALUES (NULL, 1, 4);
+INSERT INTO hashtags_posts
+  VALUES (NULL, 7, 4);

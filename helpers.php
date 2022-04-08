@@ -263,6 +263,61 @@ function generate_random_date($index)
     return $dt;
 }
 
+
+// Функции студенческие
+
+/**
+ * Функция, которая обрезает текст по заданному максимальному кол-ву символов
+ * @param $text - string непосредственно текст, который нужно обрезать
+ * @param $symbol_amount - int максимальное количество символов
+ */
+
+function get_cut_text($text, $symbol_amount = 300)
+{
+    $link = '<a class="post-text__more-link" href="#">Читать далее</a>';
+    if (mb_strlen($text) < $symbol_amount) {
+        return "<p>$text</p>";
+    } else {
+        $words = explode(' ', $text);
+        $result = 0;
+        $new_words = [];
+        foreach ($words as $word) {
+            $result += (mb_strlen($word) + 1);
+            array_push($new_words, $word);
+            if (($result - 1) >= $symbol_amount) {
+                break;
+            };
+        };
+        array_pop($new_words);
+        $trimmed_string = implode(' ', $new_words);
+        return "<p>$trimmed_string...</p> $link";
+    };
+}
+
+/**
+ * Функция, которая позволяет конвертировать дату в необходимый формат, в правильном падеже и т.п.
+ * @param $date - непосредственно дата, которую нужно перевести
+ */
+
+function get_date_interval_format($date) {
+    $current_date = date_create('now');
+    $date_interval = date_diff($date, $current_date);
+    $week = floor($date_interval->d / 7);
+
+    if ($date_interval->m >= 1) {
+        return $date_interval->m . " " . get_noun_plural_form($date_interval->m, 'месяц', 'месяца', 'месяцев') . " назад";
+    } elseif ($week >= 1) {
+        return $week . " " . get_noun_plural_form($week, 'неделя', 'недели', 'недель') . " назад";
+    } elseif ($date_interval->d >= 1) {
+        return $date_interval->d . " " . get_noun_plural_form($date_interval->d, 'день', 'дня', 'дней') . " назад";
+    } elseif ($date_interval->h >= 1 ) {
+        return $date_interval->h . " " . get_noun_plural_form($date_interval->h, 'час', 'часа', 'часов') . " назад";
+    };
+    return $date_interval->i . " " . get_noun_plural_form($date_interval->i, 'минута', 'минуты', 'минут') . " назад";
+}
+
+
+
 /**
  * Возвращает двумерный массив с данными из базы данных если value = 'all'
  * и значение если 'assoc'
@@ -472,3 +527,4 @@ function db_set_connection () {
     mysqli_set_charset($connect, "utf8");
     return $connect;
 }
+
