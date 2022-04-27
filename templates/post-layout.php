@@ -10,7 +10,7 @@
 
                     <div class="post__indicators">
                         <div class="post__buttons">
-                            <a class="post__indicator post__indicator--likes button" href="#" title="Лайк">
+                            <a class="post__indicator post__indicator--likes button" href="<?php echo('/likes.php' . '?post_id=' . $post['id'])?>" title="Лайк">
                                 <svg class="post__indicator-icon" width="20" height="17">
                                     <use xlink:href="#icon-heart"></use>
                                 </svg>
@@ -108,17 +108,17 @@
                 <div class="post-details__user user">
                     <div class="post-details__user-info user__info">
                         <div class="post-details__avatar user__avatar">
-                            <a class="post-details__avatar-link user__avatar-link" href="#">
+                            <a class="post-details__avatar-link user__avatar-link" href="<?php echo('/profile.php' . '?user_id=' . $post['user_id']) . '&tab=posts';?>">
                             <?php if (isset($post['avatar'])): ?>
                                 <img class="post-details__picture user__picture" src="../uploads/avatars/<?php echo $post['avatar']; ?>" alt="Аватар пользователя">
                             <?php endif; ?>
                             </a>
                         </div>
                         <div class="post-details__name-wrapper user__name-wrapper">
-                            <a class="post-details__name user__name" href="#">
-                                <span><?=$post['user_login'] ?></span>
+                            <a class="post-details__name user__name" href="<?php echo('/profile.php' . '?user_id=' . $post['user_id']) . '&tab=posts';?>">
+                                <span><?=$post['user_login']; ?></span>
                             </a>
-                            <time class="post-details__time user__time" datetime="2014-03-20">5 лет на сайте</time>
+                            <time class="post-details__time user__time" datetime="<?php echo (date_format(date_create($post['created_at']), 'Y-m-d'));?>"><?=get_date_interval_format(date_create($post['created_at']), 'на сайте');?></time>
                         </div>
                     </div>
                     <div class="post-details__rating user__rating">
@@ -136,8 +136,12 @@
                         </p>
                     </div>
                     <div class="post-details__user-buttons user__buttons">
-                        <button class="user__button user__button--subscription button button--main" type="button">Подписаться</button>
-                        <a class="user__button user__button--writing button button--green" href="#">Сообщение</a>
+                        <?php if (in_array($post['user_id'], $user_subs)): ?>
+                        <a class="profile__user-button user__button user__button--subscription button button--main" href="<?php echo ('/subscribtion.php' . '?user_id=' . $post['user_id']);?>">Отписаться</a>
+                        <a class="profile__user-button user__button user__button--writing button button--green" href="#">Сообщение</a>
+                        <?php else: ?>
+                        <a class="profile__user-button user__button user__button--subscription button button--main" href="<?php echo ('/subscribtion.php' . '?user_id=' . $post['user_id']);?>">Подписаться</a>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>

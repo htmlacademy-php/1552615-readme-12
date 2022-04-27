@@ -297,23 +297,24 @@ function get_cut_text($text, $symbol_amount = 300)
 /**
  * Функция, которая позволяет конвертировать дату в необходимый формат, в правильном падеже и т.п.
  * @param $date - непосредственно дата, которую нужно перевести
+ * @param $word - слово, которое должно быть в конце сконвертированной даты, например "назад" и т.п.
  */
 
-function get_date_interval_format($date) {
+function get_date_interval_format($date, $word) {
     $current_date = date_create('now');
     $date_interval = date_diff($date, $current_date);
     $week = floor($date_interval->d / 7);
 
     if ($date_interval->m >= 1) {
-        return $date_interval->m . " " . get_noun_plural_form($date_interval->m, 'месяц', 'месяца', 'месяцев') . " назад";
+        return $date_interval->m . " " . get_noun_plural_form($date_interval->m, 'месяц', 'месяца', 'месяцев') . " " . $word;
     } elseif ($week >= 1) {
-        return $week . " " . get_noun_plural_form($week, 'неделя', 'недели', 'недель') . " назад";
+        return $week . " " . get_noun_plural_form($week, 'неделя', 'недели', 'недель') . " " . $word;
     } elseif ($date_interval->d >= 1) {
-        return $date_interval->d . " " . get_noun_plural_form($date_interval->d, 'день', 'дня', 'дней') . " назад";
+        return $date_interval->d . " " . get_noun_plural_form($date_interval->d, 'день', 'дня', 'дней') . " " . $word;
     } elseif ($date_interval->h >= 1 ) {
-        return $date_interval->h . " " . get_noun_plural_form($date_interval->h, 'час', 'часа', 'часов') . " назад";
+        return $date_interval->h . " " . get_noun_plural_form($date_interval->h, 'час', 'часа', 'часов') . " " . $word;
     };
-    return $date_interval->i . " " . get_noun_plural_form($date_interval->i, 'минута', 'минуты', 'минут') . " назад";
+    return $date_interval->i . " " . get_noun_plural_form($date_interval->i, 'минута', 'минуты', 'минут') . " " . $word;
 }
 
 
@@ -526,5 +527,23 @@ function db_set_connection () {
     }
     mysqli_set_charset($connect, "utf8");
     return $connect;
+}
+
+/**
+ * Функция получения массива подписчиков авторизованного пользователя
+ * $user_id - id текущего авторизованного пользователя
+ * $connect - соединение с БД
+ */
+function get_subscribers ($user_id, $connect) {
+    $user_subs = [];
+    $sql_user_subs_query = "SELECT * FROM subscribtions
+    WHERE user_id = '$user_id'";
+
+    $sql_user_subs = db_get_query('all', $connect, $sql_user_subs_query);
+
+    foreach ($sql_user_subs as $user_sub) {
+        array_push($user_subs, $user_sub['to_user_id']);
+    }
+    return $user_subs;
 }
 
