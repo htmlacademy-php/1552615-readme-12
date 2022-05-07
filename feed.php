@@ -33,6 +33,6 @@ $sql_posts = db_get_query('all', $connect, $sql_posts_query);
 
 $feed_layout = include_template('feed-layout.php', ['types' => $sql_types, 'posts' => $sql_posts, 'hashtags' => $hashtags, 'type_classname' => $type_classname, 'url' => $url, 'path' => $path]);
 
-$layout = include_template('layout.php', ['content' => $feed_layout, 'title' => 'readme: моя лента', 'is_auth' => $is_auth, 'user_name' => $user_name, 'avatar' => $user_avatar, 'path' => $path]);
+$layout = include_template('layout.php', ['content' => $feed_layout, 'title' => 'readme: моя лента', 'is_auth' => $is_auth, 'user_name' => $user_name, 'avatar' => $user_avatar, 'path' => $path, 'user_id' => $user_id]);
 
 print($layout);

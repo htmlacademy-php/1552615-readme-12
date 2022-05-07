@@ -144,6 +144,6 @@ $active_form = include_template('adding-post-forms/adding-' . $classname . '-for
 
 $adding_post = include_template('adding-post.php', ['active_form' => $active_form, 'types' => $sql_types, 'url' => $add_url, 'classname' => $classname]);
 
-$layout = include_template('layout.php', ['content' => $adding_post, 'title' => 'readme: добавление публикации', 'is_auth' => $is_auth, 'user_name' => $user_name, 'avatar' => $user_avatar, 'path' => $path]);
+$layout = include_template('layout.php', ['content' => $adding_post, 'title' => 'readme: добавление публикации', 'is_auth' => $is_auth, 'user_name' => $user_name, 'avatar' => $user_avatar, 'path' => $path, 'user_id' => $user_id]);
 
 print($layout);

@@ -3,6 +3,8 @@
 require_once('auth.php');
 require_once('helpers.php');
 require_once('hashtags.php');
+require_once('add_comment.php');
+require_once('show_comments.php');
 
 $path = (pathinfo(__FILE__, PATHINFO_BASENAME));
 $url = "/" . $path;
@@ -25,6 +27,7 @@ if (isset($tab)) {
                                     LEFT JOIN user u ON original_author_id = u.id
                                     WHERE post.user_id = '$profile_user_id'";
             $tab_data = db_get_query('all', $connect, $sql_posts_query);
+
             break;
 
         case 'likes':
@@ -71,10 +74,10 @@ if (isset($profile_user_id)) {
     $user_subs = get_subscribers($user_id, $connect);
 }
 
-$active_tab = include_template('/profile-tabs/' . $active_tab_layout . '.php', ['tab_data' => $tab_data, 'profile_user_id' => $profile_user_id, 'hashtags' => $hashtags]);
+$active_tab = include_template('/profile-tabs/' . $active_tab_layout . '.php', ['tab_data' => $tab_data, 'profile_user_id' => $profile_user_id, 'hashtags' => $hashtags, 'errors' => $errors, 'comments' => $comments]);
 
 $profile_layout = include_template('profile-layout.php', ['active_tab' => $active_tab, 'hashtags' => $hashtags, 'url' => $url, 'path' => $path, 'tab' => $tab, 'profile_user_id' => $profile_user_id, 'user_data' => $user_data, 'user_subs' => $user_subs]);
 
-$layout = include_template('layout.php', ['content' => $profile_layout, 'title' => 'readme: профиль', 'is_auth' => $is_auth, 'user_name' => $user_name, 'avatar' => $user_avatar, 'path' => $path]);
+$layout = include_template('layout.php', ['content' => $profile_layout, 'title' => 'readme: профиль', 'is_auth' => $is_auth, 'user_name' => $user_name, 'avatar' => $user_avatar, 'path' => $path, 'user_id' => $user_id]);
 
 print($layout);

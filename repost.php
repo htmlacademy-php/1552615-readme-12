@@ -14,7 +14,7 @@ $sql_post_check = "SELECT id FROM post WHERE id = '$post_id'";
 $post_check = db_get_query('assoc', $connect, $sql_post_check) ?? null;
 if($post_check) {
     mysqli_query($connect, "START TRANSACTION");
-    $post_copy = mysqli_query($connect, "INSERT INTO post (repost, user_id, original_post_id, title, text_content, quote_author, picture, video, link, watch_count, type_id, original_author_id)
+    $post_copy = mysqli_query($connect, "INSERT INTO post (is_repost, user_id, original_post_id, title, text_content, quote_author, picture, video, link, watch_count, type_id, original_author_id)
             SELECT '1', '$user_id', '$post_id', title, text_content, quote_author, picture, video, link, watch_count, type_id, user_id AS original_author_id
             FROM post WHERE id = '$post_id'");
 

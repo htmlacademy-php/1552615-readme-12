@@ -3,11 +3,11 @@
 require_once('auth.php');
 require_once('helpers.php');
 require_once('hashtags.php');
+require_once('add_comment.php');
+require_once('show_comments.php');
 
 $connect = db_set_connection();
-
 $path = (pathinfo(__FILE__, PATHINFO_BASENAME));
-
 $post_url = '/' . $path;
 
 if (isset($_GET['post_id'])) {
@@ -21,12 +21,20 @@ $sql_post_id_query = "SELECT id FROM post WHERE id = $post_id";
 $sql_post_id = db_get_query('assoc', $connect, $sql_post_id_query);
 
 if ($post_id == $sql_post_id['id']) {
+    mysqli_query($connect, "START TRANSACTION");
     $sql_post_query = "SELECT post.*, u.user_login, u.avatar, u.created_at, ct.classname, COUNT(DISTINCT comm.id) AS total_comm
     FROM post
         LEFT JOIN user u ON post.user_id = u.id
         LEFT JOIN content_type ct ON type_id = ct.id
         LEFT JOIN comments comm ON post.id = comm.post_id
     WHERE post.id = $post_id";
+    $post_watch_update = mysqli_query($connect, "UPDATE post SET watch_count = watch_count + 1 WHERE id = $post_id");
+    if ($post_watch_update) {
+        mysqli_query($connect, "COMMIT");
+    }
+    else {
+        mysqli_query($connect, "ROLLBACK");
+    }
 } else {
     http_response_code(404);
     die('Такой страницы не существует!');
@@ -43,8 +51,8 @@ $sql_total_subs = get_total_from_db ('user_id', 'subscribtions', 'to_user_id', $
 
 $active_post = include_template('post-' . $sql_post['classname'] . '.php', ['post' => $sql_post]);
 
-$post_layout = include_template('post-layout.php', ['active_post' => $active_post, 'post' => $sql_post, 'totalpost' => $sql_total_posts, 'likes' => $sql_total_likes, 'subs' => $sql_total_subs, 'hashtags' => $hashtags, 'user_subs' => $user_subs]);
+$post_layout = include_template('post-layout.php', ['active_post' => $active_post, 'post' => $sql_post, 'totalpost' => $sql_total_posts, 'likes' => $sql_total_likes, 'subs' => $sql_total_subs, 'hashtags' => $hashtags, 'user_subs' => $user_subs, 'errors' => $errors, 'comments' => $comments]);
 
-$layout = include_template('layout.php', ['content' => $post_layout, 'title' => 'readme: публикация', 'is_auth' => $is_auth, 'user_name' => $user_name, 'avatar' => $user_avatar, 'path' => $path]);
+$layout = include_template('layout.php', ['content' => $post_layout, 'title' => 'readme: публикация', 'is_auth' => $is_auth, 'user_name' => $user_name, 'avatar' => $user_avatar, 'path' => $path, 'user_id' => $user_id]);
 
 print($layout);

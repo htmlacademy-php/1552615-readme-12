@@ -531,8 +531,8 @@ function db_set_connection () {
 
 /**
  * Функция получения массива подписчиков авторизованного пользователя
- * $user_id - id текущего авторизованного пользователя
- * $connect - соединение с БД
+ * @param $user_id - id текущего авторизованного пользователя
+ * @param $connect - соединение с БД
  */
 function get_subscribers ($user_id, $connect) {
     $user_subs = [];
@@ -545,5 +545,34 @@ function get_subscribers ($user_id, $connect) {
         array_push($user_subs, $user_sub['to_user_id']);
     }
     return $user_subs;
+}
+
+/**
+ * Функция проверки длины сообщения/комментария
+ * @param $text - текст или комментарий, который необходимо проверить на соответствующую длину
+ */
+function validateLength ($text, $min_length) {
+    if (!empty($text)) {
+        if (mb_strlen($text) < $min_length) {
+            return 'Должно быть больше ' . $min_length . ' ' . get_noun_plural_form($min_length, 'символ', 'символа', 'символов');
+        }
+    }
+}
+
+/**
+ * Функция генерации http запроса
+ * @param $key - параметр запроса
+ * @param $value - значение параметра запроса
+ */
+function generate_http_query ($key, $value) {
+    $params = $_GET;
+    if (key_exists($key, $params)) {
+        unset($params[$key]);
+        $params[$key] = $value;
+    } else {
+        $params[$key] = $value;
+    }
+    $http_query = http_build_query($params);
+    return $http_query;
 }
 
