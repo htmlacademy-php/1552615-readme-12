@@ -5,7 +5,6 @@ require_once('auth.php');
 $connect = db_set_connection();
 $errors = [];
 $min_length = 4;
-$referer = $_SERVER['HTTP_REFERER'];
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $post_id = filter_input(INPUT_POST, 'post_id') ?? null;
     $comment = trim(filter_input(INPUT_POST, 'comment')) ?? null;
@@ -26,14 +25,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if (empty($errors['comment']) && $post_id) {
-        mysqli_query($connect, "START TRANSACTION");
-        $add_comment = mysqli_query($connect, "INSERT INTO comments (comment, user_id, post_id) VALUES ('$comment', '$user_id', '$post_id')");
-        if ($add_comment) {
-            mysqli_query($connect, "COMMIT");
-        }
-        else {
-            mysqli_query($connect, "ROLLBACK");
-        }
+        $add_comment = "INSERT INTO comments (comment, user_id, post_id) VALUES ('$comment', '$user_id', '$post_id')";
+        $stmt = db_get_prepare_stmt($connect, $add_comment);
+        $result = mysqli_stmt_execute($stmt);
         header("Location: /profile.php?user_id=$post_author_id&tab=posts");
         exit;
     }

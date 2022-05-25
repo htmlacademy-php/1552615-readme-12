@@ -29,10 +29,12 @@
                 </p>
             </div>
             <div class="post-mini__user-buttons user__buttons">
-                <?php if(isset($data)):?>
-                <a class="post-mini__user-button user__button user__button--subscription button button--quartz" href="<?php echo ('/subscribtion.php' . '?user_id=' . $profile_user_id);?>">Отписаться</a>
-                <?php else: ?>
-                <a class="post-mini__user-button user__button user__button--subscription button button--main" href="<?php echo ('/subscribtion.php' . '?user_id=' . $profile_user_id);?>">Подписаться</a>
+                <?php if ($user_id === $data['id']):?>
+                <a class="post-mini__user-button user__button user__button--subscription button button--quartz" href="#">_</a>
+                <?php elseif (in_array($data['id'], $user_subs)):?>
+                <a class="post-mini__user-button user__button user__button--subscription button button--quartz" href="<?php echo ('/subscribtion.php' . '?user_id=' . $data['id']);?>">Отписаться</a>
+                <?php else:?>
+                <a class="post-mini__user-button user__button user__button--subscription button button--main" href="<?php echo ('/subscribtion.php' . '?user_id=' . $data['id']);?>">Подписаться</a>
                 <?php endif;?>
             </div>
         </li>

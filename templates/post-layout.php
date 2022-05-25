@@ -90,10 +90,6 @@
                                 <?php endif;?>
                                 <?php endforeach;?>
                             </ul>
-                            <a class="comments__more-link" href="#">
-                            <span>Показать все комментарии</span>
-                            <sup class="comments__amount">45</sup>
-                            </a>
                         </div>
                     </div>
                 </div>
@@ -101,7 +97,7 @@
                     <div class="post-details__user-info user__info">
                         <div class="post-details__avatar user__avatar">
                             <a class="post-details__avatar-link user__avatar-link" href="<?php echo('/profile.php' . '?user_id=' . $post['user_id']) . '&tab=posts';?>">
-                            <?php if (isset($post['avatar'])): ?>
+                            <?php if (!empty($post['avatar'])): ?>
                                 <img class="post-details__picture user__picture" src="../uploads/avatars/<?php echo $post['avatar']; ?>" alt="Аватар пользователя">
                             <?php endif; ?>
                             </a>
@@ -128,7 +124,9 @@
                         </p>
                     </div>
                     <div class="post-details__user-buttons user__buttons">
-                        <?php if (in_array($post['user_id'], $user_subs)): ?>
+                        <?php if ($user_id === $post['user_id']):?>
+                        <a class="post-mini__user-button user__button user__button--subscription button button--quartz" href="#">_</a>
+                        <?php elseif (in_array($post['user_id'], $user_subs)): ?>
                         <a class="profile__user-button user__button user__button--subscription button button--main" href="<?php echo ('/subscribtion.php' . '?user_id=' . $post['user_id']);?>">Отписаться</a>
                         <a class="profile__user-button user__button user__button--writing button button--green" href="#">Сообщение</a>
                         <?php else: ?>

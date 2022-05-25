@@ -533,18 +533,19 @@ function db_set_connection () {
  * Функция получения массива подписчиков авторизованного пользователя
  * @param $user_id - id текущего авторизованного пользователя
  * @param $connect - соединение с БД
+ * @return array $user_subs - массив с подписчиками определенного пользователя
  */
 function get_subscribers ($user_id, $connect) {
     $user_subs = [];
     $sql_user_subs_query = "SELECT * FROM subscribtions
     WHERE user_id = '$user_id'";
-
     $sql_user_subs = db_get_query('all', $connect, $sql_user_subs_query);
-
-    foreach ($sql_user_subs as $user_sub) {
-        array_push($user_subs, $user_sub['to_user_id']);
+    if ($sql_user_subs) {
+        foreach ($sql_user_subs as $user_sub) {
+            array_push($user_subs, $user_sub['to_user_id']);
+        }
+        return $user_subs;
     }
-    return $user_subs;
 }
 
 /**
@@ -566,13 +567,23 @@ function validateLength ($text, $min_length) {
  */
 function generate_http_query ($key, $value) {
     $params = $_GET;
-    if (key_exists($key, $params)) {
-        unset($params[$key]);
-        $params[$key] = $value;
-    } else {
-        $params[$key] = $value;
-    }
-    $http_query = http_build_query($params);
-    return $http_query;
+    $params[$key] = $value;
+    return http_build_query($params);
 }
 
+/**
+ * Функция для отображения комментариев
+ * @param $post_id - id искомого поста
+ * @param $connect - подключение к бд
+ * @return array - $comments список комментариев
+ */
+function show_comments ($post_id, $connect) {
+    $comments = [];
+    $sql_comment_query = "SELECT comments.*, user.user_login AS comment_author, user.avatar AS comment_author_avatar
+                            FROM comments
+                                LEFT JOIN user ON comments.user_id = user.id
+                            WHERE comments.post_id IN ('$post_id')
+                                ORDER BY published_at DESC";
+    $comments = db_get_query('all', $connect, $sql_comment_query);
+    return $comments;
+}

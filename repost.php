@@ -26,6 +26,6 @@ if($post_check) {
         mysqli_query($connect, "ROLLBACK");
     }
 }
-header("Location: /profile.php?user_id=$user_id)&tab=posts");
+header("Location: /profile.php?user_id=$user_id&tab=posts");
 exit;
 

@@ -48,9 +48,7 @@
             </div>
         </div>
         <div class="popular__posts">
-
-            <?php
-            foreach ($posts as $key => $post):?>
+            <?php foreach ($posts as $key => $post):?>
             <article class="popular__post post post-<?php echo (htmlspecialchars($post['classname'])); ?>">
                 <header class="post__header">
                     <a href="<?php echo('/post.php?post_id=' . $post['id'])?>">
@@ -151,11 +149,11 @@
             <?php endforeach; ?>
         </div>
 
-        <?php if ($total_posts > 9): ?>
-            <div class="popular__page-links">
-                <a class="popular__page-link popular__page-link--prev button button--gray" href="<?php if ($cur_page > $pages[0]):?><?php echo ($url . generate_http_query('page', $cur_page - 1)); ?><?php endif;?>">Предыдущая страница</a>
-                <a class="popular__page-link popular__page-link--next button button--gray" href="<?php if ($cur_page < count($pages)):?><?php echo ($url . generate_http_query('page', $cur_page + 1)); ?><?php endif;?>">Следующая страница</a>
-            </div>
-            <?php endif; ?>
+        <?php if ($total_posts > $max_posts && $posts_of_type > $page_items): ?>
+        <div class="popular__page-links">
+            <a class="popular__page-link popular__page-link--prev button button--gray" href="<?php if ($cur_page > $pages[0]):?><?php echo ($url . generate_http_query('page', $cur_page - 1)); ?><?php endif;?>">Предыдущая страница</a>
+            <a class="popular__page-link popular__page-link--next button button--gray" href="<?php if ($cur_page < count($pages)):?><?php echo ($url . generate_http_query('page', $cur_page + 1)); ?><?php endif;?>">Следующая страница</a>
+        </div>
+        <?php endif; ?>
     </div>
 </main>

@@ -124,6 +124,7 @@
         <div class="comments">
             <div class="comments__list-wrapper">
                 <ul class="comments__list">
+                    <?php $comments = show_comments($post['id'], $connect);?>
                     <?php foreach ($comments as $comment): ?>
                     <?php if ($post['id'] == $comment['post_id']):?>
                     <li class="comments__item user">
@@ -149,10 +150,6 @@
                     <?php endif;?>
                     <?php endforeach;?>
                 </ul>
-                <a class="comments__more-link" href="#">
-                    <span>Показать все комментарии</span>
-                    <sup class="comments__amount"><?=$post['total_comm'];?></sup>
-                </a>
             </div>
         </div>
         <form class="comments__form form" action="#" method="post">

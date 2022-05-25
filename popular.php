@@ -59,11 +59,10 @@ $order_by = "";
 $path = (pathinfo(__FILE__, PATHINFO_BASENAME));
 $url = '/' . $path . '?';
 
-
 $sql_total_posts_query = "SELECT COUNT(id) AS total_posts FROM post";
-$total_posts = db_get_query('assoc', $connect, $sql_total_posts_query);
-
-$pages_count = ceil($total_posts['total_posts'] / $page_items);
+$sql_total_posts = db_get_query('assoc', $connect, $sql_total_posts_query);
+$total_posts = (int) $sql_total_posts['total_posts'];
+$pages_count = ceil($total_posts / $page_items);
 $offset = ($cur_page - 1) * $page_items;
 $pages = range(1, $pages_count);
 
@@ -91,8 +90,7 @@ switch ($sort_by) {
         break;
 }
 
-$offset_condition = ($offset > 0) ? "OFFSET $offset" : "";
-$limit_condition = ($total_posts['total_posts'] > 9) ? "LIMIT $page_items" : "";
+$condition = ($total_posts > $max_posts) ? "LIMIT $page_items OFFSET $offset" : "";
 
 $sql_types_query = "SELECT * FROM content_type";
 $sql_posts_query = "SELECT post.*, u.user_login, u.avatar, ct.classname,
@@ -101,13 +99,21 @@ $sql_posts_query = "SELECT post.*, u.user_login, u.avatar, ct.classname,
     FROM post
         LEFT JOIN user u ON user_id = u.id
         LEFT JOIN content_type ct ON type_id = ct.id
-    $query_condition ORDER BY $order_by DESC $limit_condition $offset_condition";
+    $query_condition ORDER BY $order_by DESC $condition";
+
+$sql_type_posts = "SELECT post.*, u.user_login, u.avatar, ct.classname,
+(SELECT COUNT(id) FROM comments WHERE comments.post_id = post.id) AS total_comm,
+(SELECT COUNT(id) FROM likes WHERE likes.post_id = post.id) AS total_likes
+    FROM post
+        LEFT JOIN user u ON user_id = u.id
+        LEFT JOIN content_type ct ON type_id = ct.id
+    $query_condition";
 
 $sql_types = db_get_query('all', $connect, $sql_types_query);
 $sql_posts = db_get_query('all', $connect, $sql_posts_query);
-$posts_on_page = count($sql_posts);
+$posts_of_type = count(db_get_query('all', $connect, $sql_type_posts));
 
-$popular_content = include_template('popular-page.php', ['posts' => $sql_posts, 'types' => $sql_types, 'url' => $url, 'path' => $path, 'type_classname' => $type_classname, 'sort_by' => $sort_by, 'sorts_by' => $sorts_by, 'total_posts' => $total_posts, 'posts_on_page' => $posts_on_page,'cur_page' => $cur_page, 'pages' => $pages, 'page_items' => $page_items]);
+$popular_content = include_template('popular-page.php', ['posts' => $sql_posts, 'types' => $sql_types, 'url' => $url, 'path' => $path, 'type_classname' => $type_classname, 'sort_by' => $sort_by, 'sorts_by' => $sorts_by, 'total_posts' => $total_posts, 'posts_of_type' => $posts_of_type, 'max_posts' => $max_posts, 'cur_page' => $cur_page, 'pages' => $pages, 'page_items' => $page_items]);
 
 $layout = include_template('layout.php', ['content' => $popular_content, 'title' => 'readme: популярное', 'is_auth' => $is_auth, 'user_name' => $user_name, 'avatar' => $user_avatar, 'path' => $path, 'user_id' => $user_id]);
 

@@ -4,7 +4,7 @@ require_once('auth.php');
 require_once('helpers.php');
 require_once('hashtags.php');
 require_once('add_comment.php');
-require_once('show_comments.php');
+// require_once('show_comments.php');
 
 $path = (pathinfo(__FILE__, PATHINFO_BASENAME));
 $url = "/" . $path;
@@ -57,7 +57,6 @@ if (isset($tab)) {
                 array_push($tab_data, $sub_data);
             }
             break;
-
     }
 }
 $user_data = [];
@@ -71,12 +70,20 @@ if (isset($profile_user_id)) {
                             WHERE id = '$profile_user_id'";
 
     $user_data = db_get_query('assoc', $connect, $sql_user_query);
-    $user_subs = get_subscribers($user_id, $connect);
+    if ($user_data) {
+        $user_subs = get_subscribers($user_id, $connect);
+    } else {
+        http_response_code(404);
+        die('Такого пользователя не существует!');
+    }
+} else {
+    http_response_code(404);
+    die('Такой страницы не существует!');
 }
 
-$active_tab = include_template('/profile-tabs/' . $active_tab_layout . '.php', ['tab_data' => $tab_data, 'profile_user_id' => $profile_user_id, 'hashtags' => $hashtags, 'errors' => $errors, 'comments' => $comments]);
+$active_tab = include_template('/profile-tabs/' . $active_tab_layout . '.php', ['tab_data' => $tab_data, 'profile_user_id' => $profile_user_id, 'hashtags' => $hashtags, 'errors' => $errors, 'user_id' => $user_id, 'user_subs' => $user_subs, 'connect' => $connect]);
 
-$profile_layout = include_template('profile-layout.php', ['active_tab' => $active_tab, 'hashtags' => $hashtags, 'url' => $url, 'path' => $path, 'tab' => $tab, 'profile_user_id' => $profile_user_id, 'user_data' => $user_data, 'user_subs' => $user_subs]);
+$profile_layout = include_template('profile-layout.php', ['active_tab' => $active_tab, 'hashtags' => $hashtags, 'url' => $url, 'path' => $path, 'tab' => $tab, 'profile_user_id' => $profile_user_id, 'user_data' => $user_data, 'user_id' => $user_id, 'user_subs' => $user_subs]);
 
 $layout = include_template('layout.php', ['content' => $profile_layout, 'title' => 'readme: профиль', 'is_auth' => $is_auth, 'user_name' => $user_name, 'avatar' => $user_avatar, 'path' => $path, 'user_id' => $user_id]);
 

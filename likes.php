@@ -16,24 +16,18 @@ $post_check = db_get_query('assoc', $connect, $sql_post_check) ?? null;
 $sql_likes_check = "SELECT * FROM likes WHERE user_id = '$user_id' AND post_id = '$post_id'";
 $likes_check = db_get_query('assoc', $connect, $sql_likes_check) ?? null;
 if ($post_check && !$likes_check) {
-    mysqli_query($connect, "START TRANSACTION");
-    $add_like = mysqli_query($connect, "INSERT INTO likes (user_id, post_id) VALUES ('$user_id', '$post_id')");
-    if ($add_like) {
-        mysqli_query($connect, "COMMIT");
-    }
-    else {
-        mysqli_query($connect, "ROLLBACK");
-    }
+    $add_like = "INSERT INTO likes (user_id, post_id) VALUES ('$user_id', '$post_id')";
+    $stmt = db_get_prepare_stmt($connect, $add_like);
+    $result = mysqli_stmt_execute($stmt);
 }
 elseif ($post_check && $likes_check) {
-    mysqli_query($connect, "START TRANSACTION");
-    $delete_like = mysqli_query($connect, "DELETE FROM likes WHERE user_id = '$user_id' AND post_id = '$post_id'");
-    if ($delete_like) {
-        mysqli_query($connect, "COMMIT");
-    }
-    else {
-        mysqli_query($connect, "ROLLBACK");
-    }
+    $delete_like = "DELETE FROM likes WHERE user_id = '$user_id' AND post_id = '$post_id'";
+    $stmt = db_get_prepare_stmt($connect, $delete_like);
+    $result = mysqli_stmt_execute($stmt);
+}
+if (!$referer) {
+    header("Location: /post.php?post_id=$post_id");
+    exit;
 }
 header("Location: $referer");
 exit;

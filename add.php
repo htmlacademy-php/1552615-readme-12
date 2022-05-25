@@ -10,7 +10,7 @@ $path = (pathinfo(__FILE__, PATHINFO_BASENAME));
 $add_url = '/' . $path;
 $errors = [];
 $classname = 'text';
-$content_type_id = intval($_GET['id']) ?? '';
+$content_type_id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT) ?? '';
 $form_errors = '';
 $oldData = [];
 
@@ -19,7 +19,7 @@ $sql_types = db_get_query('all', $connect, "SELECT * FROM content_type");
 foreach ($sql_types as $type) {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($_POST['classname'] == $type['classname']) {
-            $content_type_id == $type['id'];
+            $content_type_id = $type['id'];
         }
 
         $classname = $_POST['classname'];
@@ -29,6 +29,7 @@ foreach ($sql_types as $type) {
         }
     }
 }
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $oldData = $_POST;
     //задаем правила валидации соответствующих полей
@@ -93,15 +94,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
     $errors = array_filter($errors);
-
     //если совсем нет ошибок, то добавляем пост в бд и отрисовываем на странице,
     //если есть ошибки - возращаемся обратно на страницу с формой
     $db_post = [];
     $sql = '';
-
+    // var_dump($content_type_id);
+    // die();
     if (empty($errors)) {
         $form_errors = '';
-        $user_id = 2;
         $db_post['title'] = $_POST['heading'];
         $db_post['text_content'] = null;
         $db_post['quote_author'] = $_POST['quote-author'] ?? null;
@@ -121,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $db_post['picture'] = basename($_POST['photo-url']);
         }
         $sql = "INSERT INTO post (title, text_content, quote_author, picture, video, link, user_id, type_id)
-                VALUES (?, ?, ?, ?, ?, ?, $user_id, $content_type_id)";
+                VALUES (?, ?, ?, ?, ?, ?, '$user_id', '$content_type_id')";
         $stmt = db_get_prepare_stmt($connect, $sql, $db_post);
         $result = mysqli_stmt_execute($stmt);
 
