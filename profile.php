@@ -4,7 +4,6 @@ require_once('auth.php');
 require_once('helpers.php');
 require_once('hashtags.php');
 require_once('add_comment.php');
-// require_once('show_comments.php');
 
 $path = (pathinfo(__FILE__, PATHINFO_BASENAME));
 $url = "/" . $path;
