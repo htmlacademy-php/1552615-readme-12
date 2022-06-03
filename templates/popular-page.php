@@ -36,7 +36,7 @@
                         <?php if ($type['classname'] === $type_classname):
                             echo ('filters__button--active'); ?>
                         <?php endif; ?>"
-                        href="<?php echo ($url . generate_http_query('type', $type['classname']));?>">
+                        href="<?php echo ($url . generate_http_query('type', $type['classname'], 'page'));?>">
                             <span class="visually-hidden"><?=$type['title']?></span>
                             <svg class="filters__icon" width="22" height="18">
                                 <use xlink:href="#icon-filter-<?php echo $type['classname']?>"></use>
@@ -151,8 +151,8 @@
 
         <?php if ($total_posts > $max_posts && $posts_of_type > $page_items): ?>
         <div class="popular__page-links">
-            <a class="popular__page-link popular__page-link--prev button button--gray" href="<?php if ($cur_page > $pages[0]):?><?php echo ($url . generate_http_query('page', $cur_page - 1)); ?><?php endif;?>">Предыдущая страница</a>
-            <a class="popular__page-link popular__page-link--next button button--gray" href="<?php if ($cur_page < count($pages)):?><?php echo ($url . generate_http_query('page', $cur_page + 1)); ?><?php endif;?>">Следующая страница</a>
+            <a class="popular__page-link popular__page-link--prev button button--gray" <?php if (intval($cur_page) == $pages[0]):?><?php echo('');?><?php elseif (intval($cur_page) > $pages[0]):?><?php echo ('href="' . $url . generate_http_query('page', intval($cur_page) - 1) . '"');?><?php endif;?> >Предыдущая страница</a>
+            <a class="popular__page-link popular__page-link--next button button--gray" <?php if (intval($cur_page) < count($pages)):?><?php echo ('href="' . $url . generate_http_query('page', $cur_page + 1) . '"'); ?><?php elseif ($cur_page == $pages[count($pages) - 1]):?><?php echo('');?><?php endif;?>">Следующая страница</a>
         </div>
         <?php endif; ?>
     </div>

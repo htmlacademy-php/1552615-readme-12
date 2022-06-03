@@ -124,7 +124,6 @@
         <div class="comments">
             <div class="comments__list-wrapper">
                 <ul class="comments__list">
-                    <?php $comments = show_comments($post['id'], $connect);?>
                     <?php foreach ($comments as $comment): ?>
                     <?php if ($post['id'] == $comment['post_id']):?>
                     <li class="comments__item user">

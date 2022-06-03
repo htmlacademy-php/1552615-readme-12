@@ -3,7 +3,7 @@ require_once('helpers.php');
 require_once('auth.php');
 
 $connect = db_set_connection();
-$post_id = filter_input(INPUT_GET, 'post_id') ?? null;
+$post_id = filter_input(INPUT_GET, 'post_id', FILTER_SANITIZE_NUMBER_INT) ?? null;
 $referer = $_SERVER['HTTP_REFERER'];
 
 if (!$post_id) {

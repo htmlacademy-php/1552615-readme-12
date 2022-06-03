@@ -9,10 +9,11 @@ $path = (pathinfo(__FILE__, PATHINFO_BASENAME));
 $url = "/" . $path;
 
 $connect = db_set_connection();
-$tab = filter_input(INPUT_GET, 'tab') ?? 'posts';
-$profile_user_id = filter_input(INPUT_GET, 'user_id') ?? null;
+$tab = filter_input(INPUT_GET, 'tab', FILTER_SANITIZE_SPECIAL_CHARS) ?? 'posts';
+$profile_user_id = filter_input(INPUT_GET, 'user_id', FILTER_SANITIZE_NUMBER_INT) ?? null;
 $active_tab_layout = '';
 $tab_data = [];
+$comments = [];
 
 if (isset($tab)) {
     switch ($tab) {
@@ -26,7 +27,12 @@ if (isset($tab)) {
                                     LEFT JOIN user u ON original_author_id = u.id
                                     WHERE post.user_id = '$profile_user_id'";
             $tab_data = db_get_query('all', $connect, $sql_posts_query);
-
+            $posts = [];
+            foreach ($tab_data as $data) {
+                $post_id = $data['id'];
+                array_push($posts, $data['id']);
+            }
+            $comments = show_comments(implode(', ', $posts), $connect);
             break;
 
         case 'likes':
@@ -80,7 +86,7 @@ if (isset($profile_user_id)) {
     die('Такой страницы не существует!');
 }
 
-$active_tab = include_template('/profile-tabs/' . $active_tab_layout . '.php', ['tab_data' => $tab_data, 'profile_user_id' => $profile_user_id, 'hashtags' => $hashtags, 'errors' => $errors, 'user_id' => $user_id, 'user_subs' => $user_subs, 'connect' => $connect]);
+$active_tab = include_template('/profile-tabs/' . $active_tab_layout . '.php', ['tab_data' => $tab_data, 'profile_user_id' => $profile_user_id, 'hashtags' => $hashtags, 'errors' => $errors, 'user_id' => $user_id, 'user_subs' => $user_subs, 'comments' => $comments]);
 
 $profile_layout = include_template('profile-layout.php', ['active_tab' => $active_tab, 'hashtags' => $hashtags, 'url' => $url, 'path' => $path, 'tab' => $tab, 'profile_user_id' => $profile_user_id, 'user_data' => $user_data, 'user_id' => $user_id, 'user_subs' => $user_subs]);
 

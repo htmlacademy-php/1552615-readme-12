@@ -564,9 +564,13 @@ function validateLength ($text, $min_length) {
  * Функция генерации http запроса
  * @param $key - параметр запроса
  * @param $value - значение параметра запроса
+ * @param $exclude - параметр, который необходимо обнулить
  */
-function generate_http_query ($key, $value) {
+function generate_http_query ($key, $value, $exclude = null) {
     $params = $_GET;
+    if (!is_null($exclude)) {
+        unset($params[$exclude]);
+    }
     $params[$key] = $value;
     return http_build_query($params);
 }
@@ -582,8 +586,15 @@ function show_comments ($post_id, $connect) {
     $sql_comment_query = "SELECT comments.*, user.user_login AS comment_author, user.avatar AS comment_author_avatar
                             FROM comments
                                 LEFT JOIN user ON comments.user_id = user.id
-                            WHERE comments.post_id IN ('$post_id')
-                                ORDER BY published_at DESC";
+                            WHERE comments.post_id IN ($post_id)
+                                ORDER BY published_at";
     $comments = db_get_query('all', $connect, $sql_comment_query);
     return $comments;
 }
+
+
+// SELECT comments.*, user.user_login AS comment_author, user.avatar AS comment_author_avatar
+//                             FROM comments
+//                                 LEFT JOIN user ON comments.user_id = user.id
+//                             WHERE comments.post_id IN (3, 4)
+//                                 ORDER BY comments.published_at

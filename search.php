@@ -6,7 +6,7 @@ require_once('helpers.php');
 $connect = db_set_connection();
 $path = (pathinfo(__FILE__, PATHINFO_BASENAME));
 
-$search = trim(filter_input(INPUT_GET, 'q')) ?? NULL;
+$search = trim(filter_input(INPUT_GET, 'q', FILTER_SANITIZE_SPECIAL_CHARS)) ?? NULL;
 
 $posts = [];
 if ($search) {

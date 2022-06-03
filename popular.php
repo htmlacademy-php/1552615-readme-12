@@ -49,9 +49,9 @@ $posts = [
 
 $connect = db_set_connection();
 
-$type_classname = filter_input(INPUT_GET, 'type') ?? 'all';
-$sort_by = filter_input(INPUT_GET, 'sort_by') ?? 'popular';
-$cur_page = filter_input(INPUT_GET, 'page') ?? 1;
+$type_classname = filter_input(INPUT_GET, 'type', FILTER_SANITIZE_SPECIAL_CHARS) ?? 'all';
+$sort_by = filter_input(INPUT_GET, 'sort_by', FILTER_SANITIZE_SPECIAL_CHARS) ?? 'popular';
+$cur_page = filter_input(INPUT_GET, 'page', FILTER_SANITIZE_NUMBER_INT) ?? 1;
 $max_posts = 9;
 $page_items = 6;
 $order_by = "";

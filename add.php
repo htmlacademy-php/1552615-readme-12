@@ -98,8 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     //если есть ошибки - возращаемся обратно на страницу с формой
     $db_post = [];
     $sql = '';
-    // var_dump($content_type_id);
-    // die();
+
     if (empty($errors)) {
         $form_errors = '';
         $db_post['title'] = $_POST['heading'];

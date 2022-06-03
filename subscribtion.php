@@ -3,7 +3,7 @@ require_once('helpers.php');
 require_once('auth.php');
 
 $connect = db_set_connection();
-$profile_user_id = filter_input(INPUT_GET, 'user_id') ?? null;
+$profile_user_id = filter_input(INPUT_GET, 'user_id', FILTER_SANITIZE_NUMBER_INT) ?? null;
 $referer = $_SERVER['HTTP_REFERER'];
 
 if ($profile_user_id) {
