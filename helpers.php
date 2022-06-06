@@ -297,23 +297,24 @@ function get_cut_text($text, $symbol_amount = 300)
 /**
  * Функция, которая позволяет конвертировать дату в необходимый формат, в правильном падеже и т.п.
  * @param $date - непосредственно дата, которую нужно перевести
+ * @param $word - слово, которое должно быть в конце сконвертированной даты, например "назад" и т.п.
  */
 
-function get_date_interval_format($date) {
+function get_date_interval_format($date, $word) {
     $current_date = date_create('now');
     $date_interval = date_diff($date, $current_date);
     $week = floor($date_interval->d / 7);
 
     if ($date_interval->m >= 1) {
-        return $date_interval->m . " " . get_noun_plural_form($date_interval->m, 'месяц', 'месяца', 'месяцев') . " назад";
+        return $date_interval->m . " " . get_noun_plural_form($date_interval->m, 'месяц', 'месяца', 'месяцев') . " " . $word;
     } elseif ($week >= 1) {
-        return $week . " " . get_noun_plural_form($week, 'неделя', 'недели', 'недель') . " назад";
+        return $week . " " . get_noun_plural_form($week, 'неделя', 'недели', 'недель') . " " . $word;
     } elseif ($date_interval->d >= 1) {
-        return $date_interval->d . " " . get_noun_plural_form($date_interval->d, 'день', 'дня', 'дней') . " назад";
+        return $date_interval->d . " " . get_noun_plural_form($date_interval->d, 'день', 'дня', 'дней') . " " . $word;
     } elseif ($date_interval->h >= 1 ) {
-        return $date_interval->h . " " . get_noun_plural_form($date_interval->h, 'час', 'часа', 'часов') . " назад";
+        return $date_interval->h . " " . get_noun_plural_form($date_interval->h, 'час', 'часа', 'часов') . " " . $word;
     };
-    return $date_interval->i . " " . get_noun_plural_form($date_interval->i, 'минута', 'минуты', 'минут') . " назад";
+    return $date_interval->i . " " . get_noun_plural_form($date_interval->i, 'минута', 'минуты', 'минут') . " " . $word;
 }
 
 
@@ -528,3 +529,72 @@ function db_set_connection () {
     return $connect;
 }
 
+/**
+ * Функция получения массива подписчиков авторизованного пользователя
+ * @param $user_id - id текущего авторизованного пользователя
+ * @param $connect - соединение с БД
+ * @return array $user_subs - массив с подписчиками определенного пользователя
+ */
+function get_subscribers ($user_id, $connect) {
+    $user_subs = [];
+    $sql_user_subs_query = "SELECT * FROM subscribtions
+    WHERE user_id = '$user_id'";
+    $sql_user_subs = db_get_query('all', $connect, $sql_user_subs_query);
+    if ($sql_user_subs) {
+        foreach ($sql_user_subs as $user_sub) {
+            array_push($user_subs, $user_sub['to_user_id']);
+        }
+        return $user_subs;
+    }
+}
+
+/**
+ * Функция проверки длины сообщения/комментария
+ * @param $text - текст или комментарий, который необходимо проверить на соответствующую длину
+ */
+function validateLength ($text, $min_length) {
+    if (!empty($text)) {
+        if (mb_strlen($text) < $min_length) {
+            return 'Должно быть больше ' . $min_length . ' ' . get_noun_plural_form($min_length, 'символ', 'символа', 'символов');
+        }
+    }
+}
+
+/**
+ * Функция генерации http запроса
+ * @param $key - параметр запроса
+ * @param $value - значение параметра запроса
+ * @param $exclude - параметр, который необходимо обнулить
+ */
+function generate_http_query ($key, $value, $exclude = null) {
+    $params = $_GET;
+    if (!is_null($exclude)) {
+        unset($params[$exclude]);
+    }
+    $params[$key] = $value;
+    return http_build_query($params);
+}
+
+/**
+ * Функция для отображения комментариев
+ * @param $post_id - id искомого поста
+ * @param $connect - подключение к бд
+ * @return array - $comments список комментариев
+ */
+function show_comments ($post_id, $connect) {
+    $comments = [];
+    $sql_comment_query = "SELECT comments.*, user.user_login AS comment_author, user.avatar AS comment_author_avatar
+                            FROM comments
+                                LEFT JOIN user ON comments.user_id = user.id
+                            WHERE comments.post_id IN ($post_id)
+                                ORDER BY published_at";
+    $comments = db_get_query('all', $connect, $sql_comment_query);
+    return $comments;
+}
+
+
+// SELECT comments.*, user.user_login AS comment_author, user.avatar AS comment_author_avatar
+//                             FROM comments
+//                                 LEFT JOIN user ON comments.user_id = user.id
+//                             WHERE comments.post_id IN (3, 4)
+//                                 ORDER BY comments.published_at

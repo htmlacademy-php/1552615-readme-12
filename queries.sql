@@ -56,8 +56,6 @@ WHERE post_id = 1;
 INSERT INTO likes
   VALUES (NULL, 2, 1);
 INSERT INTO likes
-  VALUES (NULL, 1, 1);
-INSERT INTO likes
   VALUES (NULL, 3, 1);
 INSERT INTO likes
   VALUES (NULL, 1, 2);
@@ -65,8 +63,6 @@ INSERT INTO likes
   VALUES (NULL, 3, 3);
 INSERT INTO likes
   VALUES (NULL, 2, 5);
-INSERT INTO likes
-  VALUES (NULL, 1, 5);
 INSERT INTO likes
   VALUES (NULL, 3, 5);
 
@@ -78,14 +74,12 @@ INSERT INTO subscribtions
 INSERT INTO subscribtions
   VALUES (NULL, 3, 2);
 INSERT INTO subscribtions
-  VALUES (NULL, 1, 1);
-INSERT INTO subscribtions
-  VALUES (NULL, 1, 1);
-DELETE FROM subscribtions
-  WHERE id = 3;
+  VALUES (NULL, 3, 1);
 
+-- добавляем возможность полнотекстового поиска
 CREATE FULLTEXT INDEX post_ft_search ON post(title, text_content);
 
+-- добавляем хэштеги
 INSERT INTO hashtag
   VALUES (NULL, 'шикарныйвид');
 INSERT INTO hashtag
@@ -101,6 +95,7 @@ INSERT INTO hashtag
 INSERT INTO hashtag
   VALUES (NULL, 'nature');
 
+-- делаем привязку хештегов к постам
 INSERT INTO hashtags_posts
   VALUES (NULL, 2, 1);
 INSERT INTO hashtags_posts
@@ -117,3 +112,5 @@ INSERT INTO hashtags_posts
   VALUES (NULL, 1, 4);
 INSERT INTO hashtags_posts
   VALUES (NULL, 7, 4);
+
+

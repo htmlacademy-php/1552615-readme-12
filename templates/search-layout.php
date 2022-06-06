@@ -16,7 +16,7 @@
                     <?php foreach ($posts as $post): ?>
                     <article class="search__post post post-<?php echo $post['classname'];?>">
                         <header class="post__header post__author">
-                            <a class="post__author-link" href="#" title="Автор">
+                            <a class="post__author-link" href="<?php echo('/profile.php' . '?user_id=' . $post['user_id']) . '&tab=posts';?>" title="Автор">
                                 <div class="post__avatar-wrapper">
                                     <?php if (isset($post['avatar'])):?>
                                     <img class="post__author-avatar" src="../uploads/avatars/<?php echo $post['avatar'];?>" alt="Аватар пользователя" width="60" height="60">
@@ -24,7 +24,7 @@
                                 </div>
                                 <div class="post__info">
                                     <b class="post__author-name"><?=$post['user_login'];?></b>
-                                    <span class="post__time"><?=get_date_interval_format(date_create($post['published_at']));?></span>
+                                    <span class="post__time"><?=get_date_interval_format(date_create($post['published_at']), 'назад');?></span>
                                 </div>
                             </a>
                         </header>
@@ -92,7 +92,7 @@
                         </div>
                         <footer class="post__footer post__indicators">
                             <div class="post__buttons">
-                                <a class="post__indicator post__indicator--likes button" href="#" title="Лайк">
+                                <a class="post__indicator post__indicator--likes button" href="<?php echo('/likes.php' . '?post_id=' . $post['id'])?>" title="Лайк">
                                     <svg class="post__indicator-icon" width="20" height="17">
                                         <use xlink:href="#icon-heart"></use>
                                     </svg>

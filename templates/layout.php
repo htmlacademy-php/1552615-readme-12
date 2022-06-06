@@ -43,7 +43,7 @@
                 <ul class="header__my-nav">
 
                     <li class="header__my-page header__my-page--popular">
-                        <a class="header__page-link <?php if ($path == 'popular.php'): ?><?php echo ('header__page-link--active'); ?><?php endif; ?>" href="popular.php" title="Популярный контент">
+                        <a class="header__page-link <?php if ($path == 'popular.php'): ?><?php echo ('header__page-link--active'); ?><?php endif; ?>" href="popular.php<?='?' . 'type=all';?>" title="Популярный контент">
                             <span class="visually-hidden">Популярный контент</span>
                         </a>
                     </li>
@@ -82,7 +82,7 @@
                             <div class="header__profile-tooltip">
                                 <ul class="header__profile-nav">
                                     <li class="header__profile-nav-item">
-                                        <a class="header__profile-nav-link" href="#">
+                                        <a class="header__profile-nav-link" href="<?php echo '/profile.php?user_id=' . $user_id . '&tab=posts';?>">
                                             <span class="header__profile-nav-text">
                                                 Мой профиль
                                             </span>
@@ -184,8 +184,8 @@
         </div>
     </div>
 </footer>
-<!-- <script src="libs/dropzone.js"></script>
-<script src="js/dropzone-settings.js"></script>
-<script src="js/main.js"></script> -->
+<!-- <script src="libs/dropzone.js"></script> -->
+<!-- <script src="js/dropzone-settings.js"></script> -->
+<!-- <script src="js/main.js"></script> -->
 </body>
 </html>

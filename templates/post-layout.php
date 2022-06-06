@@ -10,7 +10,7 @@
 
                     <div class="post__indicators">
                         <div class="post__buttons">
-                            <a class="post__indicator post__indicator--likes button" href="#" title="Лайк">
+                            <a class="post__indicator post__indicator--likes button" href="<?php echo('/likes.php' . '?post_id=' . $post['id'])?>" title="Лайк">
                                 <svg class="post__indicator-icon" width="20" height="17">
                                     <use xlink:href="#icon-heart"></use>
                                 </svg>
@@ -27,11 +27,11 @@
                                 <span><?=$post['total_comm']?></span>
                                 <span class="visually-hidden">количество комментариев</span>
                             </a>
-                            <a class="post__indicator post__indicator--repost button" href="#" title="Репост">
+                            <a class="post__indicator post__indicator--repost button" href="<?php echo('/repost.php' . '?post_id=' . $post['id']);?>" title="Репост">
                                 <svg class="post__indicator-icon" width="19" height="17">
                                     <use xlink:href="#icon-repost"></use>
                                 </svg>
-                                <span>5</span>
+                                <span><?=$post['repost_count']?></span>
                                 <span class="visually-hidden">количество репостов</span>
                             </a>
                         </div>
@@ -44,81 +44,69 @@
                     <?php endif;?>
                     </ul>
                     <div class="comments">
-                        <form class="comments__form form" action="#" method="post">
+                        <form class="comments__form form" action="" method="post">
                             <div class="comments__my-avatar">
-                                <img class="comments__picture" src="img/userpic-medium.jpg" alt="Аватар пользователя">
+                                <?php if (!empty($user_avatar)):?>
+                                <img class="comments__picture" src="/uploads/avatars/<?php echo $user_avatar;?>" alt="Аватар пользователя">
+                                <?php endif;?>
                             </div>
-                            <div class="form__input-section form__input-section--error">
-                                <textarea class="comments__textarea form__textarea form__input" placeholder="Ваш комментарий"></textarea>
+                            <?php $input_err = isset($errors['comment']) ? "form__input-section--error" : ""; ?>
+                            <div class="form__input-section <?php echo $input_err;?>">
+                                <textarea class="comments__textarea form__textarea form__input" placeholder="Ваш комментарий" name="comment"></textarea>
                                 <label class="visually-hidden">Ваш комментарий</label>
+                                <input type="hidden" name="post_id" value="<?php echo($post['id']);?>">
                                 <button class="form__error-button button" type="button">!</button>
                                 <div class="form__error-text">
                                     <h3 class="form__error-title">Ошибка валидации</h3>
-                                    <p class="form__error-desc">Это поле обязательно к заполнению</p>
+                                    <p class="form__error-desc"><?=$errors['comment'];?></p>
                                 </div>
                             </div>
                             <button class="comments__submit button button--green" type="submit">Отправить</button>
                         </form>
                         <div class="comments__list-wrapper">
                             <ul class="comments__list">
+                                <?php foreach ($comments as $comment): ?>
+                                <?php if ($post['id'] == $comment['post_id']):?>
                                 <li class="comments__item user">
                                     <div class="comments__avatar">
-                                    <a class="user__avatar-link" href="#">
-                                        <img class="comments__picture" src="img/userpic-larisa.jpg" alt="Аватар пользователя">
-                                    </a>
+                                        <a class="user__avatar-link" href="<?php echo ('/profile.php' . '?user_id=' . $comment['user_id'] . '&tab=posts');?>">
+                                            <?php if (!empty($comment['comment_author_avatar'])):?>
+                                            <img class="comments__picture" src="/uploads/avatars/<?php echo $comment['comment_author_avatar'];?>" alt="Аватар пользователя">
+                                            <?php endif;?>
+                                        </a>
                                     </div>
                                     <div class="comments__info">
                                         <div class="comments__name-wrapper">
-                                            <a class="comments__user-name" href="#">
-                                            <span>Лариса Роговая</span>
+                                            <a class="comments__user-name" href="<?php echo ('/profile.php' . '?user_id=' . $comment['user_id'] . '&tab=posts');?>">
+                                            <span><?=$comment['comment_author'];?></span>
                                             </a>
-                                            <time class="comments__time" datetime="2019-03-20">1 ч назад</time>
+                                            <time class="comments__time" datetime="<?php echo (date_format(date_create($comment['published_at']), 'c'));?>"><?=get_date_interval_format(date_create($comment['published_at']), 'назад');?></time>
                                         </div>
                                         <p class="comments__text">
-                                            Красота!!!1!
+                                            <?=$comment['comment'];?>
                                         </p>
                                     </div>
                                 </li>
-                                <li class="comments__item user">
-                                    <div class="comments__avatar">
-                                    <a class="user__avatar-link" href="#">
-                                        <img class="comments__picture" src="img/userpic-larisa.jpg" alt="Аватар пользователя">
-                                    </a>
-                                    </div>
-                                    <div class="comments__info">
-                                        <div class="comments__name-wrapper">
-                                            <a class="comments__user-name" href="#">
-                                            <span>Лариса Роговая</span>
-                                            </a>
-                                            <time class="comments__time" datetime="2019-03-18">2 дня назад</time>
-                                        </div>
-                                        <p class="comments__text">
-                                            Озеро Байкал – огромное древнее озеро в горах Сибири к северу от монгольской границы. Байкал считается самым глубоким озером в мире. Он окружен сетью пешеходных маршрутов, называемых Большой байкальской тропой. Деревня Листвянка, расположенная на западном берегу озера, – популярная отправная точка для летних экскурсий. Зимой здесь можно кататься на коньках и собачьих упряжках.
-                                        </p>
-                                    </div>
-                                </li>
+                                <?php endif;?>
+                                <?php endforeach;?>
                             </ul>
-                            <a class="comments__more-link" href="#">
-                            <span>Показать все комментарии</span>
-                            <sup class="comments__amount">45</sup>
-                            </a>
                         </div>
                     </div>
                 </div>
                 <div class="post-details__user user">
                     <div class="post-details__user-info user__info">
                         <div class="post-details__avatar user__avatar">
-                            <a class="post-details__avatar-link user__avatar-link" href="#">
-                            <?php if (isset($post['avatar'])): ?>
+                            <a class="post-details__avatar-link user__avatar-link" href="<?php echo('/profile.php' . '?user_id=' . $post['user_id']) . '&tab=posts';?>">
+                            <?php if (!empty($post['avatar'])): ?>
                                 <img class="post-details__picture user__picture" src="../uploads/avatars/<?php echo $post['avatar']; ?>" alt="Аватар пользователя">
                             <?php endif; ?>
                             </a>
                         </div>
                         <div class="post-details__name-wrapper user__name-wrapper">
-                            <a class="post-details__name user__name" href="#">
-                                <span><?=$post['user_login'] ?></span>
+                            <a class="post-details__name user__name" href="<?php echo('/profile.php' . '?user_id=' . $post['user_id']) . '&tab=posts';?>">
+                                <span><?=$post['user_login']; ?></span>
                             </a>
-                            <time class="post-details__time user__time" datetime="2014-03-20">5 лет на сайте</time>
+                            <time class="post-details__time user__time" datetime="<?php echo (date_format(date_create($post['created_at']), 'Y-m-d'));?>"><?=get_date_interval_format(date_create($post['created_at']), 'на сайте');?></time>
                         </div>
                     </div>
                     <div class="post-details__rating user__rating">
@@ -136,8 +124,14 @@
                         </p>
                     </div>
                     <div class="post-details__user-buttons user__buttons">
-                        <button class="user__button user__button--subscription button button--main" type="button">Подписаться</button>
-                        <a class="user__button user__button--writing button button--green" href="#">Сообщение</a>
+                        <?php if ($user_id === $post['user_id']):?>
+                        <a class="post-mini__user-button user__button user__button--subscription button button--quartz visually-hidden" href="#">&nbsp;</a>
+                        <?php elseif (in_array($post['user_id'], $user_subs)): ?>
+                        <a class="profile__user-button user__button user__button--subscription button button--main" href="<?php echo ('/subscribtion.php' . '?user_id=' . $post['user_id']);?>">Отписаться</a>
+                        <a class="profile__user-button user__button user__button--writing button button--green" href="#">Сообщение</a>
+                        <?php else: ?>
+                        <a class="profile__user-button user__button user__button--subscription button button--main" href="<?php echo ('/subscribtion.php' . '?user_id=' . $post['user_id']);?>">Подписаться</a>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
