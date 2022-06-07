@@ -30,7 +30,7 @@
             </div>
             <div class="post-mini__user-buttons user__buttons">
                 <?php if ($user_id === $data['id']):?>
-                <span class="post-mini__user-button user__button user__button--subscription button button--quartz">&nbsp;</span>
+                <span class="post-mini__user-button user__button user__button--subscription button">&nbsp;</span>
                 <?php elseif (in_array($data['id'], $user_subs)):?>
                 <a class="post-mini__user-button user__button user__button--subscription button button--quartz" href="<?php echo ('/subscribtion.php' . '?user_id=' . $data['id']);?>">Отписаться</a>
                 <?php else:?>

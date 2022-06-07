@@ -25,7 +25,7 @@
                     <li class="popular__filters-item popular__filters-item--all filters__item filters__item--all">
                         <a class="filters__button filters__button--ellipse filters__button--all <?php if($type_classname === 'all'): echo ('filters__button--active');?>
                         <?php endif; ?>"
-                            href="<?php echo ($url . generate_http_query('type', 'all'));?>">
+                            href="<?php echo ($url . generate_http_query('type', 'all', 'page'));?>">
                             <span>Все</span>
                         </a >
                     </li>

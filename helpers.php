@@ -591,10 +591,3 @@ function show_comments ($post_id, $connect) {
     $comments = db_get_query('all', $connect, $sql_comment_query);
     return $comments;
 }
-
-
-// SELECT comments.*, user.user_login AS comment_author, user.avatar AS comment_author_avatar
-//                             FROM comments
-//                                 LEFT JOIN user ON comments.user_id = user.id
-//                             WHERE comments.post_id IN (3, 4)
-//                                 ORDER BY comments.published_at
