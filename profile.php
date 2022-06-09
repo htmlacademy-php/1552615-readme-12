@@ -44,7 +44,6 @@ if (isset($tab)) {
                 LEFT JOIN content_type ct ON type_id = ct.id
                 WHERE p.user_id = '$profile_user_id'";
             $tab_data = db_get_query('all', $connect, $sql_likes_query);
-
             break;
 
         case 'subscribtions':

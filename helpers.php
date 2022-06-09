@@ -518,7 +518,7 @@ function validateEmail($name) {
 }
 
 /**
- * Функиця установления соединения с базой данных
+ * Функция установления соединения с базой данных
  */
 function db_set_connection () {
     $connect = mysqli_connect("localhost", "root", "root", "readme");
@@ -550,7 +550,9 @@ function get_subscribers ($user_id, $connect) {
 
 /**
  * Функция проверки длины сообщения/комментария
- * @param $text - текст или комментарий, который необходимо проверить на соответствующую длину
+ * @param string $text - текст или комментарий, который необходимо проверить на соответствующую длину
+ * @param int $min_length - минимальное количество символов
+ * @return string - предупреждение о том, что нужно больше символов
  */
 function validateLength ($text, $min_length) {
     if (!empty($text)) {
@@ -565,6 +567,7 @@ function validateLength ($text, $min_length) {
  * @param $key - параметр запроса
  * @param $value - значение параметра запроса
  * @param $exclude - параметр, который необходимо обнулить
+ * @return string - строка запроса
  */
 function generate_http_query ($key, $value, $exclude = null) {
     $params = $_GET;

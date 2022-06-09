@@ -1,0 +1,15 @@
+{
+    "name": "ilnur/readme",
+    "description": "Blog website",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "KIlnur",
+            "email": "kilnur1988@rambler.ru"
+        }
+    ],
+    "require": {
+        "symfony/mailer": "^6.1"
+    }
+}

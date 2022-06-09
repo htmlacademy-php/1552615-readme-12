@@ -2,6 +2,7 @@
 
 require_once('auth.php');
 require_once('helpers.php');
+require_once('mail.php');
 
 $connect = db_set_connection();
 
@@ -126,6 +127,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if ($result) {
             $db_post_id = mysqli_insert_id($connect);
+
+            $sql_subs = "SELECT subs.user_id, u.user_login FROM subscribtions subs
+                         LEFT JOIN user u on u.id = subs.user_id
+                         WHERE to_user_id = $user_id";
+            $subs = db_get_query('all', $connect, $sql_subs);
+            foreach ($subs as $sub) {
+                $sub_login = $sub['user_login'];
+                $user_link = 'http://' . $_SERVER['HTTP_HOST'] . '/profile.php?user_id=' . $user_id;
+                $message->to("keks@phpdemo.ru");
+                $message->from("kilnur1988@rambler.ru");
+                $message->subject("Новая публикация от пользователя " . $user_name);
+                $message->text("Здравствуйте, " . $sub_login . ". Пользователь " . $user_name . " только что опубликовал новую запись " . htmlspecialchars($_POST['heading']) . ". Посмотрите её на странице пользователя: " . $user_link);
+                // Отправка сообщения
+                $mailer->send($message);
+            }
+
             header("Location: post.php?post_id=" . $db_post_id);
 
         } else {
