@@ -127,7 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if ($result) {
             $db_post_id = mysqli_insert_id($connect);
-
+            // формирование списка подписчиков автора поста
             $sql_subs = "SELECT subs.user_id, u.user_login FROM subscribtions subs
                          LEFT JOIN user u on u.id = subs.user_id
                          WHERE to_user_id = $user_id";
@@ -135,6 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             foreach ($subs as $sub) {
                 $sub_login = $sub['user_login'];
                 $user_link = 'http://' . $_SERVER['HTTP_HOST'] . '/profile.php?user_id=' . $user_id;
+                // Формирование сообщения уведомления о новом посте
                 $message->to("keks@phpdemo.ru");
                 $message->from("kilnur1988@rambler.ru");
                 $message->subject("Новая публикация от пользователя " . $user_name);
