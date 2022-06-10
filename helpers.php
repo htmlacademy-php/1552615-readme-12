@@ -158,7 +158,8 @@ function check_youtube_url($url)
 {
     $id = extract_youtube_id($url);
 
-    set_error_handler(function () {}, E_WARNING);
+    set_error_handler(function () {
+    }, E_WARNING);
     $headers = get_headers('https://www.youtube.com/oembed?format=json&url=http://www.youtube.com/watch?v=' . $id);
     restore_error_handler();
 
@@ -300,7 +301,8 @@ function get_cut_text($text, $symbol_amount = 300)
  * @param $word - слово, которое должно быть в конце сконвертированной даты, например "назад" и т.п.
  */
 
-function get_date_interval_format($date, $word) {
+function get_date_interval_format($date, $word)
+{
     $current_date = date_create('now');
     $date_interval = date_diff($date, $current_date);
     $week = floor($date_interval->d / 7);
@@ -311,7 +313,7 @@ function get_date_interval_format($date, $word) {
         return $week . " " . get_noun_plural_form($week, 'неделя', 'недели', 'недель') . " " . $word;
     } elseif ($date_interval->d >= 1) {
         return $date_interval->d . " " . get_noun_plural_form($date_interval->d, 'день', 'дня', 'дней') . " " . $word;
-    } elseif ($date_interval->h >= 1 ) {
+    } elseif ($date_interval->h >= 1) {
         return $date_interval->h . " " . get_noun_plural_form($date_interval->h, 'час', 'часа', 'часов') . " " . $word;
     };
     return $date_interval->i . " " . get_noun_plural_form($date_interval->i, 'минута', 'минуты', 'минут') . " " . $word;
@@ -327,7 +329,8 @@ function get_date_interval_format($date, $word) {
  * @param $sql - sql запрос
  * @return array
  */
-function db_get_query($value, $connect, $sql) {
+function db_get_query($value, $connect, $sql)
+{
     $result = mysqli_query($connect, $sql);
     if (!$result) {
         die("Ошибка запроса:" . mysqli_error($connect));
@@ -337,7 +340,7 @@ function db_get_query($value, $connect, $sql) {
     } elseif ($value == 'assoc') {
         return mysqli_fetch_assoc($result);
     } else {
-        die ("Уточните передаваемые данные");
+        die("Уточните передаваемые данные");
     };
 }
 
@@ -356,7 +359,8 @@ function db_get_query($value, $connect, $sql) {
  * @param $sql_connect - созданное sql соединение
  * @return string
  */
-function get_total_from_db ($count, $table, $group_by, $equals, $sql_connect) {
+function get_total_from_db($count, $table, $group_by, $equals, $sql_connect)
+{
     $sql_total_posts_query = "SELECT COUNT($count) AS total
     FROM $table
     WHERE $group_by = $equals
@@ -367,19 +371,23 @@ function get_total_from_db ($count, $table, $group_by, $equals, $sql_connect) {
 
 /**
  * Функция для сохранения написанного пользователем в форме
- * @param $array - array, массив данных полученных ранее из формы
- * @param $name - string, значение name для input
+ * @param array $array - array, массив данных полученных ранее из формы
+ * @param string $name - string, значение name для input
+ * @return string
  *
  */
-function getPostVal($array, $name) {
+function getPostVal($array, $name)
+{
     return $array[$name] ?? "";
 }
 
 /**
  * Функция проверки заполненности формы
- * @param $name - значение соответствующего поля input
+ * @param string $name - значение соответствующего поля input
+ * @return string - в случае неудачи возвращает строку с сообщением
  */
-function validateFilled($name) {
+function validateFilled($name)
+{
     if (empty($name)) {
         return 'Это поле должно быть заполнено';
     }
@@ -387,9 +395,11 @@ function validateFilled($name) {
 
 /**
  * Функция проверки правильности ссылки url
- * @param $name - значение соответствующего поля input
+ * @param string $name - значение соответствующего поля input
+ * @return string - в случае неудачи возвращает строку с сообщением
  */
-function validateUrl($name) {
+function validateUrl($name)
+{
     if (!filter_var($name, FILTER_VALIDATE_URL)) {
         return 'Ссылка должна быть корректной';
     }
@@ -397,9 +407,11 @@ function validateUrl($name) {
 
 /**
  * Функция валидации загружаемого пользователем файла
- * @param $name - значение соответствующего поля input
+ * @param string $name - значение соответствующего поля input
+ * @return string - в случае неудачи возвращает строку с сообщением
  */
-function validateFile($name) {
+function validateFile($name)
+{
     if (!empty($name['name'])) {
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $tmp_name = $name['tmp_name'];
@@ -421,13 +433,14 @@ function validateFile($name) {
  * @param $name - значение соответствующего поля input
  * @param $dirName - название папки, в которую грузится файл
  */
-function uploadFile($name, $dirName) {
+function uploadFile($name, $dirName)
+{
     if (!empty($name['name'])) {
         $_POST['photo-url'] = '';
         $file_name = $name['name'];
         $file_path = __DIR__ . '/' . $dirName . '/';
         $res = move_uploaded_file($name['tmp_name'], $file_path . $file_name);
-        if(!$res) {
+        if (!$res) {
             return 'Не удалось загрузить файл';
         }
     }
@@ -435,9 +448,11 @@ function uploadFile($name, $dirName) {
 
 /**
  * Функция загрузки файла по указанной ссылке
- * @param $name - значение соответствующего поля input
+ * @param string $name - значение соответствующего поля input
+ * @return string - в случае неудачи возвращает строку с сообщением
  */
-function downloadFileFromUrl($name) {
+function downloadFileFromUrl($name)
+{
     if (isset($name)) {
         $file = file_get_contents($name);
         if ($file === false) {
@@ -454,8 +469,10 @@ function downloadFileFromUrl($name) {
 
 /**
  * Функция валидации полей загрузки фото
+ * @return string - в случае неудачи возвращает строку с сообщением
  */
-function validateFilledPhoto () {
+function validateFilledPhoto()
+{
     if (empty($_POST['photo-url']) && empty($_FILES['userpic-file-photo']['name'])) {
         return 'Необходимо загрузить изображение или ввести ссылку';
     }
@@ -463,8 +480,11 @@ function validateFilledPhoto () {
 
 /**
  * Функция валидации хэштегов
+ * @param string $name - значение соответствующего поля input
+ * @return string - в случае неудачи возвращает строку с сообщением
  */
-function validateTags ($name) {
+function validateTags($name)
+{
     if (empty($name)) {
         return 'Должен быть хотя бы один тег';
     }
@@ -472,8 +492,11 @@ function validateTags ($name) {
 
 /**
  * Функция перевода названия полей
+ * @param string $name - значение соответствующего поля input
+ * @return string - возвращает переведенное значение
  */
-function translateInputName ($name) {
+function translateInputName($name)
+{
     $translatedName = '';
     if ($name === 'heading') {
         $translatedName = 'Заголовок';
@@ -509,9 +532,11 @@ function translateInputName ($name) {
 
 /**
  * Функция валидации email
- * @param $name - значение соответствующего поля input
+ * @param string $name - значение соответствующего поля input
+ * @return string - в случае неудачи возвращает строку с сообщением
  */
-function validateEmail($name) {
+function validateEmail($name)
+{
     if (!filter_var($name, FILTER_VALIDATE_EMAIL)) {
         return 'E-mail должен быть корректным';
     }
@@ -519,8 +544,10 @@ function validateEmail($name) {
 
 /**
  * Функция установления соединения с базой данных
+ * @return $connect - возвращает соединение с БД
  */
-function db_set_connection () {
+function db_set_connection()
+{
     $connect = mysqli_connect("localhost", "root", "root", "readme");
     if ($connect == false) {
         die('Connection error: ' . mysqli_connect_error());
@@ -531,11 +558,12 @@ function db_set_connection () {
 
 /**
  * Функция получения массива подписчиков авторизованного пользователя
- * @param $user_id - id текущего авторизованного пользователя
+ * @param string $user_id - id текущего авторизованного пользователя
  * @param $connect - соединение с БД
  * @return array $user_subs - массив с подписчиками определенного пользователя
  */
-function get_subscribers ($user_id, $connect) {
+function get_subscribers($user_id, $connect)
+{
     $user_subs = [];
     $sql_user_subs_query = "SELECT * FROM subscribtions
     WHERE user_id = '$user_id'";
@@ -554,7 +582,8 @@ function get_subscribers ($user_id, $connect) {
  * @param int $min_length - минимальное количество символов
  * @return string - предупреждение о том, что нужно больше символов
  */
-function validateLength ($text, $min_length) {
+function validateLength($text, $min_length)
+{
     if (!empty($text)) {
         if (mb_strlen($text) < $min_length) {
             return 'Должно быть больше ' . $min_length . ' ' . get_noun_plural_form($min_length, 'символ', 'символа', 'символов');
@@ -569,7 +598,8 @@ function validateLength ($text, $min_length) {
  * @param $exclude - параметр, который необходимо обнулить
  * @return string - строка запроса
  */
-function generate_http_query ($key, $value, $exclude = null) {
+function generate_http_query($key, $value, $exclude = null)
+{
     $params = $_GET;
     if (!is_null($exclude)) {
         unset($params[$exclude]);
@@ -584,7 +614,8 @@ function generate_http_query ($key, $value, $exclude = null) {
  * @param $connect - подключение к бд
  * @return array - $comments список комментариев
  */
-function show_comments ($post_id, $connect) {
+function show_comments($post_id, $connect)
+{
     $comments = [];
     $sql_comment_query = "SELECT comments.*, user.user_login AS comment_author, user.avatar AS comment_author_avatar
                             FROM comments

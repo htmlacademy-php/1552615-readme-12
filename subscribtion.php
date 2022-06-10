@@ -1,8 +1,8 @@
 <?php
+
 require_once('helpers.php');
 require_once('auth.php');
 require_once('mail.php');
-
 require_once('vendor/autoload.php');
 
 $connect = db_set_connection();
@@ -48,7 +48,3 @@ if ($profile_user_id) {
     header("Location: $referer");
     exit;
 }
-
-
-
-

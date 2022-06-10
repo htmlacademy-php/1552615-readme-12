@@ -95,14 +95,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if ($result) {
             header("Location: index.php");
-
         } else {
             die(print_r(mysqli_stmt_error_list($stmt)));
         }
     } else {
         $form_errors = include_template('form-errors.php', ['errors' => $errors]);
     }
-
 }
 
 $reg_layout = include_template('reg-layout.php', ['form_errors' => $form_errors, 'post' => $post, 'errors' => $errors]);

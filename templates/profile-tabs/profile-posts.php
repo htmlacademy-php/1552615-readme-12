@@ -1,11 +1,11 @@
 <section class="profile__posts tabs__content tabs__content--active">
     <h2 class="visually-hidden">Публикации</h2>
     <?php foreach ($tab_data as $post): ?>
-    <article class="profile__post post post-<?php echo ($post['classname']);?>">
+    <article class="profile__post post post-<?php echo($post['classname']);?>">
         <header class="post__header">
             <?php if ($post['is_repost'] == 1):?>
             <div class="post__author">
-                <a class="post__author-link" title="Автор" href="<?php echo ('/profile.php' . '?user_id=' . $post['original_author_id'] . '&tab=posts');?>">
+                <a class="post__author-link" title="Автор" href="<?php echo('/profile.php' . '?user_id=' . $post['original_author_id'] . '&tab=posts');?>">
                     <div class="post__avatar-wrapper post__avatar-wrapper--repost">
                         <?php if (!empty($post['author_avatar'])):?>
                         <img class="post__author-avatar" src="uploads/avatars/<?php echo $post['author_avatar'];?>" alt="Аватар пользователя">
@@ -13,7 +13,7 @@
                     </div>
                     <div class="post__info">
                         <b class="post__author-name">Репост: <?=$post['author_login'];?></b>
-                        <time class="post__time" datetime="<?php echo (date_format(date_create($post['published_at']), 'c'));?>"><?=get_date_interval_format(date_create($post['published_at']), 'назад');?></time>
+                        <time class="post__time" datetime="<?php echo(date_format(date_create($post['published_at']), 'c'));?>"><?=get_date_interval_format(date_create($post['published_at']), 'назад');?></time>
                     </div>
                 </a>
             </div>
@@ -105,17 +105,17 @@
                     <span class="visually-hidden">количество репостов</span>
                 </a>
             </div>
-            <time class="post__time" datetime="<?php echo (date_format(date_create($post['published_at']), 'c'));?>"><?=get_date_interval_format(date_create($post['published_at']), 'назад');?></time>
+            <time class="post__time" datetime="<?php echo(date_format(date_create($post['published_at']), 'c'));?>"><?=get_date_interval_format(date_create($post['published_at']), 'назад');?></time>
         </div>
         <ul class="post__tags">
         <?php if ($post['is_repost'] == 1):?>
             <?php if (key_exists($post['original_post_id'], $hashtags)):?><?php foreach ($hashtags[$post['original_post_id']] as $hashtag): ?>
-            <li><a href="<?php echo ('search.php' . '?q=%23' . $hashtag);?>">#<?=$hashtag;?>
+            <li><a href="<?php echo('search.php' . '?q=%23' . $hashtag);?>">#<?=$hashtag;?>
             <?php endforeach;?></a></li>
             <?php endif;?>
         <?php else:?>
             <?php if (key_exists($post['id'], $hashtags)):?><?php foreach ($hashtags[$post['id']] as $hashtag): ?>
-                <li><a href="<?php echo ('search.php' . '?q=%23' . $hashtag);?>">#<?=$hashtag;?>
+                <li><a href="<?php echo('search.php' . '?q=%23' . $hashtag);?>">#<?=$hashtag;?>
                 <?php endforeach;?></a></li>
             <?php endif;?>
         <?php endif;?>
@@ -128,7 +128,7 @@
                     <?php if ($post['id'] == $comment['post_id']):?>
                     <li class="comments__item user">
                         <div class="comments__avatar">
-                            <a class="user__avatar-link" href="<?php echo ('/profile.php' . '?user_id=' . $comment['user_id'] . '&tab=posts');?>">
+                            <a class="user__avatar-link" href="<?php echo('/profile.php' . '?user_id=' . $comment['user_id'] . '&tab=posts');?>">
                                 <?php if (!empty($comment['comment_author_avatar'])):?>
                                 <img class="comments__picture" src="/uploads/avatars/<?php echo $comment['comment_author_avatar'];?>" alt="Аватар пользователя">
                                 <?php endif;?>
@@ -136,10 +136,10 @@
                         </div>
                         <div class="comments__info">
                             <div class="comments__name-wrapper">
-                                <a class="comments__user-name" href="<?php echo ('/profile.php' . '?user_id=' . $comment['user_id'] . '&tab=posts');?>">
+                                <a class="comments__user-name" href="<?php echo('/profile.php' . '?user_id=' . $comment['user_id'] . '&tab=posts');?>">
                                 <span><?=$comment['comment_author'];?></span>
                                 </a>
-                                <time class="comments__time" datetime="<?php echo (date_format(date_create($comment['published_at']), 'c'));?>"><?=get_date_interval_format(date_create($comment['published_at']), 'назад');?></time>
+                                <time class="comments__time" datetime="<?php echo(date_format(date_create($comment['published_at']), 'c'));?>"><?=get_date_interval_format(date_create($comment['published_at']), 'назад');?></time>
                             </div>
                             <p class="comments__text">
                                 <?=$comment['comment'];?>

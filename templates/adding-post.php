@@ -12,20 +12,20 @@
                             <a class="adding-post__tabs-link filters__button filters__button--<?php echo $type['classname'];?>
                             tabs__item button
                             <?php if ($type['classname'] == $classname):?>
-                                <?php echo ('filters__button--active tabs__item--active');?>
+                                <?php echo('filters__button--active tabs__item--active');?>
                             <?php endif;?>"
-                            href="<?php echo ($url . '?id=' . $type['id']);?>">
+                            href="<?php echo($url . '?id=' . $type['id']);?>">
                                 <svg class="filters__icon"
                                 <?php if ($type['classname'] == 'photo'): ?>
-                                    <?php echo ('width="22" height="18"');?>
+                                    <?php echo('width="22" height="18"');?>
                                 <?php elseif ($type['classname'] == 'video'):?>
-                                    <?php echo ('width="24" height="16"');?>
+                                    <?php echo('width="24" height="16"');?>
                                 <?php elseif ($type['classname'] == 'text'):?>
-                                    <?php echo ('width="20" height="21"');?>
+                                    <?php echo('width="20" height="21"');?>
                                 <?php elseif ($type['classname'] == 'quote'):?>
-                                    <?php echo ('width="21" height="20"');?>
+                                    <?php echo('width="21" height="20"');?>
                                 <?php elseif ($type['classname'] == 'link'):?>
-                                    <?php echo ('width="21" height="18"');?>
+                                    <?php echo('width="21" height="18"');?>
                                 <?php endif;?>>
                                     <use xlink:href="#icon-filter-<?php echo $type['classname'];?>"></use>
                                 </svg>
@@ -35,7 +35,7 @@
                     <?php endforeach;?>
                     </ul>
                 </div>
-                <?php foreach($types as $type): ?>
+                <?php foreach ($types as $type): ?>
                     <div class="adding-post__tab-content">
                         <?php if ($type['classname'] == $classname): ?>
                         <section class="adding-post__<?php echo($type['classname']);?> tabs__content tabs__content--active">
@@ -43,7 +43,7 @@
                                 Форма добавления <?=$type['title'];?>
                             </h2>
                             <form class="adding-post__form form" action="add.php" method="post"
-                                <?php if($type['classname'] == 'photo'):?>
+                                <?php if ($type['classname'] == 'photo'):?>
                                     <?php echo'enctype="multipart/form-data"';?>
                                 <?php else: ?>
                                     <?php echo '';?>
