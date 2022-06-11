@@ -13,3 +13,4 @@ uploads/*
 uploads/avatars/*
 !uploads/.gitkeep
 !uploads/avatars/.gitkeep
+.php-cs-fixer.cache

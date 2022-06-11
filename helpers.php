@@ -625,3 +625,78 @@ function show_comments($post_id, $connect)
     $comments = db_get_query('all', $connect, $sql_comment_query);
     return $comments;
 }
+
+/**
+ * Функция подготовки и отправки сообщения с помощью Symfony Mailer
+ * @param string $address - email адресата
+ * @param string $subject - тема сообщения
+ * @param string $message_text - текст сообщения
+ * @param $message - объект $message Symfony Mailer
+ * @param $mailer - объект $mailer Symfony Mailer
+ */
+function prepare_and_send_message ($message, $mailer, $address, $subject, $message_text) {
+                // Формирование сообщения уведомления о новом подписчике
+    $message->to($address);
+    $message->subject($subject);
+    $message->text($message_text);
+    // Отправка сообщения
+    $mailer->send($message);
+}
+
+/**
+ * Функция уведомления подписчиков пользователя
+ * @param string $user_id - id текущего залогиненного пользователя
+ * @param $connect - соединение с бд
+ * @param $message - объект $message Symfony Mailer
+ * @param $mailer - объект $mailer Symfony Mailer
+ */
+function send_notice_to_subs ($message, $mailer, $user_id, $connect, $user_name)
+{
+    $sql_subs = "SELECT subs.user_id, u.user_login, u.email
+                 FROM subscribtions subs
+                    LEFT JOIN user u on u.id = subs.user_id
+                 WHERE to_user_id = $user_id";
+    $subs = db_get_query('all', $connect, $sql_subs);
+    foreach ($subs as $sub) {
+        $sub_login = $sub['user_login'];
+        $user_link = 'http://' . $_SERVER['HTTP_HOST'] . '/profile.php?user_id=' . $user_id;
+        $address = $sub['email'];
+        $subject = "Новая публикация от пользователя " . $user_name;
+        $message_text = "Здравствуйте, " . $sub_login . ". Пользователь " . $user_name . " только что опубликовал новую запись " . htmlspecialchars($_POST['heading']) . ". Посмотрите её на странице пользователя: " . $user_link;
+
+        prepare_and_send_message ($message, $mailer, $address, $subject, $message_text);
+    }
+}
+
+/**
+ * Функция уведомления пользователя о новом подписчике
+ * @param string $user_id - id текущего залогиненного пользователя
+ * @param string $profile_user_id - id пользователя, на которого подписались
+ * @param $connect - соединение с бд
+ * @param $message - объект $message Symfony Mailer
+ * @param $mailer - объект $mailer Symfony Mailer
+ */
+function send_notice_about_new_sub ($user_id, $profile_user_id, $connect, $message, $mailer)
+{
+    $sql_users_login = "SELECT id, user_login, email FROM user
+                        WHERE id IN ($user_id, $profile_user_id)";
+    $users = db_get_query('all', $connect, $sql_users_login);
+    $user_link = 'http://' . $_SERVER['HTTP_HOST'] . '/profile.php?user_id=' . $user_id;
+    $subs_user_login = '';
+    $subscriber_login = '';
+    $subscriber_email = '';
+    foreach ($users as $user) {
+        if (in_array($user_id, $user)) {
+            $subs_user_login = $user['user_login'];
+        }
+        if (in_array($profile_user_id, $user)) {
+            $subscriber_login = $user['user_login'];
+            $subscriber_email = $user['email'];
+        }
+    }
+    $address = $subscriber_email;
+    $subject = "У вас новый подписчик";
+    $message_text = "Здравствуйте, " . $subscriber_login . ". На вас подписался новый пользователь " . $subs_user_login . ". Вот ссылка на его профиль: " . $user_link;
+    prepare_and_send_message ($message, $mailer, $address, $subject, $message_text);
+}
+
