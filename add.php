@@ -127,7 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if ($result) {
             $db_post_id = mysqli_insert_id($connect);
-            send_notice_to_subs ($message, $mailer, $user_id, $connect, $user_name);
+            send_notice_to_subs($message, $mailer, $user_id, $connect, $user_name);
             header("Location: post.php?post_id=" . $db_post_id);
             exit();
         } else {

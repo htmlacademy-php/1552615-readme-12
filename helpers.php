@@ -634,8 +634,9 @@ function show_comments($post_id, $connect)
  * @param $message - объект $message Symfony Mailer
  * @param $mailer - объект $mailer Symfony Mailer
  */
-function prepare_and_send_message ($message, $mailer, $address, $subject, $message_text) {
-                // Формирование сообщения уведомления о новом подписчике
+function prepare_and_send_message($message, $mailer, $address, $subject, $message_text)
+{
+    // Формирование сообщения уведомления о новом подписчике
     $message->to($address);
     $message->subject($subject);
     $message->text($message_text);
@@ -650,7 +651,7 @@ function prepare_and_send_message ($message, $mailer, $address, $subject, $messa
  * @param $message - объект $message Symfony Mailer
  * @param $mailer - объект $mailer Symfony Mailer
  */
-function send_notice_to_subs ($message, $mailer, $user_id, $connect, $user_name)
+function send_notice_to_subs($message, $mailer, $user_id, $connect, $user_name)
 {
     $sql_subs = "SELECT subs.user_id, u.user_login, u.email
                  FROM subscribtions subs
@@ -664,7 +665,7 @@ function send_notice_to_subs ($message, $mailer, $user_id, $connect, $user_name)
         $subject = "Новая публикация от пользователя " . $user_name;
         $message_text = "Здравствуйте, " . $sub_login . ". Пользователь " . $user_name . " только что опубликовал новую запись " . htmlspecialchars($_POST['heading']) . ". Посмотрите её на странице пользователя: " . $user_link;
 
-        prepare_and_send_message ($message, $mailer, $address, $subject, $message_text);
+        prepare_and_send_message($message, $mailer, $address, $subject, $message_text);
     }
 }
 
@@ -676,7 +677,7 @@ function send_notice_to_subs ($message, $mailer, $user_id, $connect, $user_name)
  * @param $message - объект $message Symfony Mailer
  * @param $mailer - объект $mailer Symfony Mailer
  */
-function send_notice_about_new_sub ($user_id, $profile_user_id, $connect, $message, $mailer)
+function send_notice_about_new_sub($user_id, $profile_user_id, $connect, $message, $mailer)
 {
     $sql_users_login = "SELECT id, user_login, email FROM user
                         WHERE id IN ($user_id, $profile_user_id)";
@@ -697,6 +698,5 @@ function send_notice_about_new_sub ($user_id, $profile_user_id, $connect, $messa
     $address = $subscriber_email;
     $subject = "У вас новый подписчик";
     $message_text = "Здравствуйте, " . $subscriber_login . ". На вас подписался новый пользователь " . $subs_user_login . ". Вот ссылка на его профиль: " . $user_link;
-    prepare_and_send_message ($message, $mailer, $address, $subject, $message_text);
+    prepare_and_send_message($message, $mailer, $address, $subject, $message_text);
 }
-
