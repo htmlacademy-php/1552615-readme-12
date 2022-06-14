@@ -11,7 +11,7 @@
                         <label class="registration__label form__label" for="registration-email">Электронная почта <span class="form__input-required">*</span></label>
                         <?php $input_err = isset($errors['email']) ? "form__input-section--error" : ""; ?>
                         <div class="form__input-section <?php echo $input_err;?>">
-                        <input class="registration__input form__input" id="registration-email" type="email" name="email" placeholder="Укажите эл.почту" value="<?php echo(getPostVal($post,'email'));?>">
+                        <input class="registration__input form__input" id="registration-email" type="email" name="email" placeholder="Укажите эл.почту" value="<?php echo(getPostVal($post, 'email'));?>">
                         <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                             <div class="form__error-text">
                                 <h3 class="form__error-title">ОШИБКА!</h3>
@@ -23,7 +23,7 @@
                     <label class="registration__label form__label" for="registration-login">Логин <span class="form__input-required">*</span></label>
                     <?php $input_err = isset($errors['login']) ? "form__input-section--error" : ""; ?>
                     <div class="form__input-section <?php echo $input_err;?>">
-                    <input class="registration__input form__input" id="registration-login" type="text" name="login" placeholder="Укажите логин" value="<?php echo(getPostVal($post,'login'));?>">
+                    <input class="registration__input form__input" id="registration-login" type="text" name="login" placeholder="Укажите логин" value="<?php echo(getPostVal($post, 'login'));?>">
                     <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                     <div class="form__error-text">
                         <h3 class="form__error-title">ОШИБКА!</h3>
@@ -35,7 +35,7 @@
                     <label class="registration__label form__label" for="registration-password">Пароль<span class="form__input-required">*</span></label>
                     <?php $input_err = isset($errors['password']) ? "form__input-section--error" : ""; ?>
                     <div class="form__input-section <?php echo $input_err;?>">
-                    <input class="registration__input form__input" id="registration-password" type="password" name="password" placeholder="Придумайте пароль" value="<?php echo(getPostVal($post,'password'));?>">
+                    <input class="registration__input form__input" id="registration-password" type="password" name="password" placeholder="Придумайте пароль" value="<?php echo(getPostVal($post, 'password'));?>">
                     <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                     <div class="form__error-text">
                         <h3 class="form__error-title">ОШИБКА!</h3>

@@ -10,7 +10,7 @@
         </div>
         <div class="search__results-wrapper">
 
-            <?php if($posts): ?>
+            <?php if ($posts): ?>
             <div class="container">
                 <div class="search__content">
                     <?php foreach ($posts as $post): ?>

@@ -40,9 +40,9 @@ $user_subs = [];
 $user_subs = get_subscribers($user_id, $connect);
 $comments = show_comments($post_id, $connect);
 
-$sql_total_posts = get_total_from_db ('id', 'post', 'user_id', $current_user, $connect);
-$sql_total_likes = get_total_from_db ('id', 'likes', 'post_id', $post_id, $connect);
-$sql_total_subs = get_total_from_db ('user_id', 'subscribtions', 'to_user_id', $current_user, $connect);
+$sql_total_posts = get_total_from_db('id', 'post', 'user_id', $current_user, $connect);
+$sql_total_likes = get_total_from_db('id', 'likes', 'post_id', $post_id, $connect);
+$sql_total_subs = get_total_from_db('user_id', 'subscribtions', 'to_user_id', $current_user, $connect);
 
 $active_post = include_template('post-' . $sql_post['classname'] . '.php', ['post' => $sql_post]);
 

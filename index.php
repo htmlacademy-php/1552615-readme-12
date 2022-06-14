@@ -38,15 +38,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $result = mysqli_query($connect, $sql_query);
     $user = $result ? mysqli_fetch_array($result, MYSQLI_ASSOC) : null;
 
-	if ($user && empty($errors)) {
+    if ($user && empty($errors)) {
         $pass_check = password_verify($post['password'], $user['user_password']);
         if ($pass_check) {
             $_SESSION['user'] = $user;
-		}
-		else {
+        } else {
             $errors['password'] = 'Неверный пароль';
-		}
-	}
+        }
+    }
     if (!$user && empty($errors['login'])) {
         $errors['login'] = 'Такой пользователь не найден';
     }

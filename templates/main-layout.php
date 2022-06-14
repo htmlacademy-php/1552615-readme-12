@@ -63,7 +63,7 @@
             <div class="authorization__input-wrapper form__input-wrapper">
             <?php $input_err = isset($errors['login']) ? "form__input-section--error" : ""; ?>
                 <div class="form__input-section <?=$input_err; ?>">
-                    <input class="authorization__input authorization__input--login form__input" type="email" name="login" placeholder="Электронная почта" value="<?php if (isset($post)): ?><?php echo(getPostVal($post,'login'));?><?php endif; ?>">
+                    <input class="authorization__input authorization__input--login form__input" type="email" name="login" placeholder="Электронная почта" value="<?php if (isset($post)): ?><?php echo(getPostVal($post, 'login'));?><?php endif; ?>">
                     <svg class="form__input-icon" width="19" height="18">
                         <use xlink:href="#icon-input-user"></use>
                     </svg>

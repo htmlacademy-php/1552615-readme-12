@@ -158,7 +158,8 @@ function check_youtube_url($url)
 {
     $id = extract_youtube_id($url);
 
-    set_error_handler(function () {}, E_WARNING);
+    set_error_handler(function () {
+    }, E_WARNING);
     $headers = get_headers('https://www.youtube.com/oembed?format=json&url=http://www.youtube.com/watch?v=' . $id);
     restore_error_handler();
 
@@ -300,7 +301,8 @@ function get_cut_text($text, $symbol_amount = 300)
  * @param $word - слово, которое должно быть в конце сконвертированной даты, например "назад" и т.п.
  */
 
-function get_date_interval_format($date, $word) {
+function get_date_interval_format($date, $word)
+{
     $current_date = date_create('now');
     $date_interval = date_diff($date, $current_date);
     $week = floor($date_interval->d / 7);
@@ -311,7 +313,7 @@ function get_date_interval_format($date, $word) {
         return $week . " " . get_noun_plural_form($week, 'неделя', 'недели', 'недель') . " " . $word;
     } elseif ($date_interval->d >= 1) {
         return $date_interval->d . " " . get_noun_plural_form($date_interval->d, 'день', 'дня', 'дней') . " " . $word;
-    } elseif ($date_interval->h >= 1 ) {
+    } elseif ($date_interval->h >= 1) {
         return $date_interval->h . " " . get_noun_plural_form($date_interval->h, 'час', 'часа', 'часов') . " " . $word;
     };
     return $date_interval->i . " " . get_noun_plural_form($date_interval->i, 'минута', 'минуты', 'минут') . " " . $word;
@@ -327,7 +329,8 @@ function get_date_interval_format($date, $word) {
  * @param $sql - sql запрос
  * @return array
  */
-function db_get_query($value, $connect, $sql) {
+function db_get_query($value, $connect, $sql)
+{
     $result = mysqli_query($connect, $sql);
     if (!$result) {
         die("Ошибка запроса:" . mysqli_error($connect));
@@ -337,7 +340,7 @@ function db_get_query($value, $connect, $sql) {
     } elseif ($value == 'assoc') {
         return mysqli_fetch_assoc($result);
     } else {
-        die ("Уточните передаваемые данные");
+        die("Уточните передаваемые данные");
     };
 }
 
@@ -356,7 +359,8 @@ function db_get_query($value, $connect, $sql) {
  * @param $sql_connect - созданное sql соединение
  * @return string
  */
-function get_total_from_db ($count, $table, $group_by, $equals, $sql_connect) {
+function get_total_from_db($count, $table, $group_by, $equals, $sql_connect)
+{
     $sql_total_posts_query = "SELECT COUNT($count) AS total
     FROM $table
     WHERE $group_by = $equals
@@ -367,19 +371,23 @@ function get_total_from_db ($count, $table, $group_by, $equals, $sql_connect) {
 
 /**
  * Функция для сохранения написанного пользователем в форме
- * @param $array - array, массив данных полученных ранее из формы
- * @param $name - string, значение name для input
+ * @param array $array - array, массив данных полученных ранее из формы
+ * @param string $name - string, значение name для input
+ * @return string
  *
  */
-function getPostVal($array, $name) {
+function getPostVal($array, $name)
+{
     return $array[$name] ?? "";
 }
 
 /**
  * Функция проверки заполненности формы
- * @param $name - значение соответствующего поля input
+ * @param string $name - значение соответствующего поля input
+ * @return string - в случае неудачи возвращает строку с сообщением
  */
-function validateFilled($name) {
+function validateFilled($name)
+{
     if (empty($name)) {
         return 'Это поле должно быть заполнено';
     }
@@ -387,9 +395,11 @@ function validateFilled($name) {
 
 /**
  * Функция проверки правильности ссылки url
- * @param $name - значение соответствующего поля input
+ * @param string $name - значение соответствующего поля input
+ * @return string - в случае неудачи возвращает строку с сообщением
  */
-function validateUrl($name) {
+function validateUrl($name)
+{
     if (!filter_var($name, FILTER_VALIDATE_URL)) {
         return 'Ссылка должна быть корректной';
     }
@@ -397,9 +407,11 @@ function validateUrl($name) {
 
 /**
  * Функция валидации загружаемого пользователем файла
- * @param $name - значение соответствующего поля input
+ * @param string $name - значение соответствующего поля input
+ * @return string - в случае неудачи возвращает строку с сообщением
  */
-function validateFile($name) {
+function validateFile($name)
+{
     if (!empty($name['name'])) {
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $tmp_name = $name['tmp_name'];
@@ -421,13 +433,14 @@ function validateFile($name) {
  * @param $name - значение соответствующего поля input
  * @param $dirName - название папки, в которую грузится файл
  */
-function uploadFile($name, $dirName) {
+function uploadFile($name, $dirName)
+{
     if (!empty($name['name'])) {
         $_POST['photo-url'] = '';
         $file_name = $name['name'];
         $file_path = __DIR__ . '/' . $dirName . '/';
         $res = move_uploaded_file($name['tmp_name'], $file_path . $file_name);
-        if(!$res) {
+        if (!$res) {
             return 'Не удалось загрузить файл';
         }
     }
@@ -435,9 +448,11 @@ function uploadFile($name, $dirName) {
 
 /**
  * Функция загрузки файла по указанной ссылке
- * @param $name - значение соответствующего поля input
+ * @param string $name - значение соответствующего поля input
+ * @return string - в случае неудачи возвращает строку с сообщением
  */
-function downloadFileFromUrl($name) {
+function downloadFileFromUrl($name)
+{
     if (isset($name)) {
         $file = file_get_contents($name);
         if ($file === false) {
@@ -454,8 +469,10 @@ function downloadFileFromUrl($name) {
 
 /**
  * Функция валидации полей загрузки фото
+ * @return string - в случае неудачи возвращает строку с сообщением
  */
-function validateFilledPhoto () {
+function validateFilledPhoto()
+{
     if (empty($_POST['photo-url']) && empty($_FILES['userpic-file-photo']['name'])) {
         return 'Необходимо загрузить изображение или ввести ссылку';
     }
@@ -463,8 +480,11 @@ function validateFilledPhoto () {
 
 /**
  * Функция валидации хэштегов
+ * @param string $name - значение соответствующего поля input
+ * @return string - в случае неудачи возвращает строку с сообщением
  */
-function validateTags ($name) {
+function validateTags($name)
+{
     if (empty($name)) {
         return 'Должен быть хотя бы один тег';
     }
@@ -472,8 +492,11 @@ function validateTags ($name) {
 
 /**
  * Функция перевода названия полей
+ * @param string $name - значение соответствующего поля input
+ * @return string - возвращает переведенное значение
  */
-function translateInputName ($name) {
+function translateInputName($name)
+{
     $translatedName = '';
     if ($name === 'heading') {
         $translatedName = 'Заголовок';
@@ -509,18 +532,22 @@ function translateInputName ($name) {
 
 /**
  * Функция валидации email
- * @param $name - значение соответствующего поля input
+ * @param string $name - значение соответствующего поля input
+ * @return string - в случае неудачи возвращает строку с сообщением
  */
-function validateEmail($name) {
+function validateEmail($name)
+{
     if (!filter_var($name, FILTER_VALIDATE_EMAIL)) {
         return 'E-mail должен быть корректным';
     }
 }
 
 /**
- * Функиця установления соединения с базой данных
+ * Функция установления соединения с базой данных
+ * @return $connect - возвращает соединение с БД
  */
-function db_set_connection () {
+function db_set_connection()
+{
     $connect = mysqli_connect("localhost", "root", "root", "readme");
     if ($connect == false) {
         die('Connection error: ' . mysqli_connect_error());
@@ -531,11 +558,12 @@ function db_set_connection () {
 
 /**
  * Функция получения массива подписчиков авторизованного пользователя
- * @param $user_id - id текущего авторизованного пользователя
+ * @param string $user_id - id текущего авторизованного пользователя
  * @param $connect - соединение с БД
  * @return array $user_subs - массив с подписчиками определенного пользователя
  */
-function get_subscribers ($user_id, $connect) {
+function get_subscribers($user_id, $connect)
+{
     $user_subs = [];
     $sql_user_subs_query = "SELECT * FROM subscribtions
     WHERE user_id = '$user_id'";
@@ -550,9 +578,12 @@ function get_subscribers ($user_id, $connect) {
 
 /**
  * Функция проверки длины сообщения/комментария
- * @param $text - текст или комментарий, который необходимо проверить на соответствующую длину
+ * @param string $text - текст или комментарий, который необходимо проверить на соответствующую длину
+ * @param int $min_length - минимальное количество символов
+ * @return string - предупреждение о том, что нужно больше символов
  */
-function validateLength ($text, $min_length) {
+function validateLength($text, $min_length)
+{
     if (!empty($text)) {
         if (mb_strlen($text) < $min_length) {
             return 'Должно быть больше ' . $min_length . ' ' . get_noun_plural_form($min_length, 'символ', 'символа', 'символов');
@@ -565,8 +596,10 @@ function validateLength ($text, $min_length) {
  * @param $key - параметр запроса
  * @param $value - значение параметра запроса
  * @param $exclude - параметр, который необходимо обнулить
+ * @return string - строка запроса
  */
-function generate_http_query ($key, $value, $exclude = null) {
+function generate_http_query($key, $value, $exclude = null)
+{
     $params = $_GET;
     if (!is_null($exclude)) {
         unset($params[$exclude]);
@@ -581,7 +614,8 @@ function generate_http_query ($key, $value, $exclude = null) {
  * @param $connect - подключение к бд
  * @return array - $comments список комментариев
  */
-function show_comments ($post_id, $connect) {
+function show_comments($post_id, $connect)
+{
     $comments = [];
     $sql_comment_query = "SELECT comments.*, user.user_login AS comment_author, user.avatar AS comment_author_avatar
                             FROM comments
@@ -592,9 +626,77 @@ function show_comments ($post_id, $connect) {
     return $comments;
 }
 
+/**
+ * Функция подготовки и отправки сообщения с помощью Symfony Mailer
+ * @param string $address - email адресата
+ * @param string $subject - тема сообщения
+ * @param string $message_text - текст сообщения
+ * @param $message - объект $message Symfony Mailer
+ * @param $mailer - объект $mailer Symfony Mailer
+ */
+function prepare_and_send_message($message, $mailer, $address, $subject, $message_text)
+{
+    // Формирование сообщения уведомления о новом подписчике
+    $message->to($address);
+    $message->subject($subject);
+    $message->text($message_text);
+    // Отправка сообщения
+    $mailer->send($message);
+}
 
-// SELECT comments.*, user.user_login AS comment_author, user.avatar AS comment_author_avatar
-//                             FROM comments
-//                                 LEFT JOIN user ON comments.user_id = user.id
-//                             WHERE comments.post_id IN (3, 4)
-//                                 ORDER BY comments.published_at
+/**
+ * Функция уведомления подписчиков пользователя
+ * @param string $user_id - id текущего залогиненного пользователя
+ * @param $connect - соединение с бд
+ * @param $message - объект $message Symfony Mailer
+ * @param $mailer - объект $mailer Symfony Mailer
+ */
+function send_notice_to_subs($message, $mailer, $user_id, $connect, $user_name)
+{
+    $sql_subs = "SELECT subs.user_id, u.user_login, u.email
+                 FROM subscribtions subs
+                    LEFT JOIN user u on u.id = subs.user_id
+                 WHERE to_user_id = $user_id";
+    $subs = db_get_query('all', $connect, $sql_subs);
+    foreach ($subs as $sub) {
+        $sub_login = $sub['user_login'];
+        $user_link = 'http://' . $_SERVER['HTTP_HOST'] . '/profile.php?user_id=' . $user_id;
+        $address = $sub['email'];
+        $subject = "Новая публикация от пользователя " . $user_name;
+        $message_text = "Здравствуйте, " . $sub_login . ". Пользователь " . $user_name . " только что опубликовал новую запись " . htmlspecialchars($_POST['heading']) . ". Посмотрите её на странице пользователя: " . $user_link;
+
+        prepare_and_send_message($message, $mailer, $address, $subject, $message_text);
+    }
+}
+
+/**
+ * Функция уведомления пользователя о новом подписчике
+ * @param string $user_id - id текущего залогиненного пользователя
+ * @param string $profile_user_id - id пользователя, на которого подписались
+ * @param $connect - соединение с бд
+ * @param $message - объект $message Symfony Mailer
+ * @param $mailer - объект $mailer Symfony Mailer
+ */
+function send_notice_about_new_sub($user_id, $profile_user_id, $connect, $message, $mailer)
+{
+    $sql_users_login = "SELECT id, user_login, email FROM user
+                        WHERE id IN ($user_id, $profile_user_id)";
+    $users = db_get_query('all', $connect, $sql_users_login);
+    $user_link = 'http://' . $_SERVER['HTTP_HOST'] . '/profile.php?user_id=' . $user_id;
+    $subs_user_login = '';
+    $subscriber_login = '';
+    $subscriber_email = '';
+    foreach ($users as $user) {
+        if (in_array($user_id, $user)) {
+            $subs_user_login = $user['user_login'];
+        }
+        if (in_array($profile_user_id, $user)) {
+            $subscriber_login = $user['user_login'];
+            $subscriber_email = $user['email'];
+        }
+    }
+    $address = $subscriber_email;
+    $subject = "У вас новый подписчик";
+    $message_text = "Здравствуйте, " . $subscriber_login . ". На вас подписался новый пользователь " . $subs_user_login . ". Вот ссылка на его профиль: " . $user_link;
+    prepare_and_send_message($message, $mailer, $address, $subject, $message_text);
+}

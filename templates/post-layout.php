@@ -39,7 +39,7 @@
                     </div>
                     <ul class="post__tags">
                     <?php if (key_exists($post['id'], $hashtags)):?><?php foreach ($hashtags[$post['id']] as $hashtag): ?>
-                        <li><a href="<?php echo ('search.php' . '?q=%23' . $hashtag);?>">#<?=$hashtag;?>
+                        <li><a href="<?php echo('search.php' . '?q=%23' . $hashtag);?>">#<?=$hashtag;?>
                         <?php endforeach;?></a></li>
                     <?php endif;?>
                     </ul>
@@ -69,7 +69,7 @@
                                 <?php if ($post['id'] == $comment['post_id']):?>
                                 <li class="comments__item user">
                                     <div class="comments__avatar">
-                                        <a class="user__avatar-link" href="<?php echo ('/profile.php' . '?user_id=' . $comment['user_id'] . '&tab=posts');?>">
+                                        <a class="user__avatar-link" href="<?php echo('/profile.php' . '?user_id=' . $comment['user_id'] . '&tab=posts');?>">
                                             <?php if (!empty($comment['comment_author_avatar'])):?>
                                             <img class="comments__picture" src="/uploads/avatars/<?php echo $comment['comment_author_avatar'];?>" alt="Аватар пользователя">
                                             <?php endif;?>
@@ -77,10 +77,10 @@
                                     </div>
                                     <div class="comments__info">
                                         <div class="comments__name-wrapper">
-                                            <a class="comments__user-name" href="<?php echo ('/profile.php' . '?user_id=' . $comment['user_id'] . '&tab=posts');?>">
+                                            <a class="comments__user-name" href="<?php echo('/profile.php' . '?user_id=' . $comment['user_id'] . '&tab=posts');?>">
                                             <span><?=$comment['comment_author'];?></span>
                                             </a>
-                                            <time class="comments__time" datetime="<?php echo (date_format(date_create($comment['published_at']), 'c'));?>"><?=get_date_interval_format(date_create($comment['published_at']), 'назад');?></time>
+                                            <time class="comments__time" datetime="<?php echo(date_format(date_create($comment['published_at']), 'c'));?>"><?=get_date_interval_format(date_create($comment['published_at']), 'назад');?></time>
                                         </div>
                                         <p class="comments__text">
                                             <?=$comment['comment'];?>
@@ -106,7 +106,7 @@
                             <a class="post-details__name user__name" href="<?php echo('/profile.php' . '?user_id=' . $post['user_id']) . '&tab=posts';?>">
                                 <span><?=$post['user_login']; ?></span>
                             </a>
-                            <time class="post-details__time user__time" datetime="<?php echo (date_format(date_create($post['created_at']), 'Y-m-d'));?>"><?=get_date_interval_format(date_create($post['created_at']), 'на сайте');?></time>
+                            <time class="post-details__time user__time" datetime="<?php echo(date_format(date_create($post['created_at']), 'Y-m-d'));?>"><?=get_date_interval_format(date_create($post['created_at']), 'на сайте');?></time>
                         </div>
                     </div>
                     <div class="post-details__rating user__rating">
@@ -127,10 +127,10 @@
                         <?php if ($user_id === $post['user_id']):?>
                         <a class="post-mini__user-button user__button user__button--subscription button button--quartz visually-hidden" href="#">&nbsp;</a>
                         <?php elseif (in_array($post['user_id'], $user_subs)): ?>
-                        <a class="profile__user-button user__button user__button--subscription button button--main" href="<?php echo ('/subscribtion.php' . '?user_id=' . $post['user_id']);?>">Отписаться</a>
+                        <a class="profile__user-button user__button user__button--subscription button button--main" href="<?php echo('/subscribtion.php' . '?user_id=' . $post['user_id']);?>">Отписаться</a>
                         <a class="profile__user-button user__button user__button--writing button button--green" href="#">Сообщение</a>
                         <?php else: ?>
-                        <a class="profile__user-button user__button user__button--subscription button button--main" href="<?php echo ('/subscribtion.php' . '?user_id=' . $post['user_id']);?>">Подписаться</a>
+                        <a class="profile__user-button user__button user__button--subscription button button--main" href="<?php echo('/subscribtion.php' . '?user_id=' . $post['user_id']);?>">Подписаться</a>
                         <?php endif; ?>
                     </div>
                 </div>

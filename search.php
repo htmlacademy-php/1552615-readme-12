@@ -6,12 +6,11 @@ require_once('helpers.php');
 $connect = db_set_connection();
 $path = (pathinfo(__FILE__, PATHINFO_BASENAME));
 
-$search = trim(filter_input(INPUT_GET, 'q', FILTER_SANITIZE_SPECIAL_CHARS)) ?? NULL;
+$search = trim(filter_input(INPUT_GET, 'q', FILTER_SANITIZE_SPECIAL_CHARS)) ?? null;
 
 $posts = [];
 if ($search) {
-
-    $is_hashtag = ((substr($search, 0, 1)) === '#') ? substr($search, 1) : NULL;
+    $is_hashtag = ((substr($search, 0, 1)) === '#') ? substr($search, 1) : null;
 
     $sql_query = "SELECT post.*, u.user_login, u.avatar, ct.classname,
     (SELECT COUNT(id) FROM comments WHERE comments.post_id = post.id) AS total_comm,

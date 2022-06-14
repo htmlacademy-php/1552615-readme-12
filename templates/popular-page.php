@@ -9,7 +9,7 @@
                 <ul class="popular__sorting-list sorting__list">
                     <?php foreach ($sorts_by as $key => $value):?>
                     <li class="sorting__item sorting__item--popular">
-                        <a class="sorting__link <?php if ($sort_by == $key): ?><?php echo 'sorting__link--active';?><?php endif;?>" href="<?php echo ($url . generate_http_query('sort_by', $key));?>">
+                        <a class="sorting__link <?php if ($sort_by == $key): ?><?php echo 'sorting__link--active';?><?php endif;?>" href="<?php echo($url . generate_http_query('sort_by', $key));?>">
                             <span><?=$value;?></span>
                             <svg class="sorting__icon" width="10" height="12">
                                 <use xlink:href="#icon-sort"></use>
@@ -23,9 +23,9 @@
                 <b class="popular__filters-caption filters__caption">Тип контента:</b>
                 <ul class="popular__filters-list filters__list">
                     <li class="popular__filters-item popular__filters-item--all filters__item filters__item--all">
-                        <a class="filters__button filters__button--ellipse filters__button--all <?php if($type_classname === 'all'): echo ('filters__button--active');?>
+                        <a class="filters__button filters__button--ellipse filters__button--all <?php if ($type_classname === 'all'): echo('filters__button--active');?>
                         <?php endif; ?>"
-                            href="<?php echo ($url . generate_http_query('type', 'all'));?>">
+                            href="<?php echo($url . generate_http_query('type', 'all', 'page'));?>">
                             <span>Все</span>
                         </a >
                     </li>
@@ -34,9 +34,9 @@
                     <li class="popular__filters-item filters__item">
                         <a class="filters__button filters__button--<?php echo $type['classname']; ?> button
                         <?php if ($type['classname'] === $type_classname):
-                            echo ('filters__button--active'); ?>
+                            echo('filters__button--active'); ?>
                         <?php endif; ?>"
-                        href="<?php echo ($url . generate_http_query('type', $type['classname'], 'page'));?>">
+                        href="<?php echo($url . generate_http_query('type', $type['classname'], 'page'));?>">
                             <span class="visually-hidden"><?=$type['title']?></span>
                             <svg class="filters__icon" width="22" height="18">
                                 <use xlink:href="#icon-filter-<?php echo $type['classname']?>"></use>
@@ -49,7 +49,7 @@
         </div>
         <div class="popular__posts">
             <?php foreach ($posts as $key => $post):?>
-            <article class="popular__post post post-<?php echo (htmlspecialchars($post['classname'])); ?>">
+            <article class="popular__post post post-<?php echo(htmlspecialchars($post['classname'])); ?>">
                 <header class="post__header">
                     <a href="<?php echo('/post.php?post_id=' . $post['id'])?>">
                         <h2><?=htmlspecialchars($post['title']);?></h2>
@@ -151,8 +151,8 @@
 
         <?php if ($total_posts > $max_posts && $posts_of_type > $page_items): ?>
         <div class="popular__page-links">
-            <a class="popular__page-link popular__page-link--prev button button--gray" <?php if (intval($cur_page) == $pages[0]):?><?php echo('');?><?php elseif (intval($cur_page) > $pages[0]):?><?php echo ('href="' . $url . generate_http_query('page', intval($cur_page) - 1) . '"');?><?php endif;?> >Предыдущая страница</a>
-            <a class="popular__page-link popular__page-link--next button button--gray" <?php if (intval($cur_page) < count($pages)):?><?php echo ('href="' . $url . generate_http_query('page', $cur_page + 1) . '"'); ?><?php elseif ($cur_page == $pages[count($pages) - 1]):?><?php echo('');?><?php endif;?>">Следующая страница</a>
+            <a class="popular__page-link popular__page-link--prev button button--gray" <?php if (intval($cur_page) == $pages[0]):?><?php echo('');?><?php elseif (intval($cur_page) > $pages[0]):?><?php echo('href="' . $url . generate_http_query('page', intval($cur_page) - 1) . '"');?><?php endif;?> >Предыдущая страница</a>
+            <a class="popular__page-link popular__page-link--next button button--gray" <?php if (intval($cur_page) < count($pages)):?><?php echo('href="' . $url . generate_http_query('page', $cur_page + 1) . '"'); ?><?php elseif ($cur_page == $pages[count($pages) - 1]):?><?php echo('');?><?php endif;?>">Следующая страница</a>
         </div>
         <?php endif; ?>
     </div>

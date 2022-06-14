@@ -1,4 +1,5 @@
 <?php
+
 require_once('helpers.php');
 require_once('auth.php');
 
@@ -19,8 +20,7 @@ if ($post_check && !$likes_check) {
     $add_like = "INSERT INTO likes (user_id, post_id) VALUES ('$user_id', '$post_id')";
     $stmt = db_get_prepare_stmt($connect, $add_like);
     $result = mysqli_stmt_execute($stmt);
-}
-elseif ($post_check && $likes_check) {
+} elseif ($post_check && $likes_check) {
     $delete_like = "DELETE FROM likes WHERE user_id = '$user_id' AND post_id = '$post_id'";
     $stmt = db_get_prepare_stmt($connect, $delete_like);
     $result = mysqli_stmt_execute($stmt);
@@ -31,4 +31,3 @@ if (!$referer) {
 }
 header("Location: $referer");
 exit;
-

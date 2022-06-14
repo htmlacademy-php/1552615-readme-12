@@ -2,6 +2,7 @@
 
 require_once('auth.php');
 require_once('helpers.php');
+require_once('mail.php');
 
 $connect = db_set_connection();
 
@@ -116,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if (isset($_FILES['userpic-file-photo']) && empty($_POST['photo-url'])) {
             $db_post['picture'] = $_FILES['userpic-file-photo']['name'];
-        } elseif(!empty($_POST['photo-url'])) {
+        } elseif (!empty($_POST['photo-url'])) {
             $db_post['picture'] = basename($_POST['photo-url']);
         }
         $sql = "INSERT INTO post (title, text_content, quote_author, picture, video, link, user_id, type_id)
@@ -126,8 +127,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if ($result) {
             $db_post_id = mysqli_insert_id($connect);
+            send_notice_to_subs($message, $mailer, $user_id, $connect, $user_name);
             header("Location: post.php?post_id=" . $db_post_id);
-
+            exit();
         } else {
             die(print_r(mysqli_stmt_error_list($stmt)));
         }

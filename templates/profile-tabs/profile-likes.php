@@ -19,7 +19,7 @@
                     </a>
                     <div class="post-mini__action">
                         <span class="post-mini__activity user__additional">Лайкнул вашу публикацию</span>
-                        <time class="post-mini__time user__additional" datetime="<?php echo (date_format(date_create($data['liked_at']), 'c'));?>"><?=get_date_interval_format(date_create($data['liked_at']), 'назад');?></time>
+                        <time class="post-mini__time user__additional" datetime="<?php echo(date_format(date_create($data['liked_at']), 'c'));?>"><?=get_date_interval_format(date_create($data['liked_at']), 'назад');?></time>
                     </div>
                 </div>
             </div>

@@ -5,7 +5,7 @@
             <label class="adding-post__label form__label" for="photo-url">Ссылка из интернета</label>
             <?php $input_err = isset($errors['photo-url']) ? "form__input-section--error" : ""; ?>
             <div class="form__input-section <?php echo $input_err;?>">
-                <input class="adding-post__input form__input" id="photo-url" type="text" name="photo-url" placeholder="Введите ссылку" value="<?php echo(getPostVal($oldData,'photo-url'));?>">
+                <input class="adding-post__input form__input" id="photo-url" type="text" name="photo-url" placeholder="Введите ссылку" value="<?php echo(getPostVal($oldData, 'photo-url'));?>">
                 <button class="form__error-button button" type="button">!
                     <span class="visually-hidden">Информация об ошибке</span>
                 </button>

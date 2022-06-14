@@ -115,7 +115,7 @@
                             </div>
                             <ul class="post__tags">
                                 <?php if (key_exists($post['id'], $hashtags)):?><?php foreach ($hashtags[$post['id']] as $hashtag): ?>
-                                    <li><a href="<?php echo ('search.php' . '?q=%23' . $hashtag);?>">#<?=$hashtag;?>
+                                    <li><a href="<?php echo('search.php' . '?q=%23' . $hashtag);?>">#<?=$hashtag;?>
                                     <?php endforeach;?></a></li>
                                 <?php endif;?>
                             </ul>
@@ -127,7 +127,7 @@
             </div>
             <ul class="feed__filters filters">
                 <li class="feed__filters-item filters__item">
-                    <a class="filters__button <?php if($type_classname == ''): echo ('filters__button--active');?>
+                    <a class="filters__button <?php if ($type_classname == ''): echo('filters__button--active');?>
                         <?php endif; ?>" href="<?php echo $url; ?>">
                         <span>Все</span>
                     </a>
@@ -135,7 +135,7 @@
 
                 <?php foreach ($types as $type):?>
                 <li class="feed__filters-item filters__item">
-                    <a class="filters__button filters__button--<?php echo $type['classname']; ?> button <?php if ($type['classname'] === $type_classname):?><?php echo ('filters__button--active');?><?php endif;?>" href="<?php echo ($url . '?type=' . $type['classname']);?>">
+                    <a class="filters__button filters__button--<?php echo $type['classname']; ?> button <?php if ($type['classname'] === $type_classname):?><?php echo('filters__button--active');?><?php endif;?>" href="<?php echo($url . '?type=' . $type['classname']);?>">
                         <span class="visually-hidden"><?php echo $type['title']; ?></span>
                         <svg class="filters__icon"
                         <?php if ($type['classname'] === 'photo'): ?>

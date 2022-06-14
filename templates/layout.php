@@ -43,17 +43,17 @@
                 <ul class="header__my-nav">
 
                     <li class="header__my-page header__my-page--popular">
-                        <a class="header__page-link <?php if ($path == 'popular.php'): ?><?php echo ('header__page-link--active'); ?><?php endif; ?>" href="popular.php<?='?' . 'type=all';?>" title="Популярный контент">
+                        <a class="header__page-link <?php if ($path == 'popular.php'): ?><?php echo('header__page-link--active'); ?><?php endif; ?>" href="popular.php<?='?' . 'type=all';?>" title="Популярный контент">
                             <span class="visually-hidden">Популярный контент</span>
                         </a>
                     </li>
                     <li class="header__my-page header__my-page--feed">
-                        <a class="header__page-link <?php if ($path == 'feed.php'): ?><?php echo ('header__page-link--active'); ?><?php endif; ?>" href="feed.php" title="Моя лента">
+                        <a class="header__page-link <?php if ($path == 'feed.php'): ?><?php echo('header__page-link--active'); ?><?php endif; ?>" href="feed.php" title="Моя лента">
                             <span class="visually-hidden">Моя лента</span>
                         </a>
                     </li>
                     <li class="header__my-page header__my-page--messages">
-                        <a class="header__page-link <?php if ($path == 'messages.php'): ?><?php echo ('header__page-link--active'); ?><?php endif; ?>" href="messages.html" title="Личные сообщения">
+                        <a class="header__page-link <?php if ($path == 'messages.php'): ?><?php echo('header__page-link--active'); ?><?php endif; ?>" href="messages.html" title="Личные сообщения">
                             <span class="visually-hidden">Личные сообщения</span>
                         </a>
                     </li>
@@ -65,13 +65,13 @@
                         <a class="header__profile-link" href="#">
                             <div class="header__avatar-wrapper">
                                 <?php if (!empty($avatar)): ?>
-                                    <?php echo ('<img class="header__profile-avatar" src="uploads/avatars/' . $avatar . '" alt="Аватар профиля">'); ?>
+                                    <?php echo('<img class="header__profile-avatar" src="uploads/avatars/' . $avatar . '" alt="Аватар профиля">'); ?>
                                 <?php endif; ?>
                             </div>
                             <div class="header__profile-name">
                                 <span>
                                     <!--здесь должно быть имя пользователя-->
-                                    <?php echo (htmlspecialchars($user_name)); ?>
+                                    <?php echo(htmlspecialchars($user_name)); ?>
                                 </span>
                                 <svg class="header__link-arrow" width="10" height="6">
                                     <use xlink:href="#icon-arrow-right-ad"></use>
