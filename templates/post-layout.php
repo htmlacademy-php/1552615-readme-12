@@ -126,7 +126,7 @@
                     <div class="post-details__user-buttons user__buttons">
                         <?php if ($user_id === $post['user_id']):?>
                         <a class="post-mini__user-button user__button user__button--subscription button button--quartz visually-hidden" href="#">&nbsp;</a>
-                        <?php elseif (in_array($post['user_id'], $user_subs)): ?>
+                        <?php elseif ($user_subs && in_array($post['user_id'], $user_subs)): ?>
                         <a class="profile__user-button user__button user__button--subscription button button--main" href="<?php echo('/subscribtion.php' . '?user_id=' . $post['user_id']);?>">Отписаться</a>
                         <a class="profile__user-button user__button user__button--writing button button--green" href="#">Сообщение</a>
                         <?php else: ?>

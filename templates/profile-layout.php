@@ -27,7 +27,7 @@
                 <div class="profile__user-buttons user__buttons">
                     <?php if ($user_id === $profile_user_id):?>
                     <a class="profile__user-button user__button user__button--subscription button button--quartz visually-hidden" href="#"></a>
-                    <?php elseif (in_array($profile_user_id, $user_subs)): ?>
+                    <?php elseif ($user_subs && in_array($profile_user_id, $user_subs)): ?>
                     <a class="profile__user-button user__button user__button--subscription button button--main" href="<?php echo('/subscribtion.php' . '?user_id=' . $profile_user_id);?>">Отписаться</a>
                     <a class="profile__user-button user__button user__button--writing button button--green" href="#">Сообщение</a>
                     <?php else: ?>

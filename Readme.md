@@ -53,3 +53,21 @@ git clone SSH-адрес_вашего_форка
 <a href="https://htmlacademy.ru/intensive/php"><img align="left" width="50" height="50" alt="HTML Academy" src="https://up.htmlacademy.ru/static/img/intensive/php/logo-for-github-2.png"></a>
 
 Репозиторий создан для обучения на профессиональном онлайн‑курсе «[PHP, уровень 1](https://htmlacademy.ru/intensive/php)» от [HTML Academy](https://htmlacademy.ru).
+
+#### 5. Инструкции для картинок и аватарок
+
+---
+
+Для того, чтобы отображались картинки и аватарки необходимо:
+
+### 5.1 Аватары 
+
+---
+
+Из папки img скопировать файлы начинающиеся на "userpic" в папку uploads/avatars
+
+### 5.2 Картинки и фото 
+
+---
+
+Из папки img скопировать все остальные файлы в папку uploads

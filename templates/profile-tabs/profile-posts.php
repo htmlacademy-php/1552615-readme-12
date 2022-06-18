@@ -35,7 +35,7 @@
             <?php elseif ($post['classname'] === 'video'):?>
             <div class="post-video__block">
                 <div class="post-video__preview">
-                    <img src="<?php echo embed_youtube_cover($post['video']);?>" alt="Превью к видео" width="760" height="396">
+                    <?=embed_youtube_cover(htmlspecialchars($post['video']));?>
                 </div>
                 <div class="post-video__control">
                     <button class="post-video__play post-video__play--paused button button--video" type="button"><span class="visually-hidden">Запустить видео</span></button>

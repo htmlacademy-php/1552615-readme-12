@@ -12,7 +12,7 @@ $connect = db_set_connection();
 $errors = [];
 $post = [];
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $post = $_POST;
     // Проверяем на заполнение обязательные поля
     $rules = [

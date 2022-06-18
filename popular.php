@@ -3,50 +3,6 @@
 require_once('auth.php');
 require_once('helpers.php');
 
-
-$posts = [
-    [
-        'title' => 'Цитата',
-        'type' => 'post-quote',
-        'content' => 'Мы в жизни любим только раз, а после ищем лишь похожих',
-        'author_name' => 'Лариса',
-        'avatar' => 'userpic-larisa-small.jpg',
-        'published_at' => date_create(generate_random_date(0)),
-    ],
-    [
-        'title' => 'Игра престолов',
-        'type' => 'post-text',
-        'content' => 'Не могу дождаться начала финального сезона своего любимого сериала!',
-        'author_name' => 'Владик',
-        'avatar' => 'userpic.jpg',
-        'published_at' => date_create(generate_random_date(1)),
-    ],
-    [
-        'title' => 'Наконец, обработал фотки!',
-        'type' => 'post-photo',
-        'content' => 'rock-medium.jpg',
-        'author_name' => 'Виктор',
-        'avatar' => 'userpic-mark.jpg',
-        'published_at' => date_create(generate_random_date(2)),
-    ],
-    [
-        'title' => 'Моя мечта',
-        'type' => 'post-photo',
-        'content' => 'coast-medium.jpg',
-        'author_name' => 'Лариса',
-        'avatar' => 'userpic-larisa-small.jpg',
-        'published_at' => date_create(generate_random_date(3)),
-    ],
-    [
-        'title' => 'Лучшие курсы',
-        'type' => 'post-link',
-        'content' => 'www.htmlacademy.ru',
-        'author_name' => 'Владик',
-        'avatar' => 'userpic.jpg',
-        'published_at' => date_create(generate_random_date(4)),
-    ],
-];
-
 $connect = db_set_connection();
 
 $type_classname = filter_input(INPUT_GET, 'type', FILTER_SANITIZE_SPECIAL_CHARS) ?? 'all';
@@ -66,7 +22,7 @@ $pages_count = ceil($total_posts / $page_items);
 $offset = ($cur_page - 1) * $page_items;
 $pages = range(1, $pages_count);
 
-if ($type_classname != 'all') {
+if ($type_classname !== 'all') {
     $query_condition = "WHERE classname = '$type_classname'";
 } else {
     $query_condition = "";

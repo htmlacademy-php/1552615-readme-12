@@ -18,20 +18,20 @@ $oldData = [];
 $sql_types = db_get_query('all', $connect, "SELECT * FROM content_type");
 
 foreach ($sql_types as $type) {
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($_POST['classname'] == $type['classname']) {
             $content_type_id = $type['id'];
         }
 
         $classname = $_POST['classname'];
     } else {
-        if ($content_type_id == $type['id']) {
+        if ($content_type_id === $type['id']) {
             $classname = $type['classname'];
         }
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $oldData = $_POST;
     //задаем правила валидации соответствующих полей
     $rules = [
