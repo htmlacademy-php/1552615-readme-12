@@ -10,7 +10,7 @@ $path = (pathinfo(__FILE__, PATHINFO_BASENAME));
 $post_url = '/' . $path;
 
 if (isset($_GET['post_id'])) {
-    $post_id = intval($_GET['post_id']);
+    $post_id = filter_input(INPUT_GET, 'post_id', FILTER_SANITIZE_NUMBER_INT);
 } else {
     http_response_code(404);
     die('Такой страницы не существует!');

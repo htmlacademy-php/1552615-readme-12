@@ -18,20 +18,20 @@ $oldData = [];
 $sql_types = db_get_query('all', $connect, "SELECT * FROM content_type");
 
 foreach ($sql_types as $type) {
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($_POST['classname'] == $type['classname']) {
             $content_type_id = $type['id'];
         }
 
         $classname = $_POST['classname'];
     } else {
-        if ($content_type_id == $type['id']) {
+        if ($content_type_id === $type['id']) {
             $classname = $type['classname'];
         }
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $oldData = $_POST;
     //задаем правила валидации соответствующих полей
     $rules = [
@@ -82,7 +82,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $errors['userpic-file-photo'] = uploadFile($_FILES['userpic-file-photo'], 'uploads');
         }
     }
-
     // если нет ошибок добавляем картинки из ссылки
     if (!empty($_POST['photo-url']) && empty($errors['photo-url'])) {
         $errors['photo-url'] = downloadFileFromUrl($_POST['photo-url']);
@@ -101,6 +100,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $sql = '';
 
     if (empty($errors)) {
+        mysqli_query($connect, "START TRANSACTION");
+        // Добавляем в бд хэштеги
+        $tags = explode(' ', $_POST['tags']);
+        $db_tags_id = [];
+        foreach ($tags as $tag) {
+            $sql = "INSERT INTO hashtag (hashtag) VALUES ('$tag')";
+            $tag_stmt = db_get_prepare_stmt($connect, $sql);
+            $tag_result = mysqli_stmt_execute($tag_stmt);
+            array_push($db_tags_id, mysqli_insert_id($connect));
+        }
+        // Добавляем в бд пост, если нет ошибок
         $form_errors = '';
         $db_post['title'] = $_POST['heading'];
         $db_post['text_content'] = null;
@@ -120,18 +130,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         } elseif (!empty($_POST['photo-url'])) {
             $db_post['picture'] = basename($_POST['photo-url']);
         }
+
         $sql = "INSERT INTO post (title, text_content, quote_author, picture, video, link, user_id, type_id)
                 VALUES (?, ?, ?, ?, ?, ?, '$user_id', '$content_type_id')";
-        $stmt = db_get_prepare_stmt($connect, $sql, $db_post);
-        $result = mysqli_stmt_execute($stmt);
+        $post_stmt = db_get_prepare_stmt($connect, $sql, $db_post);
+        $post_result = mysqli_stmt_execute($post_stmt);
+        $db_post_id = mysqli_insert_id($connect);
+        // Добавляем в таблицу связи хэштегов с постами id поста и тега
+        foreach ($db_tags_id as $tag_id) {
+            $hp_query = mysqli_query($connect, "INSERT INTO hashtags_posts (hashtag_id, post_id) VALUES ('$tag_id', '$db_post_id')");
+        }
 
-        if ($result) {
-            $db_post_id = mysqli_insert_id($connect);
+        if ($hp_query) {
+            mysqli_query($connect, "COMMIT");
             send_notice_to_subs($message, $mailer, $user_id, $connect, $user_name);
             header("Location: post.php?post_id=" . $db_post_id);
             exit();
         } else {
-            die(print_r(mysqli_stmt_error_list($stmt)));
+            mysqli_query($connect, "ROLLBACK");
+            die(print_r(mysqli_stmt_error_list($post_stmt)));
         }
     } else {
         $classname = $_POST['classname'];

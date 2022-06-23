@@ -15,7 +15,7 @@
                         <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                             <div class="form__error-text">
                                 <h3 class="form__error-title">ОШИБКА!</h3>
-                                <p class="form__error-desc"><?=$errors['email'];?></p>
+                                <p class="form__error-desc"><?php if(isset($errors['email'])):?><?=$errors['email'];?><?php endif;?></p>
                             </div>
                         </div>
                     </div>
@@ -27,7 +27,7 @@
                     <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                     <div class="form__error-text">
                         <h3 class="form__error-title">ОШИБКА!</h3>
-                        <p class="form__error-desc"><?=$errors['login'];?></p>
+                        <p class="form__error-desc"><?php if(isset($errors['login'])):?><?=$errors['login'];?><?php endif;?></p>
                     </div>
                     </div>
                 </div>
@@ -39,7 +39,7 @@
                     <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                     <div class="form__error-text">
                         <h3 class="form__error-title">ОШИБКА!</h3>
-                        <p class="form__error-desc"><?=$errors['password'];?></p>
+                        <p class="form__error-desc"><?php if(isset($errors['password'])):?><?=$errors['password'];?><?php endif;?></p>
                     </div>
                     </div>
                 </div>
@@ -51,7 +51,7 @@
                     <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                     <div class="form__error-text">
                         <h3 class="form__error-title">ОШИБКА!</h3>
-                        <p class="form__error-desc"><?=$errors['password-repeat'];?></p>
+                        <p class="form__error-desc"><?php if(isset($errors['password-repeat'])):?><?=$errors['password-repeat'];?><?php endif;?></p>
                     </div>
                     </div>
                 </div>

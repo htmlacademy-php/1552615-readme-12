@@ -1,4 +1,7 @@
 <?php
+
+use Symfony\Component\Mime\Email;
+
 /**
  * Проверяет переданную дату на соответствие формату 'ГГГГ-ММ-ДД'
  *
@@ -319,8 +322,6 @@ function get_date_interval_format($date, $word)
     return $date_interval->i . " " . get_noun_plural_form($date_interval->i, 'минута', 'минуты', 'минут') . " " . $word;
 }
 
-
-
 /**
  * Возвращает двумерный массив с данными из базы данных если value = 'all'
  * и значение если 'assoc'
@@ -412,7 +413,7 @@ function validateUrl($name)
  */
 function validateFile($name)
 {
-    if (!empty($name['name'])) {
+    if (!empty($name['name']) && $name['error'] === 0) {
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $tmp_name = $name['tmp_name'];
         $file_type = finfo_file($finfo, $tmp_name);
@@ -549,7 +550,7 @@ function validateEmail($name)
 function db_set_connection()
 {
     $connect = mysqli_connect("localhost", "root", "root", "readme");
-    if ($connect == false) {
+    if ($connect === false) {
         die('Connection error: ' . mysqli_connect_error());
     }
     mysqli_set_charset($connect, "utf8");
@@ -616,14 +617,12 @@ function generate_http_query($key, $value, $exclude = null)
  */
 function show_comments($post_id, $connect)
 {
-    $comments = [];
     $sql_comment_query = "SELECT comments.*, user.user_login AS comment_author, user.avatar AS comment_author_avatar
                             FROM comments
                                 LEFT JOIN user ON comments.user_id = user.id
                             WHERE comments.post_id IN ($post_id)
                                 ORDER BY published_at";
-    $comments = db_get_query('all', $connect, $sql_comment_query);
-    return $comments;
+    return db_get_query('all', $connect, $sql_comment_query);
 }
 
 /**
@@ -631,12 +630,15 @@ function show_comments($post_id, $connect)
  * @param string $address - email адресата
  * @param string $subject - тема сообщения
  * @param string $message_text - текст сообщения
- * @param $message - объект $message Symfony Mailer
+ * @param $sender - адрес отправителя
  * @param $mailer - объект $mailer Symfony Mailer
  */
-function prepare_and_send_message($message, $mailer, $address, $subject, $message_text)
+function prepare_and_send_message($sender, $mailer, $address, $subject, $message_text)
 {
     // Формирование сообщения уведомления о новом подписчике
+    require_once('vendor/autoload.php');
+    $message = new Email();
+    $message->from($sender);
     $message->to($address);
     $message->subject($subject);
     $message->text($message_text);
@@ -664,32 +666,29 @@ function send_notice_to_subs($message, $mailer, $user_id, $connect, $user_name)
         $address = $sub['email'];
         $subject = "Новая публикация от пользователя " . $user_name;
         $message_text = "Здравствуйте, " . $sub_login . ". Пользователь " . $user_name . " только что опубликовал новую запись " . htmlspecialchars($_POST['heading']) . ". Посмотрите её на странице пользователя: " . $user_link;
-
-        prepare_and_send_message($message, $mailer, $address, $subject, $message_text);
+        prepare_and_send_message($sender, $mailer, $address, $subject, $message_text);
     }
 }
 
 /**
  * Функция уведомления пользователя о новом подписчике
  * @param string $user_id - id текущего залогиненного пользователя
+ * @param string $user_name - логин текущего залогиненного пользователя
  * @param string $profile_user_id - id пользователя, на которого подписались
  * @param $connect - соединение с бд
  * @param $message - объект $message Symfony Mailer
  * @param $mailer - объект $mailer Symfony Mailer
  */
-function send_notice_about_new_sub($user_id, $profile_user_id, $connect, $message, $mailer)
+function send_notice_about_new_sub($user_id, $user_name, $profile_user_id, $connect, $sender, $mailer)
 {
     $sql_users_login = "SELECT id, user_login, email FROM user
-                        WHERE id IN ($user_id, $profile_user_id)";
+                        WHERE id IN ($profile_user_id)";
     $users = db_get_query('all', $connect, $sql_users_login);
     $user_link = 'http://' . $_SERVER['HTTP_HOST'] . '/profile.php?user_id=' . $user_id;
-    $subs_user_login = '';
+    $subs_user_login = $user_name;
     $subscriber_login = '';
     $subscriber_email = '';
     foreach ($users as $user) {
-        if (in_array($user_id, $user)) {
-            $subs_user_login = $user['user_login'];
-        }
         if (in_array($profile_user_id, $user)) {
             $subscriber_login = $user['user_login'];
             $subscriber_email = $user['email'];
@@ -698,5 +697,5 @@ function send_notice_about_new_sub($user_id, $profile_user_id, $connect, $messag
     $address = $subscriber_email;
     $subject = "У вас новый подписчик";
     $message_text = "Здравствуйте, " . $subscriber_login . ". На вас подписался новый пользователь " . $subs_user_login . ". Вот ссылка на его профиль: " . $user_link;
-    prepare_and_send_message($message, $mailer, $address, $subject, $message_text);
+    prepare_and_send_message($sender, $mailer, $address, $subject, $message_text);
 }

@@ -21,7 +21,7 @@ if ($profile_user_id) {
         $stmt = db_get_prepare_stmt($connect, $add_subscriber);
         $result = mysqli_stmt_execute($stmt);
         if ($result) {
-            send_notice_about_new_sub($user_id, $profile_user_id, $connect, $message, $mailer);
+            send_notice_about_new_sub($user_id, $user_name, $profile_user_id, $connect, $sender, $mailer);
         }
     }
     if ($subs_check) {

@@ -18,7 +18,7 @@ $errors = [];
 $form_errors = '';
 $post = [];
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $post = $_POST;
     // определяем правила для полей
     $rules = [
@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // проверяем на соответствие данных в полях пароля и повтора пароля
-    if ($_POST['password'] != $_POST['password-repeat']) {
+    if ($_POST['password'] !== $_POST['password-repeat']) {
         !$errors['password'] = 'Пароли не совпадают';
         !$errors['password-repeat'] = 'Пароли не совпадают';
     }
@@ -71,6 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // валидируем и загружаем пользовательский аватар
     if (!empty($_FILES['userpic-file']['name'])) {
         $errors['userpic-file'] = validateFile($_FILES['userpic-file']);
+
     }
     if (empty($errors['userpic-file'])) {
         $errors['userpic-file'] = uploadFile($_FILES['userpic-file'], 'uploads/avatars');
@@ -93,11 +94,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt = db_get_prepare_stmt($connect, $sql, $db_post);
         $result = mysqli_stmt_execute($stmt);
 
-        if ($result) {
-            header("Location: index.php");
-        } else {
+        if (!$result) {
             die(print_r(mysqli_stmt_error_list($stmt)));
         }
+        
+        header("Location: index.php");
     } else {
         $form_errors = include_template('form-errors.php', ['errors' => $errors]);
     }

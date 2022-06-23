@@ -18,7 +18,7 @@
                         <header class="post__header post__author">
                             <a class="post__author-link" href="<?php echo('/profile.php' . '?user_id=' . $post['user_id']) . '&tab=posts';?>" title="Автор">
                                 <div class="post__avatar-wrapper">
-                                    <?php if (isset($post['avatar'])):?>
+                                    <?php if (!empty($post['avatar'])):?>
                                     <img class="post__author-avatar" src="../uploads/avatars/<?php echo $post['avatar'];?>" alt="Аватар пользователя" width="60" height="60">
                                     <?php endif;?>
                                 </div>

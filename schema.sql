@@ -117,13 +117,11 @@ CREATE TABLE user_message (
         ON DELETE CASCADE
 );
 
--- добавляем поле со временем лайка в таблицу лайков
+
 ALTER TABLE likes ADD liked_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
 
--- добавляем поле признака репоста в таблицу постов
 ALTER TABLE post ADD is_repost INT DEFAULT 0;
 
--- добавляем поле id оригинального автора поста в таблицу постов
 ALTER TABLE post ADD original_author_id INT DEFAULT NULL;
 ALTER TABLE post ADD INDEX original_author_ind(original_author_id);
 ALTER TABLE post ADD
@@ -131,8 +129,6 @@ FOREIGN KEY (original_author_id)
   REFERENCES user(id)
   ON DELETE CASCADE;
 
--- добавляем поле подсчета количества репостов в таблицу постов
 ALTER TABLE post ADD repost_count INT DEFAULT 0;
 
--- добавляем поле со значением старого id поста в таблицу постов для упрощения привязки и вывода хэштегов
 ALTER TABLE post ADD original_post_id INT DEFAULT NULL;
