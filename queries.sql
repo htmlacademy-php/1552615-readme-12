@@ -3,18 +3,18 @@ INSERT INTO content_type (title, classname)
     VALUES ('Текст', 'text'), ('Картинка', 'photo'), ('Видео', 'video'), ('Ссылка', 'link'), ('Цитата', 'quote');
 
 
-INSERT INTO user (email, user_login, user_password, avatar)
-    VALUES ('pikachu@gmail.com', 'pikachu', 'pikapika777', 'userpic-mark.jpg'), ('petr_petrovich@gmail.com', 'petr_petrovich', 'vodka_4ever', 'userpic.jpg'), ('valiko@yandex.ru', 'valiko', 'mimino555', 'userpic-larisa-small.jpg');
+INSERT INTO user (created_at, email, user_login, user_password, avatar)
+    VALUES (DATE_ADD(now(),INTERVAL 10 DAY), 'pikachu@gmail.com', 'pikachu', 'pikapika777', 'userpic-mark.jpg'), (DATE_ADD(now(),INTERVAL 2 MONTH), 'petr_petrovich@gmail.com', 'petr_petrovich', 'vodka_4ever', 'userpic.jpg'), (DATE_ADD(now(),INTERVAL 2 YEAR), 'valiko@yandex.ru', 'valiko', 'mimino555', 'userpic-larisa-small.jpg');
 
 
-INSERT INTO post (title, text_content, quote_author, watch_count, user_id, type_id)
-    VALUES ('Цитата', 'Мы в жизни любим только раз, а после ищем лишь похожих', 'Лариса', 20, 1, 5);
-INSERT INTO post (title, text_content, watch_count, user_id, type_id)
-    VALUES ('Игра престолов', 'Не могу дождаться начала финального сезона своего любимого сериала!', 12, 3, 1);
-INSERT INTO post (title, picture, watch_count, user_id, type_id)
-    VALUES ('Наконец, обработал фотки!', 'rock-medium.jpg', 22, 2, 2);
-INSERT INTO post (title, picture, watch_count, user_id, type_id)
-    VALUES ('Моя мечта', 'coast-medium.jpg', 101, 2, 2);
+INSERT INTO post (published_at, title, text_content, quote_author, watch_count, user_id, type_id)
+    VALUES (DATE_ADD(now(),INTERVAL 10 DAY), 'Цитата', 'Мы в жизни любим только раз, а после ищем лишь похожих', 'Лариса', 20, 1, 5);
+INSERT INTO post (published_at, title, text_content, watch_count, user_id, type_id)
+    VALUES (DATE_ADD(now(),INTERVAL 30 DAY), 'Игра престолов', 'Не могу дождаться начала финального сезона своего любимого сериала!', 12, 3, 1);
+INSERT INTO post (published_at, title, picture, watch_count, user_id, type_id)
+    VALUES (DATE_ADD(now(),INTERVAL 4 MONTH), 'Наконец, обработал фотки!', 'rock-medium.jpg', 22, 2, 2);
+INSERT INTO post (published_at, title, picture, watch_count, user_id, type_id)
+    VALUES (DATE_ADD(now(),INTERVAL 2 YEAR), 'Моя мечта', 'coast-medium.jpg', 101, 2, 2);
 INSERT INTO post (title, link, watch_count, user_id, type_id)
     VALUES ('Лучшие курсы', 'www.htmlacademy.ru', 45, 1, 4);
 

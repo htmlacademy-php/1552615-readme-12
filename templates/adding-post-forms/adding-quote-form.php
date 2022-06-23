@@ -13,7 +13,7 @@
                 </button>
                 <div class="form__error-text">
                     <h3 class="form__error-title">Ошибка!</h3>
-                    <p class="form__error-desc"><?=$errors['cite-text'];?></p>
+                    <p class="form__error-desc"><?php if (isset($errors['cite-text'])):?><?=$errors['cite-text'];?><?php endif;?></p>
                 </div>
             </div>
         </div>
@@ -29,7 +29,7 @@
                 </button>
                 <div class="form__error-text">
                     <h3 class="form__error-title">Ошибка!</h3>
-                    <p class="form__error-desc"><?=$errors['quote-author'];?></p>
+                    <p class="form__error-desc"><?php if (isset($errors['quote-author'])):?><?=$errors['quote-author'];?><?php endif;?></p>
                 </div>
             </div>
         </div>

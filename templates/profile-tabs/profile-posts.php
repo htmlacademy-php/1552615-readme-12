@@ -3,7 +3,7 @@
     <?php foreach ($tab_data as $post): ?>
     <article class="profile__post post post-<?php echo($post['classname']);?>">
         <header class="post__header">
-            <?php if ($post['is_repost'] == 1):?>
+            <?php if ($post['is_repost'] === '1'):?>
             <div class="post__author">
                 <a class="post__author-link" title="Автор" href="<?php echo('/profile.php' . '?user_id=' . $post['original_author_id'] . '&tab=posts');?>">
                     <div class="post__avatar-wrapper post__avatar-wrapper--repost">
@@ -108,7 +108,7 @@
             <time class="post__time" datetime="<?php echo(date_format(date_create($post['published_at']), 'c'));?>"><?=get_date_interval_format(date_create($post['published_at']), 'назад');?></time>
         </div>
         <ul class="post__tags">
-        <?php if ($post['is_repost'] == 1):?>
+        <?php if ($post['is_repost'] === '1'):?>
             <?php if (key_exists($post['original_post_id'], $hashtags)):?><?php foreach ($hashtags[$post['original_post_id']] as $hashtag): ?>
             <li><a href="<?php echo('search.php' . '?q=%23' . $hashtag);?>">#<?=$hashtag;?>
             <?php endforeach;?></a></li>
@@ -125,7 +125,7 @@
             <div class="comments__list-wrapper">
                 <ul class="comments__list">
                     <?php foreach ($comments as $comment): ?>
-                    <?php if ($post['id'] == $comment['post_id']):?>
+                    <?php if ($post['id'] === $comment['post_id']):?>
                     <li class="comments__item user">
                         <div class="comments__avatar">
                             <a class="user__avatar-link" href="<?php echo('/profile.php' . '?user_id=' . $comment['user_id'] . '&tab=posts');?>">
@@ -165,7 +165,7 @@
                 <button class="form__error-button button" type="button">!</button>
                 <div class="form__error-text">
                     <h3 class="form__error-title">Ошибка валидации</h3>
-                    <p class="form__error-desc"><?=$errors['comment'];?></p>
+                    <p class="form__error-desc"><?php if(isset($errors['comment'])):?><?=$errors['comment'];?><?php endif;?></p>
                 </div>
             </div>
             <button class="comments__submit button button--green" type="submit">Отправить</button>

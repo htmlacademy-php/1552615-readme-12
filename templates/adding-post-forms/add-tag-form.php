@@ -8,7 +8,7 @@
         </button>
         <div class="form__error-text">
             <h3 class="form__error-title">Ошибка!</h3>
-            <p class="form__error-desc"><?=$errors['tags'];?></p>
+            <p class="form__error-desc"><?php if (isset($errors['tags'])):?><?=$errors['tags'];?><?php endif;?></p>
         </div>
     </div>
 </div>

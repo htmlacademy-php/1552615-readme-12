@@ -58,7 +58,7 @@
                                 <button class="form__error-button button" type="button">!</button>
                                 <div class="form__error-text">
                                     <h3 class="form__error-title">Ошибка валидации</h3>
-                                    <p class="form__error-desc"><?=$errors['comment'];?></p>
+                                    <p class="form__error-desc"><?php if(isset($errors['comment'])):?><?=$errors['comment'];?><?php endif;?></p>
                                 </div>
                             </div>
                             <button class="comments__submit button button--green" type="submit">Отправить</button>
@@ -66,7 +66,7 @@
                         <div class="comments__list-wrapper">
                             <ul class="comments__list">
                                 <?php foreach ($comments as $comment): ?>
-                                <?php if ($post['id'] == $comment['post_id']):?>
+                                <?php if ($post['id'] === $comment['post_id']):?>
                                 <li class="comments__item user">
                                     <div class="comments__avatar">
                                         <a class="user__avatar-link" href="<?php echo('/profile.php' . '?user_id=' . $comment['user_id'] . '&tab=posts');?>">

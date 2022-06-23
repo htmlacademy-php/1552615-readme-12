@@ -23,7 +23,7 @@
             </p>
         </div>
         <form class="header__search-form form" action="/search.php" method="get">
-            <?php if ($is_auth == 1): ?>
+            <?php if ($is_auth === 1): ?>
             <div class="header__search">
                 <label class="visually-hidden">Поиск</label>
                 <input class="header__search-input form__input" type="search" name="q" value=<?php if (isset($search)): ?><?php echo $search;?><?php endif;?>>
@@ -39,7 +39,7 @@
         <div class="header__nav-wrapper">
             <!-- здесь должен быть PHP код, который показывает следующий тег по условию -->
             <nav class="header__nav">
-                <?php if ($is_auth == 1): ?>
+                <?php if ($is_auth === 1): ?>
                 <ul class="header__my-nav">
 
                     <li class="header__my-page header__my-page--popular">

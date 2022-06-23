@@ -13,7 +13,7 @@
                 </button>
                 <div class="form__error-text">
                     <h3 class="form__error-title">Ошибка!</h3>
-                    <p class="form__error-desc"><?=$errors['post-link'];?></p>
+                    <p class="form__error-desc"><?php if (isset($errors['post-link'])):?><?=$errors['post-link'];?><?php endif;?></p>
                 </div>
             </div>
         </div>

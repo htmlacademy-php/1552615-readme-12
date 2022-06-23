@@ -37,7 +37,7 @@
                 </div>
                 <?php foreach ($types as $type): ?>
                     <div class="adding-post__tab-content">
-                        <?php if ($type['classname'] == $classname): ?>
+                        <?php if ($type['classname'] === $classname): ?>
                         <section class="adding-post__<?php echo($type['classname']);?> tabs__content tabs__content--active">
                             <h2 class="visually-hidden">
                                 Форма добавления <?=$type['title'];?>

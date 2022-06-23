@@ -322,8 +322,6 @@ function get_date_interval_format($date, $word)
     return $date_interval->i . " " . get_noun_plural_form($date_interval->i, 'минута', 'минуты', 'минут') . " " . $word;
 }
 
-
-
 /**
  * Возвращает двумерный массив с данными из базы данных если value = 'all'
  * и значение если 'assoc'
@@ -415,7 +413,7 @@ function validateUrl($name)
  */
 function validateFile($name)
 {
-    if (!empty($name['name'])) {
+    if (!empty($name['name']) && $name['error'] === 0) {
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $tmp_name = $name['tmp_name'];
         $file_type = finfo_file($finfo, $tmp_name);
@@ -551,7 +549,7 @@ function validateEmail($name)
  */
 function db_set_connection()
 {
-    $connect = mysqli_connect("localhost", "root", "root", "readme_second");
+    $connect = mysqli_connect("localhost", "root", "root", "readme");
     if ($connect === false) {
         die('Connection error: ' . mysqli_connect_error());
     }
@@ -619,14 +617,12 @@ function generate_http_query($key, $value, $exclude = null)
  */
 function show_comments($post_id, $connect)
 {
-    $comments = [];
     $sql_comment_query = "SELECT comments.*, user.user_login AS comment_author, user.avatar AS comment_author_avatar
                             FROM comments
                                 LEFT JOIN user ON comments.user_id = user.id
-                            WHERE comments.post_id IN ('$post_id')
+                            WHERE comments.post_id IN ($post_id)
                                 ORDER BY published_at";
-    $comments = db_get_query('all', $connect, $sql_comment_query);
-    return $comments;
+    return db_get_query('all', $connect, $sql_comment_query);
 }
 
 /**
@@ -640,8 +636,6 @@ function show_comments($post_id, $connect)
 function prepare_and_send_message($sender, $mailer, $address, $subject, $message_text)
 {
     // Формирование сообщения уведомления о новом подписчике
-
-
     require_once('vendor/autoload.php');
     $message = new Email();
     $message->from($sender);
@@ -672,7 +666,6 @@ function send_notice_to_subs($message, $mailer, $user_id, $connect, $user_name)
         $address = $sub['email'];
         $subject = "Новая публикация от пользователя " . $user_name;
         $message_text = "Здравствуйте, " . $sub_login . ". Пользователь " . $user_name . " только что опубликовал новую запись " . htmlspecialchars($_POST['heading']) . ". Посмотрите её на странице пользователя: " . $user_link;
-
         prepare_and_send_message($sender, $mailer, $address, $subject, $message_text);
     }
 }

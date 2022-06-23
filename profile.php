@@ -15,7 +15,7 @@ $active_tab_layout = '';
 $tab_data = [];
 $comments = [];
 
-if (isset($tab)) {
+if (!isset($tab)) {
     switch ($tab) {
         case 'posts':
             $active_tab_layout = 'profile-' . $tab;
@@ -74,12 +74,11 @@ if (isset($profile_user_id)) {
                             WHERE id = '$profile_user_id'";
 
     $user_data = db_get_query('assoc', $connect, $sql_user_query);
-    if ($user_data) {
-        $user_subs = get_subscribers($user_id, $connect);
-    } else {
+    if (!$user_data) {
         http_response_code(404);
         die('Такого пользователя не существует!');
     }
+    $user_subs = get_subscribers($user_id, $connect);
 } else {
     http_response_code(404);
     die('Такой страницы не существует!');
