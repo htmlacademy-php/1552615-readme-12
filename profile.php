@@ -15,10 +15,11 @@ $active_tab_layout = '';
 $tab_data = [];
 $comments = [];
 
-if (!isset($tab)) {
+if (isset($tab)) {
     switch ($tab) {
         case 'posts':
             $active_tab_layout = 'profile-' . $tab;
+            $tab_data = [];
             $sql_posts_query = "SELECT post.*, ct.classname, u.user_login AS author_login, u.avatar AS author_avatar,
                                 (SELECT COUNT(id) FROM comments WHERE comments.post_id = post.id) AS total_comm,
                                 (SELECT COUNT(id) FROM likes WHERE likes.post_id = post.id) AS total_likes
@@ -26,13 +27,15 @@ if (!isset($tab)) {
                                     LEFT JOIN content_type ct ON type_id = ct.id
                                     LEFT JOIN user u ON original_author_id = u.id
                                     WHERE post.user_id = '$profile_user_id'";
-            $tab_data = db_get_query('all', $connect, $sql_posts_query);
             $posts = [];
-            foreach ($tab_data as $data) {
-                $post_id = $data['id'];
-                array_push($posts, $data['id']);
+            $tab_data = db_get_query('all', $connect, $sql_posts_query);
+            if (!empty ($tab_data)) {
+                foreach ($tab_data as $data) {
+                    $post_id = $data['id'];
+                    array_push($posts, $data['id']);
+                }
+                $comments = show_comments(implode(', ', $posts), $connect);
             }
-            $comments = show_comments(implode(', ', $posts), $connect);
             break;
 
         case 'likes':
