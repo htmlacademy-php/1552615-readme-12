@@ -392,6 +392,7 @@ function validateFilled($name)
     if (empty($name)) {
         return 'Это поле должно быть заполнено';
     }
+    return null;
 }
 
 /**
@@ -404,6 +405,7 @@ function validateUrl($name)
     if (!filter_var($name, FILTER_VALIDATE_URL)) {
         return 'Ссылка должна быть корректной';
     }
+    return null;
 }
 
 /**
@@ -427,6 +429,7 @@ function validateFile($name)
             return 'Загрузите картинку в формате JPEG, PNG или GIF';
         }
     }
+    return null;
 }
 
 /**
@@ -445,6 +448,7 @@ function uploadFile($name, $dirName)
             return 'Не удалось загрузить файл';
         }
     }
+    return null;
 }
 
 /**
@@ -466,6 +470,7 @@ function downloadFileFromUrl($name)
             return 'Не удалось загрузить файл';
         }
     }
+    return null;
 }
 
 /**
@@ -477,6 +482,7 @@ function validateFilledPhoto()
     if (empty($_POST['photo-url']) && empty($_FILES['userpic-file-photo']['name'])) {
         return 'Необходимо загрузить изображение или ввести ссылку';
     }
+    return null;
 }
 
 /**
@@ -489,6 +495,7 @@ function validateTags($name)
     if (empty($name)) {
         return 'Должен быть хотя бы один тег';
     }
+    return null;
 }
 
 /**
@@ -499,34 +506,35 @@ function validateTags($name)
 function translateInputName($name)
 {
     $translatedName = '';
-    if ($name === 'heading') {
-        $translatedName = 'Заголовок';
-    } elseif ($name === 'cite-text') {
-        $translatedName = 'Текст цитаты';
-    } elseif ($name === 'quote-author') {
-        $translatedName = 'Автор';
-    } elseif ($name === 'video-url') {
-        $translatedName = 'Ссылка Youtube';
-    } elseif ($name === 'post-text') {
-        $translatedName = 'Текст поста';
-    } elseif ($name === 'post-link') {
-        $translatedName = 'Ссылка';
-    } elseif ($name === 'photo-url') {
-        $translatedName = 'Ссылка из интернета';
-    } elseif ($name === 'userpic-file-photo') {
-        $translatedName = 'Картинка пользователя';
-    } elseif ($name === 'tags') {
-        $translatedName = 'Теги';
-    } elseif ($name === 'login') {
-        $translatedName = 'Логин';
-    } elseif ($name === 'email') {
-        $translatedName = 'Электронная почта';
-    } elseif ($name === 'password') {
-        $translatedName = 'Пароль';
-    } elseif ($name === 'password-repeat') {
-        $translatedName = 'Повтор пароля';
-    } elseif ($name === 'userpic-file') {
-        $translatedName = 'Аватар';
+    switch ($name) {
+        case 'heading':
+            $translatedName = 'Заголовок';
+        case 'cite-text':
+            $translatedName = 'Текст цитаты';
+        case 'quote-author':
+            $translatedName = 'Автор';
+        case 'video-url':
+            $translatedName = 'Ссылка Youtube';
+        case 'post-text':
+            $translatedName = 'Текст поста';
+        case 'post-link':
+            $translatedName = 'Ссылка';
+        case 'photo-url':
+            $translatedName = 'Ссылка из интернета';
+        case 'userpic-file-photo':
+            $translatedName = 'Картинка пользователя';
+        case 'tags':
+            $translatedName = 'Теги';
+        case 'login':
+            $translatedName = 'Логин';
+        case 'email':
+            $translatedName = 'Электронная почта';
+        case 'password':
+            $translatedName = 'Пароль';
+        case 'password-repeat':
+            $translatedName = 'Повтор пароля';
+        case 'userpic-file':
+            $translatedName = 'Аватар';
     }
     return $translatedName;
 }
@@ -541,6 +549,7 @@ function validateEmail($name)
     if (!filter_var($name, FILTER_VALIDATE_EMAIL)) {
         return 'E-mail должен быть корректным';
     }
+    return null;
 }
 
 /**
@@ -566,7 +575,7 @@ function db_set_connection()
 function get_subscribers($user_id, $connect)
 {
     $user_subs = [];
-    $sql_user_subs_query = "SELECT * FROM subscribtions
+    $sql_user_subs_query = "SELECT * FROM subscriptions
     WHERE user_id = '$user_id'";
     $sql_user_subs = db_get_query('all', $connect, $sql_user_subs_query);
     if ($sql_user_subs) {
@@ -590,6 +599,7 @@ function validateLength($text, $min_length)
             return 'Должно быть больше ' . $min_length . ' ' . get_noun_plural_form($min_length, 'символ', 'символа', 'символов');
         }
     }
+    return null;
 }
 
 /**
@@ -617,9 +627,9 @@ function generate_http_query($key, $value, $exclude = null)
  */
 function show_comments($post_id, $connect)
 {
-    $sql_comment_query = "SELECT comments.*, user.user_login AS comment_author, user.avatar AS comment_author_avatar
+    $sql_comment_query = "SELECT comments.*, users.login AS comment_author, users.avatar AS comment_author_avatar
                             FROM comments
-                                LEFT JOIN user ON comments.user_id = user.id
+                                LEFT JOIN users ON comments.user_id = users.id
                             WHERE comments.post_id IN ($post_id)
                                 ORDER BY published_at";
     return db_get_query('all', $connect, $sql_comment_query);
@@ -650,18 +660,18 @@ function prepare_and_send_message($sender, $mailer, $address, $subject, $message
  * Функция уведомления подписчиков пользователя
  * @param string $user_id - id текущего залогиненного пользователя
  * @param $connect - соединение с бд
- * @param $message - объект $message Symfony Mailer
+ * @param $sender - адрес отправителя
  * @param $mailer - объект $mailer Symfony Mailer
  */
-function send_notice_to_subs($message, $mailer, $user_id, $connect, $user_name)
+function send_notice_to_subs($sender, $mailer, $user_id, $connect, $user_name)
 {
-    $sql_subs = "SELECT subs.user_id, u.user_login, u.email
-                 FROM subscribtions subs
-                    LEFT JOIN user u on u.id = subs.user_id
+    $sql_subs = "SELECT subs.user_id, u.login, u.email
+                 FROM subscriptions subs
+                    LEFT JOIN users u on u.id = subs.user_id
                  WHERE to_user_id = $user_id";
     $subs = db_get_query('all', $connect, $sql_subs);
     foreach ($subs as $sub) {
-        $sub_login = $sub['user_login'];
+        $sub_login = $sub['login'];
         $user_link = 'http://' . $_SERVER['HTTP_HOST'] . '/profile.php?user_id=' . $user_id;
         $address = $sub['email'];
         $subject = "Новая публикация от пользователя " . $user_name;
@@ -681,7 +691,7 @@ function send_notice_to_subs($message, $mailer, $user_id, $connect, $user_name)
  */
 function send_notice_about_new_sub($user_id, $user_name, $profile_user_id, $connect, $sender, $mailer)
 {
-    $sql_users_login = "SELECT id, user_login, email FROM user
+    $sql_users_login = "SELECT id, login, email FROM users
                         WHERE id IN ($profile_user_id)";
     $users = db_get_query('all', $connect, $sql_users_login);
     $user_link = 'http://' . $_SERVER['HTTP_HOST'] . '/profile.php?user_id=' . $user_id;
@@ -690,7 +700,7 @@ function send_notice_about_new_sub($user_id, $user_name, $profile_user_id, $conn
     $subscriber_email = '';
     foreach ($users as $user) {
         if (in_array($profile_user_id, $user)) {
-            $subscriber_login = $user['user_login'];
+            $subscriber_login = $user['login'];
             $subscriber_email = $user['email'];
         }
     }

@@ -12,26 +12,26 @@ $posts = [];
 if ($search) {
     $is_hashtag = ((substr($search, 0, 1)) === '#') ? substr($search, 1) : null;
 
-    $sql_query = "SELECT post.*, u.user_login, u.avatar, ct.classname,
-    (SELECT COUNT(id) FROM comments WHERE comments.post_id = post.id) AS total_comm,
-    (SELECT COUNT(id) FROM likes WHERE likes.post_id = post.id) AS total_likes
-    FROM post
-        LEFT JOIN user u ON post.user_id = u.id
-        LEFT JOIN content_type ct ON type_id = ct.id
-    WHERE MATCH(post.title, post.text_content) AGAINST('$search')";
+    $sql_query = "SELECT posts.*, u.login, u.avatar, ct.classname,
+    (SELECT COUNT(id) FROM comments WHERE comments.post_id = posts.id) AS total_comm,
+    (SELECT COUNT(id) FROM likes WHERE likes.post_id = posts.id) AS total_likes
+    FROM posts
+        LEFT JOIN users u ON posts.user_id = u.id
+        LEFT JOIN content_types ct ON type_id = ct.id
+    WHERE MATCH(posts.title, posts.text_content) AGAINST('$search')";
 
     if ($is_hashtag) {
-        $sql_query = "SELECT hp.post_id, post.*, u.user_login, u.avatar, ct.classname,
+        $sql_query = "SELECT hp.post_id, posts.*, u.login, u.avatar, ct.classname,
         (SELECT COUNT(id) FROM comments
-            WHERE comments.post_id = post.id) AS total_comm,
+            WHERE comments.post_id = posts.id) AS total_comm,
         (SELECT COUNT(id) FROM likes
-            WHERE likes.post_id = post.id) AS total_likes
-        FROM hashtag
-            LEFT JOIN hashtags_posts hp ON hashtag.id = hp.hashtag_id
-            LEFT JOIN post ON hp.post_id = post.id
-            LEFT JOIN user u ON post.user_id = u.id
-            LEFT JOIN content_type ct ON post.type_id = ct.id
-        WHERE hashtag.hashtag LIKE '$is_hashtag'
+            WHERE likes.post_id = posts.id) AS total_likes
+        FROM hashtags
+            LEFT JOIN hashtags_posts hp ON hashtags.id = hp.hashtag_id
+            LEFT JOIN posts ON hp.post_id = posts.id
+            LEFT JOIN users u ON posts.user_id = u.id
+            LEFT JOIN content_types ct ON posts.type_id = ct.id
+        WHERE hashtags.hashtag LIKE '$is_hashtag'
         ORDER BY published_at";
     }
 

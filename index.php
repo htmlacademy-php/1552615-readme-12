@@ -34,12 +34,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $errors = array_filter($errors);
 
     $login = mysqli_real_escape_string($connect, $post['login']);
-    $sql_query = "SELECT * FROM user WHERE email = '$login'";
+    $sql_query = "SELECT * FROM users WHERE email = '$login'";
     $result = mysqli_query($connect, $sql_query);
     $user = $result ? mysqli_fetch_array($result, MYSQLI_ASSOC) : null;
 
     if ($user && empty($errors)) {
-        $pass_check = password_verify($post['password'], $user['user_password']);
+        $pass_check = password_verify($post['password'], $user['password']);
         if ($pass_check) {
             $_SESSION['user'] = $user;
         } else {

@@ -117,7 +117,7 @@
                             <?php endif; ?>
                             </div>
                             <div class="post__info">
-                                <b class="post__author-name"><?=htmlspecialchars($post['user_login'])?></b>
+                                <b class="post__author-name"><?=htmlspecialchars($post['login'])?></b>
                                 <time class="post__time" datetime="<?=date_format(date_create($post['published_at']), 'c');?>" title="<?=date_format(date_create($post['published_at']), 'd.m.Y H:i');?>"><?=get_date_interval_format(date_create($post['published_at']), 'назад');?></time>
                             </div>
                         </a>

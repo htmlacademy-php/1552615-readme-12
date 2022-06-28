@@ -15,7 +15,7 @@ $order_by = "";
 $path = (pathinfo(__FILE__, PATHINFO_BASENAME));
 $url = '/' . $path . '?';
 
-$sql_total_posts_query = "SELECT COUNT(id) AS total_posts FROM post";
+$sql_total_posts_query = "SELECT COUNT(id) AS total_posts FROM posts";
 $sql_total_posts = db_get_query('assoc', $connect, $sql_total_posts_query);
 $total_posts = (int) $sql_total_posts['total_posts'];
 $pages_count = ceil($total_posts / $page_items);
@@ -48,21 +48,21 @@ switch ($sort_by) {
 
 $condition = ($total_posts > $max_posts) ? "LIMIT $page_items OFFSET $offset" : "";
 
-$sql_types_query = "SELECT * FROM content_type";
-$sql_posts_query = "SELECT post.*, u.user_login, u.avatar, ct.classname,
-(SELECT COUNT(id) FROM comments WHERE comments.post_id = post.id) AS total_comm,
-(SELECT COUNT(id) FROM likes WHERE likes.post_id = post.id) AS total_likes
-    FROM post
-        LEFT JOIN user u ON user_id = u.id
-        LEFT JOIN content_type ct ON type_id = ct.id
+$sql_types_query = "SELECT * FROM content_types";
+$sql_posts_query = "SELECT posts.*, u.login, u.avatar, ct.classname,
+(SELECT COUNT(id) FROM comments WHERE comments.post_id = posts.id) AS total_comm,
+(SELECT COUNT(id) FROM likes WHERE likes.post_id = posts.id) AS total_likes
+    FROM posts
+        LEFT JOIN users u ON user_id = u.id
+        LEFT JOIN content_types ct ON type_id = ct.id
     $query_condition ORDER BY $order_by DESC $condition";
 
-$sql_type_posts = "SELECT post.*, u.user_login, u.avatar, ct.classname,
-(SELECT COUNT(id) FROM comments WHERE comments.post_id = post.id) AS total_comm,
-(SELECT COUNT(id) FROM likes WHERE likes.post_id = post.id) AS total_likes
-    FROM post
-        LEFT JOIN user u ON user_id = u.id
-        LEFT JOIN content_type ct ON type_id = ct.id
+$sql_type_posts = "SELECT posts.*, u.login, u.avatar, ct.classname,
+(SELECT COUNT(id) FROM comments WHERE comments.post_id = posts.id) AS total_comm,
+(SELECT COUNT(id) FROM likes WHERE likes.post_id = posts.id) AS total_likes
+    FROM posts
+        LEFT JOIN users u ON user_id = u.id
+        LEFT JOIN content_types ct ON type_id = ct.id
     $query_condition";
 
 $sql_types = db_get_query('all', $connect, $sql_types_query);

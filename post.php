@@ -16,18 +16,18 @@ if (isset($_GET['post_id'])) {
     die('Такой страницы не существует!');
 };
 
-$sql_post_id_query = "SELECT id FROM post WHERE id = $post_id";
+$sql_post_id_query = "SELECT id FROM posts WHERE id = $post_id";
 $sql_post_id = db_get_query('assoc', $connect, $sql_post_id_query);
 
-if ($post_id == $sql_post_id['id']) {
-    $sql_post_query = "SELECT post.*, u.user_login, u.avatar, u.created_at, ct.classname, COUNT(DISTINCT comm.id) AS total_comm
-    FROM post
-        LEFT JOIN user u ON post.user_id = u.id
-        LEFT JOIN content_type ct ON type_id = ct.id
-        LEFT JOIN comments comm ON post.id = comm.post_id
-    WHERE post.id = $post_id";
-    $post_watch_update = "UPDATE post SET watch_count = watch_count + 1 WHERE id = $post_id";
-    $stmt = db_get_prepare_stmt($connect, $post_watch_update);
+if ($post_id === $sql_post_id['id']) {
+    $sql_post_query = "SELECT posts.*, u.login, u.avatar, u.created_at, ct.classname, COUNT(DISTINCT comm.id) AS total_comm
+    FROM posts
+        LEFT JOIN users u ON posts.user_id = u.id
+        LEFT JOIN content_types ct ON type_id = ct.id
+        LEFT JOIN comments comm ON posts.id = comm.post_id
+    WHERE posts.id = $post_id";
+    $post_watch_update = "UPDATE posts SET watch_count = watch_count + 1 WHERE id = ?";
+    $stmt = db_get_prepare_stmt($connect, $post_watch_update, [$post_id]);
     $result = mysqli_stmt_execute($stmt);
 } else {
     http_response_code(404);
@@ -40,9 +40,9 @@ $user_subs = [];
 $user_subs = get_subscribers($user_id, $connect);
 $comments = show_comments($post_id, $connect);
 
-$sql_total_posts = get_total_from_db('id', 'post', 'user_id', $current_user, $connect);
+$sql_total_posts = get_total_from_db('id', 'posts', 'user_id', $current_user, $connect);
 $sql_total_likes = get_total_from_db('id', 'likes', 'post_id', $post_id, $connect);
-$sql_total_subs = get_total_from_db('user_id', 'subscribtions', 'to_user_id', $current_user, $connect);
+$sql_total_subs = get_total_from_db('user_id', 'subscriptions', 'to_user_id', $current_user, $connect);
 
 $active_post = include_template('post-' . $sql_post['classname'] . '.php', ['post' => $sql_post]);
 

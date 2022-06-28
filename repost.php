@@ -11,15 +11,15 @@ if (!$post_id) {
     die('Такой страницы не существует!');
 }
 
-$sql_post_check = "SELECT id FROM post WHERE id = '$post_id'";
+$sql_post_check = "SELECT id FROM posts WHERE id = '$post_id' AND user_id != '$user_id'";
 $post_check = db_get_query('assoc', $connect, $sql_post_check) ?? null;
 if ($post_check) {
     mysqli_query($connect, "START TRANSACTION");
-    $post_copy = mysqli_query($connect, "INSERT INTO post (is_repost, user_id, original_post_id, title, text_content, quote_author, picture, video, link, watch_count, type_id, original_author_id)
+    $post_copy = mysqli_query($connect, "INSERT INTO posts (is_repost, user_id, original_post_id, title, text_content, quote_author, picture, video, link, watch_count, type_id, original_author_id)
             SELECT '1', '$user_id', '$post_id', title, text_content, quote_author, picture, video, link, watch_count, type_id, user_id AS original_author_id
             FROM post WHERE id = '$post_id'");
 
-    $repost_count_update = mysqli_query($connect, "UPDATE post SET repost_count = repost_count + 1 WHERE id = $post_id");
+    $repost_count_update = mysqli_query($connect, "UPDATE posts SET repost_count = repost_count + 1 WHERE id = $post_id");
     if ($post_copy && $repost_count_update) {
         mysqli_query($connect, "COMMIT");
     } else {
