@@ -3,9 +3,9 @@
 require_once('helpers.php');
 
 $connect = db_set_connection();
-$sql_hashtag_query = "SELECT hashtag.hashtag, hp.post_id
-                      FROM hashtag
-                            LEFT JOIN hashtags_posts hp ON hashtag.id = hp.hashtag_id
+$sql_hashtag_query = "SELECT hashtags.hashtag, hp.post_id
+                      FROM hashtags
+                            LEFT JOIN hashtags_posts hp ON hashtags.id = hp.hashtag_id
                             ORDER BY post_id";
 $sql_hashtags = db_get_query('all', $connect, $sql_hashtag_query);
 

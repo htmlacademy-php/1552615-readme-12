@@ -18,7 +18,7 @@
                                     <?php endif; ?>
                                 </div>
                                 <div class="post__info">
-                                    <b class="post__author-name"><?=$post['user_login']; ?></b>
+                                    <b class="post__author-name"><?=$post['login']; ?></b>
                                     <span class="post__time"><?=get_date_interval_format(date_create($post['published_at']), 'назад');?></span>
                                 </div>
                             </a>

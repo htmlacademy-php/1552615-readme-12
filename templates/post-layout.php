@@ -104,7 +104,7 @@
                         </div>
                         <div class="post-details__name-wrapper user__name-wrapper">
                             <a class="post-details__name user__name" href="<?php echo('/profile.php' . '?user_id=' . $post['user_id']) . '&tab=posts';?>">
-                                <span><?=$post['user_login']; ?></span>
+                                <span><?=$post['login']; ?></span>
                             </a>
                             <time class="post-details__time user__time" datetime="<?php echo(date_format(date_create($post['created_at']), 'Y-m-d'));?>"><?=get_date_interval_format(date_create($post['created_at']), 'на сайте');?></time>
                         </div>
@@ -127,10 +127,10 @@
                         <?php if ($user_id === $post['user_id']):?>
                         <a class="post-mini__user-button user__button user__button--subscription button button--quartz visually-hidden" href="#">&nbsp;</a>
                         <?php elseif ($user_subs && in_array($post['user_id'], $user_subs)): ?>
-                        <a class="profile__user-button user__button user__button--subscription button button--main" href="<?php echo('/subscribtion.php' . '?user_id=' . $post['user_id']);?>">Отписаться</a>
+                        <a class="profile__user-button user__button user__button--subscription button button--main" href="<?php echo('/subscription.php' . '?user_id=' . $post['user_id']);?>">Отписаться</a>
                         <a class="profile__user-button user__button user__button--writing button button--green" href="#">Сообщение</a>
                         <?php else: ?>
-                        <a class="profile__user-button user__button user__button--subscription button button--main" href="<?php echo('/subscribtion.php' . '?user_id=' . $post['user_id']);?>">Подписаться</a>
+                        <a class="profile__user-button user__button user__button--subscription button button--main" href="<?php echo('/subscription.php' . '?user_id=' . $post['user_id']);?>">Подписаться</a>
                         <?php endif; ?>
                     </div>
                 </div>

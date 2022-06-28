@@ -15,11 +15,11 @@ $content_type_id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT) ?? 
 $form_errors = '';
 $oldData = [];
 
-$sql_types = db_get_query('all', $connect, "SELECT * FROM content_type");
+$sql_types = db_get_query('all', $connect, "SELECT * FROM content_types");
 
 foreach ($sql_types as $type) {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        if ($_POST['classname'] == $type['classname']) {
+        if ($_POST['classname'] === $type['classname']) {
             $content_type_id = $type['id'];
         }
 
@@ -105,8 +105,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $tags = explode(' ', $_POST['tags']);
         $db_tags_id = [];
         foreach ($tags as $tag) {
-            $sql = "INSERT INTO hashtag (hashtag) VALUES ('$tag')";
-            $tag_stmt = db_get_prepare_stmt($connect, $sql);
+            $sql = "INSERT INTO hashtags (hashtag) VALUES (?)";
+            $tag_stmt = db_get_prepare_stmt($connect, $sql, [$tag]);
             $tag_result = mysqli_stmt_execute($tag_stmt);
             array_push($db_tags_id, mysqli_insert_id($connect));
         }
@@ -118,6 +118,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $db_post['picture'] = null;
         $db_post['video'] = $_POST['video-url'] ?? null;
         $db_post['link'] = $_POST['post-link'] ?? null;
+        $db_post['user_id'] = $user_id;
+        $db_post['type_id'] = $content_type_id;
 
         if (isset($_POST['post-text'])) {
             $db_post['text_content'] = $_POST['post-text'];
@@ -131,8 +133,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $db_post['picture'] = basename($_POST['photo-url']);
         }
 
-        $sql = "INSERT INTO post (title, text_content, quote_author, picture, video, link, user_id, type_id)
-                VALUES (?, ?, ?, ?, ?, ?, '$user_id', '$content_type_id')";
+        $sql = "INSERT INTO posts (title, text_content, quote_author, picture, video, link, user_id, type_id)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $post_stmt = db_get_prepare_stmt($connect, $sql, $db_post);
         $post_result = mysqli_stmt_execute($post_stmt);
         $db_post_id = mysqli_insert_id($connect);
@@ -143,7 +145,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($hp_query) {
             mysqli_query($connect, "COMMIT");
-            send_notice_to_subs($message, $mailer, $user_id, $connect, $user_name);
+            send_notice_to_subs($sender, $mailer, $user_id, $connect, $user_name);
             header("Location: post.php?post_id=" . $db_post_id);
             exit();
         } else {

@@ -1,21 +1,21 @@
 
-INSERT INTO content_type (title, classname)
+INSERT INTO content_types (title, classname)
     VALUES ('Текст', 'text'), ('Картинка', 'photo'), ('Видео', 'video'), ('Ссылка', 'link'), ('Цитата', 'quote');
 
 
-INSERT INTO user (created_at, email, user_login, user_password, avatar)
+INSERT INTO users (created_at, email, login, password, avatar)
     VALUES (DATE_ADD(now(),INTERVAL 10 DAY), 'pikachu@gmail.com', 'pikachu', 'pikapika777', 'userpic-mark.jpg'), (DATE_ADD(now(),INTERVAL 2 MONTH), 'petr_petrovich@gmail.com', 'petr_petrovich', 'vodka_4ever', 'userpic.jpg'), (DATE_ADD(now(),INTERVAL 2 YEAR), 'valiko@yandex.ru', 'valiko', 'mimino555', 'userpic-larisa-small.jpg');
 
 
-INSERT INTO post (published_at, title, text_content, quote_author, watch_count, user_id, type_id)
+INSERT INTO posts (published_at, title, text_content, quote_author, watch_count, user_id, type_id)
     VALUES (DATE_ADD(now(),INTERVAL 10 DAY), 'Цитата', 'Мы в жизни любим только раз, а после ищем лишь похожих', 'Лариса', 20, 1, 5);
-INSERT INTO post (published_at, title, text_content, watch_count, user_id, type_id)
+INSERT INTO posts (published_at, title, text_content, watch_count, user_id, type_id)
     VALUES (DATE_ADD(now(),INTERVAL 30 DAY), 'Игра престолов', 'Не могу дождаться начала финального сезона своего любимого сериала!', 12, 3, 1);
-INSERT INTO post (published_at, title, picture, watch_count, user_id, type_id)
+INSERT INTO posts (published_at, title, picture, watch_count, user_id, type_id)
     VALUES (DATE_ADD(now(),INTERVAL 4 MONTH), 'Наконец, обработал фотки!', 'rock-medium.jpg', 22, 2, 2);
-INSERT INTO post (published_at, title, picture, watch_count, user_id, type_id)
+INSERT INTO posts (published_at, title, picture, watch_count, user_id, type_id)
     VALUES (DATE_ADD(now(),INTERVAL 2 YEAR), 'Моя мечта', 'coast-medium.jpg', 101, 2, 2);
-INSERT INTO post (title, link, watch_count, user_id, type_id)
+INSERT INTO posts (title, link, watch_count, user_id, type_id)
     VALUES ('Лучшие курсы', 'www.htmlacademy.ru', 45, 1, 4);
 
 
@@ -34,16 +34,16 @@ INTO comments (comment, user_id, post_id)
     ('Отличненько!', 3, 5);
 
 
-SELECT post.*, u.user_login, ct.classname
-FROM post
-    LEFT JOIN user u ON user_id = u.id
-    LEFT JOIN content_type ct ON type_id = ct.id
+SELECT posts.*, u.user_login, ct.classname
+FROM posts
+    LEFT JOIN users u ON user_id = u.id
+    LEFT JOIN content_types ct ON type_id = ct.id
 ORDER BY watch_count DESC;
 
 
-SELECT post.*, watch_count, u.user_login
-FROM post
-  LEFT JOIN user u ON user_id = u.id
+SELECT posts.*, watch_count, u.user_login
+FROM posts
+  LEFT JOIN users u ON user_id = u.id
 WHERE u.user_login = 'pikachu';
 
 
@@ -67,32 +67,32 @@ INSERT INTO likes (user_id, post_id)
   VALUES (3, 5);
 
 
-INSERT INTO subscribtions
+INSERT INTO subscriptions
   VALUES (NULL, 2, 3);
-INSERT INTO subscribtions
+INSERT INTO subscriptions
   VALUES (NULL, 1, 3);
-INSERT INTO subscribtions
+INSERT INTO subscriptions
   VALUES (NULL, 3, 2);
 INSERT INTO subscribtions
   VALUES (NULL, 3, 1);
 
 
-CREATE FULLTEXT INDEX post_ft_search ON post(title, text_content);
+CREATE FULLTEXT INDEX post_ft_search ON posts(title, text_content);
 
 
-INSERT INTO hashtag
+INSERT INTO hashtags
   VALUES (NULL, 'шикарныйвид');
-INSERT INTO hashtag
+INSERT INTO hashtags
   VALUES (NULL, 'крутосказано');
-INSERT INTO hashtag
+INSERT INTO hashtags
   VALUES (NULL, 'полезнаяссылка');
-INSERT INTO hashtag
+INSERT INTO hashtags
   VALUES (NULL, 'крутойсериал');
-INSERT INTO hashtag
+INSERT INTO hashtags
   VALUES (NULL, 'игрпрестолов');
-INSERT INTO hashtag
+INSERT INTO hashtags
   VALUES (NULL, 'лучшеефото');
-INSERT INTO hashtag
+INSERT INTO hashtags
   VALUES (NULL, 'nature');
 
 
@@ -112,5 +112,3 @@ INSERT INTO hashtags_posts
   VALUES (NULL, 1, 4);
 INSERT INTO hashtags_posts
   VALUES (NULL, 7, 4);
-
-

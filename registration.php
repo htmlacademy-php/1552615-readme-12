@@ -51,10 +51,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // проверяем на наличие передаваемого email и логина в бд
     $email = htmlspecialchars($_POST['email']);
     $login = htmlspecialchars($_POST['login']);
-    $sql_check_query = "SELECT * FROM user
+    $sql_check_query = "SELECT * FROM users
                         WHERE email = '$email'
                         ||
-                        user_login = '$login'";
+                        login = '$login'";
 
     $results = db_get_query('all', $connect, $sql_check_query) ?? '';
     foreach ($results as $result) {
@@ -85,11 +85,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($errors)) {
         $form_errors = '';
         $db_post['email'] = $_POST['email'];
-        $db_post['user_login'] = $_POST['login'];
-        $db_post['user_password'] = password_hash($_POST['password'], PASSWORD_DEFAULT);
+        $db_post['login'] = $_POST['login'];
+        $db_post['password'] = password_hash($_POST['password'], PASSWORD_DEFAULT);
         $db_post['userpic-file'] = $_FILES['userpic-file']['name'] ?? null;
 
-        $sql = "INSERT INTO user (email, user_login, user_password, avatar)
+        $sql = "INSERT INTO users (email, login, password, avatar)
                 VALUES (?, ?, ?, ?)";
         $stmt = db_get_prepare_stmt($connect, $sql, $db_post);
         $result = mysqli_stmt_execute($stmt);
@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!$result) {
             die(print_r(mysqli_stmt_error_list($stmt)));
         }
-        
+
         header("Location: index.php");
     } else {
         $form_errors = include_template('form-errors.php', ['errors' => $errors]);

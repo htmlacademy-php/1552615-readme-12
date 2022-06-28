@@ -13,7 +13,7 @@
                 </div>
                 <div class="post-mini__name-wrapper user__name-wrapper">
                     <a class="post-mini__name user__name" href="<?php echo('/profile.php' . '?user_id=' . $data['id']) . '&tab=posts';?>">
-                        <span><?=$data['user_login'];?></span>
+                        <span><?=$data['login'];?></span>
                     </a>
                     <time class="post-mini__time user__additional" datetime="<?php echo(date_format(date_create($data['created_at']), 'c'));?>"><?=get_date_interval_format(date_create($data['created_at']), 'на сайте');?></time>
                 </div>
@@ -32,9 +32,9 @@
                 <?php if ($user_id === $data['id']):?>
                 <span class="post-mini__user-button user__button user__button--subscription button">&nbsp;</span>
                 <?php elseif ($user_subs && in_array($data['id'], $user_subs)):?>
-                <a class="post-mini__user-button user__button user__button--subscription button button--quartz" href="<?php echo('/subscribtion.php' . '?user_id=' . $data['id']);?>">Отписаться</a>
+                <a class="post-mini__user-button user__button user__button--subscription button button--quartz" href="<?php echo('/subscription.php' . '?user_id=' . $data['id']);?>">Отписаться</a>
                 <?php else:?>
-                <a class="post-mini__user-button user__button user__button--subscription button button--main" href="<?php echo('/subscribtion.php' . '?user_id=' . $data['id']);?>">Подписаться</a>
+                <a class="post-mini__user-button user__button user__button--subscription button button--main" href="<?php echo('/subscription.php' . '?user_id=' . $data['id']);?>">Подписаться</a>
                 <?php endif;?>
             </div>
         </li>
